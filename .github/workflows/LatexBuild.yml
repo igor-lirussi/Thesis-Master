@@ -187,8 +187,8 @@ jobs:
         with:
           args: >-
             -d ./pandoc-uikit/config.yaml 
-            thesis-master.tex
             -o ./index.html 
+            thesis-main.tex
       - name: Commit the new gh-pages html
         run: |
           git add ./index.html 

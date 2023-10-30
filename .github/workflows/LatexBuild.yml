@@ -45,7 +45,7 @@ jobs:
           
   TelegramFailureBuildJob:
       needs: [BuildLatexJob] #when finished this job
-      if: failure() # if its failed
+      if: failure() && !skipped() # if its failed
       runs-on: ubuntu-latest
       steps:
       - name: Clone Repo with Checkout 
@@ -113,7 +113,7 @@ jobs:
           TAG="${{ steps.extract_date.outputs.DATE }}"
           MSG="${{ github.event.head_commit.message }}"
           echo $TAG
-          gh release create -m "$TAG" "$TAG" #crea release 
+          gh release create "$TAG" -t "$TAG" #crea release 
           tree
           for f in ./*.pdf; do
             echo "Delivering file: $f"
@@ -124,7 +124,7 @@ jobs:
   
   TelegramFailureDeployJob:
       needs: [DeployJob] #when finished this job
-      if: failure() # if its failed
+      if: failure() && !skipped() # if its failed
       runs-on: ubuntu-20.04
       steps:
       - name: Send custom Telegram message
@@ -211,7 +211,7 @@ jobs:
 
   TelegramFailurePandocConverterJob:
       needs: [PandocConverterJob] 
-      if: failure()
+      if: failure() && !skipped()
       runs-on: ubuntu-20.04
       steps:
       - name: Send custom Telegram message

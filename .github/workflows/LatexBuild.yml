@@ -89,7 +89,7 @@ jobs:
 
   DeployJob:
     needs: BuildLatexJob
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Clone Repo with Checkout 
         uses: actions/checkout@v2 
@@ -113,7 +113,7 @@ jobs:
           TAG="${{ steps.extract_date.outputs.DATE }}"
           MSG="${{ github.event.head_commit.message }}"
           echo $TAG
-          gh release create "$TAG" -t "$TAG" #crea release 
+          hub release create -m "$TAG" "$TAG" || true #crea release 
           tree
           for f in ./*.pdf; do
             echo "Delivering file: $f"

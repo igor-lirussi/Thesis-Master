@@ -89,7 +89,9 @@ jobs:
 
   DeployJob:
     needs: BuildLatexJob
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-20.04    
+    permissions:
+      contents: write
     steps:
       - name: Clone Repo with Checkout 
         uses: actions/checkout@v2 
@@ -185,8 +187,8 @@ jobs:
         with:
           args: >-
             -d ./pandoc-uikit/config.yaml 
-            -o ./index.html 
             thesis-master.tex
+            -o ./index.html 
       - name: Commit the new gh-pages html
         run: |
           git add ./index.html 

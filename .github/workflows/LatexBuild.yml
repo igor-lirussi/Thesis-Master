@@ -114,7 +114,7 @@ jobs:
           release_name: '${{ steps.extract_date.outputs.DATE }}'
           draft: falses
           prerelease: false
-      - name: Upload Release Asset
+      - name: Upload Release Asset #requires action, Workflow permission, read and write
         if: success()
         uses: actions/upload-release-asset@v1
         env:

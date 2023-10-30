@@ -1,0 +1,244 @@
+name: LateX Build
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  BuildLatexJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Git repo
+        uses: actions/checkout@v2
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: thesis-main.tex
+          pre_compile: "tlmgr update --self --all" #updates latex packets
+          args: "-pdf -jobname=thesis-master -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist "
+          post_compile: "latexmk -c"
+      - name: Split log
+        if: failure()
+        shell: bash
+        run: |
+          cat thesis-master.log | grep -n -E 'LaTeX Error|LaTeX Warning|Undefined' > small.log
+      - name: Upload Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Logs
+          path: |
+            small.log 
+      - name: Print small log
+        if: failure()
+        shell: bash
+        run: cat small.log >&2
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Artifacts
+          path: |
+            thesis-master.pdf
+          
+  TelegramFailureBuildJob:
+      needs: [BuildLatexJob] #when finished this job
+      if: failure() # if its failed
+      runs-on: ubuntu-latest
+      steps:
+      - name: Clone Repo with Checkout 
+        uses: actions/checkout@v2 # clones repo! Action implemented in this repository, tag "2"
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Logs
+      - name: Send custom Telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+                ${{ github.event_name }} event,
+                on github.com/${{ github.repository }}, 
+                by ${{ github.actor }}:
+                <b>${{ github.event.head_commit.message }}</b>
+                ❌ <b>FAILED</b> ❌
+          format: html
+          disable_web_page_preview: true
+          document: small.log
+          
+  TelegramSuccessBuildJob:
+        needs: [BuildLatexJob] #when finished this job
+        if: success() # if its ok
+        runs-on: ubuntu-latest
+        steps:
+        - name: Send custom Telegram message
+          uses: appleboy/telegram-action@master
+          with:
+            to: ${{ secrets.TELEGRAM_TO }}
+            token: ${{ secrets.TELEGRAM_TOKEN }}
+            message: |
+                ${{ github.event_name }} event on
+                github.com/${{ github.repository }}, 
+                <b>${{ github.event.head_commit.message }}</b>
+                ✅ <b>SUCCEDED</b> ✅ 
+            format: html
+            disable_web_page_preview: true
+
+  DeployJob:
+    needs: BuildLatexJob
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo with Checkout 
+        uses: actions/checkout@v2 
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Artifacts
+      - name: Extract Date
+        shell: bash
+        id: extract_date
+        run: |
+          echo "::set-output name=DATE::Release-$(date +%F_%H-%M)"
+      - name: Print Output Step
+        run: echo ${{ steps.extract_date.outputs.DATE }}
+      - name: Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "${{ secrets.NAME }}"
+          git config --global user.email "${{ secrets.EMAIL }}"
+          TAG="${{ steps.extract_date.outputs.DATE }}"
+          MSG="${{ github.event.head_commit.message }}"
+          echo $TAG
+          hub release create -m "$TAG" "$TAG" || true #crea release 
+          tree
+          for f in ./*.pdf; do
+            echo "Delivering file: $f"
+            gh release upload "$TAG" "$f" --clobber
+            rm $f
+          done
+
+  
+  TelegramFailureDeployJob:
+      needs: [DeployJob] #when finished this job
+      if: failure() # if its failed
+      runs-on: ubuntu-20.04
+      steps:
+      - name: Send custom Telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+              RELEASE
+              ❌ <b>FAILED</b> ❌
+          format: html
+          disable_web_page_preview: true
+          
+  TelegramSuccessDeployJob:
+      needs: [DeployJob] #when finished this job
+      if: success() # if its ok
+      runs-on: ubuntu-20.04
+      steps:
+      - name: Clone Repo with Checkout 
+        uses: actions/checkout@v2 
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Artifacts
+      - name: Send custom Telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+              Released!
+              on https://github.com/${{ github.repository }}/releases
+          format: html
+          disable_web_page_preview: true
+          document: thesis-master.pdf
+          
+          
+  PandocConverterJob:
+    needs: DeployJob
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone git repo
+        uses: actions/checkout@v2
+      - name: Setup git repo 
+        run: |
+          git config user.name "${{ secrets.NAME }}"
+          git config user.email "${{ secrets.EMAIL }}"
+          git fetch --all
+      - name: Clone Pandoc template 
+        run: |
+          git clone https://github.com/igor-lirussi/pandoc-uikit
+      - name: Pandoc tex conversion
+        uses: docker://pandoc/latex:latest
+        with:
+          args: >-
+            -d ./pandoc-uikit/config.yaml 
+            -o ./index.html 
+            thesis-master.tex
+      - name: Commit the new gh-pages html
+        run: |
+          git add ./index.html 
+          git commit -m "Invisible commit" 
+          rm -rdf pandoc-uikit/.git* 
+          git clean -fxd 
+          git checkout gh-pages
+          git rm -rf .
+          git clean -fxd
+          git clone https://github.com/igor-lirussi/pandoc-uikit
+          rm -rdf pandoc-uikit/.git*
+          git checkout -f main Extra
+          cp Extra/favicon.png .
+          git checkout -f main figures
+          git checkout -f main Images
+          git checkout -f main index.html
+          git checkout -f main README.md
+          mkdir readme
+          mv README.md ./readme
+          cp Extra/favicon.png ./readme
+          git status
+          # git cherry-pick main, alternatives
+          git add .
+          git commit -m 'Updated gh-pages'
+          git push
+
+
+  TelegramFailurePandocConverterJob:
+      needs: [PandocConverterJob] 
+      if: failure()
+      runs-on: ubuntu-20.04
+      steps:
+      - name: Send custom Telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+              Website building 
+              ❌ <b>FAILED</b> ❌
+          format: html
+          disable_web_page_preview: true
+          
+  TelegramSuccessPandocConverterJob:
+      needs: [PandocConverterJob] 
+      if: success()
+      runs-on: ubuntu-20.04
+      steps:
+      - name: Send custom Telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+              Website built! 
+              ONLINE at https://igor-lirussi.github.io/Thesis-Master/
+          format: html
+          disable_web_page_preview: true
+          

@@ -200,14 +200,12 @@ jobs:
           git clean -fxd
           git clone https://github.com/igor-lirussi/pandoc-uikit
           rm -rdf pandoc-uikit/.git*
-          git checkout -f main Extra
           git checkout -f main figures
           git checkout -f main Images
           git checkout -f main index.html
           git checkout -f main README.md
           mkdir readme
           mv README.md ./readme
-          cp Extra/favicon.png ./readme
           git status
           # git cherry-pick main, alternatives
           git add .

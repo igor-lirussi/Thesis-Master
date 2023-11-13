@@ -16,12 +16,8 @@
 
 % \usepackage[disable]{todonotes} % decommentare prima della versione finale
 \usepackage{todonotes} % commentare prima della versione finale
-\newcommand{\gcsidenote}[1]{\todo[size=\tiny,color=green]{\textbf{GC:} #1}}
-\newcommand{\gcnote}[1]{\todo[size=\scriptsize,color=green,inline]{\textbf{Giovanni Ciatto:} #1}}
-\newcommand{\dpsidenote}[1]{\todo[size=\tiny,color=red]{\textbf{DP:} #1}}
-\newcommand{\dpnote}[1]{\todo[size=\scriptsize,color=red,inline]{\textbf{Danilo Pianini:} #1}}
-\newcommand{\rcsidenote}[1]{\todo[size=\tiny,color=cyan]{\textbf{RC:} #1}}
-\newcommand{\rcnote}[1]{\todo[size=\scriptsize,color=cyan,inline]{\textbf{Roberta Calegari:} #1}}
+\newcommand{\ilsidenote}[1]{\todo[size=\tiny,color=green]{\textbf{IL:} #1}}
+\newcommand{\ilnote}[1]{\todo[size=\scriptsize,color=green,inline]{\textbf{Igor Lirussi:} #1}}
 
 \ifthenelse{\equal{italian}{\thesislang}}{
 	\renewcommand{\lstlistingname}{Listato}
@@ -91,3 +87,35 @@
 	ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Unit, it},
 	sensitive=true
 }
+
+\hypersetup{
+    pdftitle={Master Thesis},
+    pdfkeywords={CNMP, robotics, thesis, Machine Learning},
+    pdfauthor={Lirussi Igor},
+}
+
+%Symobols and Abbreviations
+\newenvironment{symbols}{%
+   \clearpage
+   \chapter*{List of Symbols}
+   \beginsymlist}
+  {\closesymlist}
+%
+\newenvironment{abbreviations}{%
+   \clearpage
+   \chapter*{List of Acronyms/Abbreviations}
+   \beginsymlist}
+  {\closesymlist}
+%
+\newcommand{\beginsymlist}{%
+   \begin{tabbing}
+   \hspace*{\symtabi}\=\hspace*{\symtabii}\=\kill}
+%
+\newcommand{\closesymlist}{\end{tabbing}}
+%
+\newcommand{\sym}[2]{\>#1 \>\parbox[t]{11cm}{#2} \\}
+\newlength{\symtabi}
+\newlength{\symtabii}
+\setlength{\symtabi}{1em}
+\setlength{\symtabii}{10em}
+%

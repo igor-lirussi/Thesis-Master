@@ -1,8 +1,3 @@
-%%%%
-% Consiglio la visione dei seguenti tutorial:
-% - https://www.youtube.com/watch?v=ihxSUsJB_14
-% - https://www.youtube.com/watch?v=XTFWaV55uDo
-%%%%
 \documentclass[12pt,a4paper,openright,twoside]{book}
 \usepackage[utf8]{inputenc}
 
@@ -18,41 +13,45 @@
 
 \begin{document}
 	
-\frontmatter
-
-\input{front.tex}
-
-\include{Tex/Abstract}
-
-\begin{dedication} 
-Optional. Max a few lines.
-\end{dedication}
-
-\include{Tex/Acknowledgements}
-
-%----------------------------------------------------------------------------------------
-\tableofcontents   
-\listoffigures     % (optional) comment if empty
-\lstlistoflistings % (optional) comment if empty
-%----------------------------------------------------------------------------------------
-
-\mainmatter
-
-\include{Tex/Introduction}
-\include{Tex/StateOfTheArt}
-\include{Tex/Design}
-\include{Tex/Implementation}
-\include{Tex/Validation}
-\include{Tex/Conclusions}
-
-
-%----------------------------------------------------------------------------------------
-% BIBLIOGRAPHY
-%----------------------------------------------------------------------------------------
-
-%\nocite{*} % uncomment this to show all the references in the .bib file
-\bibliographystyle{plain}
-\bibliography{References}
-
+    %----------------------------------------------------------------------------------------
+    % FRONTMATTER
+    \frontmatter
+    
+    \input{front.tex}
+    
+    \include{Tex/Abstract}
+    
+    \begin{dedication} 
+    Dedication here
+    \end{dedication}
+    
+    \include{Tex/Acknowledgements}
+    
+    \tableofcontents   
+    \listoffigures     
+    \listoftables
+    \include{Tex/Symbols}
+    \include{Tex/Abbreviations}
+    \lstlistoflistings 
+    %----------------------------------------------------------------------------------------
+    
+    \mainmatter
+    
+    \include{Tex/Introduction}
+    \include{Tex/StateOfTheArt}
+    \include{Tex/Platforms}
+    \include{Tex/Design}
+    \include{Tex/Implementation}
+    \include{Tex/Validation}
+    \include{Tex/Conclusions}
+    
+    
+    %----------------------------------------------------------------------------------------
+    % BIBLIOGRAPHY
+    
+    %\nocite{*} % uncomment this to show all the references in the .bib file
+    \bibliographystyle{plain}
+    \bibliography{References}
+    %----------------------------------------------------------------------------------------
 
 \end{document}

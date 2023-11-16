@@ -19,7 +19,7 @@
 
         <meta name="generator" content="pandoc-uikit" />
                 <meta name="author" content="Lirussi Igor" />
-                        <meta name="date" content="2023-11-13" />
+                        <meta name="date" content="2023-11-16" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
                         <style type="text/css">
@@ -101,7 +101,7 @@
                         <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
                     <h1 class="uk-heading">Master Thesis - Igor Lirussi</h1>
-                                        <h1 class="uk-heading" style="margin:0">2023-11-13</h1>
+                                        <h1 class="uk-heading" style="margin:0">2023-11-16</h1>
                                                             <p class="uk-text-large">Lirussi
 Igor</p>
                                     </div>
@@ -143,10 +143,10 @@ Igor</p>
                                                         class="toc-section-number">1.1</span>
                                                         Overview</a></li>
                                                         <li><a
-                                                        href="#foochallanges"
-                                                        id="footoc-challanges"><span
+                                                        href="#foochallenges"
+                                                        id="footoc-challenges"><span
                                                         class="toc-section-number">1.2</span>
-                                                        Challanges</a></li>
+                                                        Challenges</a></li>
                                                         <li><a
                                                         href="#fooobjectives"
                                                         id="footoc-objectives"><span
@@ -166,9 +166,19 @@ Igor</p>
                                                         State of the Art</a>
                                                         <ul>
                                                         <li><a
+                                                        href="#foogaussian-processes"
+                                                        id="footoc-gaussian-processes"><span
+                                                        class="toc-section-number">2.1</span>
+                                                        Gaussian
+                                                        Processes</a></li>
+                                                        <li><a href="#foocnp"
+                                                        id="footoc-cnp"><span
+                                                        class="toc-section-number">2.2</span>
+                                                        CNP</a></li>
+                                                        <li><a
                                                         href="#foocnmps"
                                                         id="footoc-cnmps"><span
-                                                        class="toc-section-number">2.1</span>
+                                                        class="toc-section-number">2.3</span>
                                                         CNMPs</a></li>
                                                         </ul></li>
                                                         <li><a
@@ -211,10 +221,12 @@ Igor</p>
                                                         class="toc-section-number">4.1</span>
                                                         End-To-End
                                                         Concatenation</a></li>
-                                                        <li><a href="#foop"
-                                                        id="footoc-p"><span
+                                                        <li><a
+                                                        href="#foopartial-combination"
+                                                        id="footoc-partial-combination"><span
                                                         class="toc-section-number">4.2</span>
-                                                        P</a></li>
+                                                        Partial
+                                                        Combination</a></li>
                                                         </ul></li>
                                                         <li><a
                                                         href="#foochap:implementation"
@@ -235,8 +247,9 @@ Igor</p>
                                                         <ul>
                                                         <li><a
                                                         href="#foofuture-work"
-                                                        id="footoc-future-work">Future
-                                                        work</a></li>
+                                                        id="footoc-future-work"><span
+                                                        class="toc-section-number">7.1</span>
+                                                        Future work</a></li>
                                                         </ul></li>
                                                         </ul>
                             
@@ -299,6 +312,9 @@ Will write at the end.</p>
 <span class="math inline">\(\mathbf{A}\)</span></p>
 <p>State transition matrix of a hidden Markov model</p>
 <p><br />
+<span class="math inline">\(t\)</span></p>
+<p>Time</p>
+<p><br />
 </p>
 <p><br />
 <span class="math inline">\(\alpha\)</span></p>
@@ -310,7 +326,11 @@ Will write at the end.</p>
 <span class="math inline">\(\Theta\)</span></p>
 <p>Parameter set</p>
 <p><br />
-</p>
+<span class="math inline">\(\sigma\)</span></p>
+<p>Standard Deviation</p>
+<p><br />
+<span class="math inline">\(\mu\)</span></p>
+<p>Mean</p>
 <p><br />
 </p>
 </div>
@@ -325,11 +345,29 @@ Will write at the end.</p>
 3D</p>
 <p>Three Dimensional</p>
 <p><br />
-AAM</p>
-<p>Active Appearance Model</p>
+IR</p>
+<p>Infrared</p>
 <p><br />
-ASM</p>
-<p>Active Shape Model</p>
+ROS</p>
+<p>Robot Operating System</p>
+<p><br />
+RGB</p>
+<p>Red Green Blue</p>
+<p><br />
+RGBD</p>
+<p>Red Green Blue Depth</p>
+<p><br />
+GP</p>
+<p>Gaussian Processes</p>
+<p><br />
+CNP</p>
+<p>Conditional Neural Processes</p>
+<p><br />
+CNMP</p>
+<p>Conditional Neural Movement Primitives</p>
+<p><br />
+YOLO</p>
+<p>You Only Look Once model</p>
 <p><br />
 </p>
 </div>
@@ -340,66 +378,246 @@ Introduction</h1>
 <section id="foooverview" class="level2" data-number="1.1">
 <h2 data-number="1.1"><span class="header-section-number">1.1</span>
 Overview</h2>
-<p>Humans have been building sequences of actions to achieve decision-making
-under uncertainty, which is essential for achieving high-level goals</p>
+<p>Humans have a remarkable ability to achieve complex goals in a wide variety
+of tasks. A person is usually exposed to different scenarios during the day,
+starting from the home environment to the commute, work, mealtime, and so on.
+The versatility of our species is a key factor, and the human cognitive
+flexibility has been appointed as a major driver in evolution <span
+class="citation" data-cites="deak2003development">(Deak 2003)</span>, <span
+class="citation" data-cites="karmiloff1994beyond">(Karmiloff-Smith
+1994)</span>. Some situations are more complicated than others; nevertheless,
+regardless of their difference, humans excel in meeting the different demands
+to solve the tasks desired.</p>
+<p>All these scenarios present different small challenges to solve in order to
+accomplish the desired high-level goal. Humans switch contexts in a really
+flexible and natural way and constantly take care of the multitude of these
+small problems that are faced to complete the desired objective. For example,
+a general task can be divided into subtasks, which can then be further divided
+into smaller ones <span class="citation"
+data-cites="kroemer2021review">(Kroemer, Niekum, e Konidaris 2021)</span>. The
+strategy of breaking down intricate objectives into smaller, manageable,
+simpler activities is the most widely used heuristic to solve problems <span
+class="citation" data-cites="egidi2006decomposition">(Egidi 2006)</span>.</p>
+<p>Many of these sub-challenges require an interaction with one or more
+objects. For example, the action of opening involves a door to pass through it
+while moving or to access the fridge for cooking. The reaching action can
+imply an object like a pen in the office to write or a glass of water to
+drink. To push as an action often implies a button to enable a device in the
+workplace, or to turn on a car to commute, or the stove to heat a meal.
+Objects have undoubtedly strong importance in the small actions performed to
+achieve a goal, and their affordance is still the object of research in humans
+<span class="citation" data-cites="maranesi2014cortical">(Maranesi, Bonini, e
+Fogassi 2014)</span>, <span class="citation"
+data-cites="osiurak2017affordance">(Osiurak, Rossetti, e Badets 2017)</span>
+and machines <span class="citation"
+data-cites="horton2012affordances">(Horton, Chakraborty, e Amant
+2012)</span>.</p>
+<p>As seen, many different movements and sub-actions, often involving objects,
+are executed in daily life. Furthermore, they are also adapted to accomplish
+the current desired goals. The adaptation can involve a simple difference of
+position with respect to the previous location, both of the object or the
+executor, or can involve a completely different context to which the action
+learned is transferred. These skills are learned and discovered at the
+beginning, and then the knowledge of the action is abstracted and adapted to
+different purposes.</p>
+<p>Moreover, a person builds sequences of actions naturally to achieve the
+objective and, as discussed, adapts them to the environment. The skills are
+often combined together one after the other, based on the scenario but also
+based on the result and position of the previous execution. Occasionally, it
+can happen that part of an action is used and part of another action, mixing
+previously learned movements if the situation requires it. This results in the
+creation of new combinations and compositions of previously known
+activities.</p>
+<p>Lastly, dissecting complex challenges requires also decision-making under
+uncertainty, which is essential for achieving high-level goals since the
+sequence of activities is not always clear in advance. Often, the goal changes
+mid-way in response to the environment, or the initial assessment is
+sub-optimal or incorrect, forcing a change in planning and a new decision on
+what subsequent action to take. So it&#x2019;s worth noting that online decision
+under dynamic circumstances and change of skill executed allows a person to
+navigate the complexities of daily scenarios with success.</p>
+<p>The human mind&#x2019;s capacity for abstraction, planning, and execution is still
+a remote objective for robotics <span class="citation"
+data-cites="konidaris2019necessity">(Konidaris 2019)</span>. This level of
+adaptation to the environment and building of compounded behaviors is still a
+hard challenge to solve nowadays.</p>
+<p>For this reason, robots currently are not pervasive in society like other
+technologies. Humanoid robots have little if no presence and, despite the
+potential different uses, are relegated to mainly interaction and exhibition
+duties. The majority of robots work in a controlled environment, like
+factories, where the surroundings are specifically designed for them. The
+actions taken are repetitive, fixed, and in contact with a simple, defined set
+of objects.</p>
+<p>Furthermore, even if some robots are able to integrate into semi-structured
+environments (for example, the robotic vacuum cleaners for homes or lawnmowers
+for gardens), they are specialized to a single task in a single scenario.
+Multi-purpose robots require a more human-compatible design and a higher
+degree of intelligent behavior <span class="citation"
+data-cites="dechant2021toward">(DeChant e Bauer 2021)</span>, but versatile
+humanoid robots are still not pervasive in the current status of society.</p>
 <p>In this study, we propose a computational model that is biologically
-inspired. Our approach Implement it on an anthropomorphic robot and on an
-industrial collaborative robot. Specifically, ...</p>
+inspired. Our approach consists of the use of mathematics and artificial
+intelligence to emulate human abstraction and adaptation capabilities in the
+execution of a series of primitive actions. We want to prove how demonstrating
+basic movements to a robot and composing them together with flexibility may
+lead to achieving complex tasks of various natures. Specifically, movement
+primitives are reused and combined differently for different goals, avoiding
+explicit teaching of multiple objectives. The trajectories for the skills
+learned are adapted to the environment and partially composed thanks to the
+interpolation abilities of Conditional Neural Movement Primitives (CNMP)
+networks <span class="citation" data-cites="Ugur-RSS-19">(Ugur 2019)</span>.
+Lastly, the approach has been implemented and tested on an anthropomorphic
+robot and on an industrial collaborative robot.</p>
 </section>
-<section id="foochallanges" class="level2" data-number="1.2">
+<section id="foochallenges" class="level2" data-number="1.2">
 <h2 data-number="1.2"><span class="header-section-number">1.2</span>
-Challanges</h2>
-<p>Robotics dominates many fields, but often the environment is controlled,
-designed to help the robot in it&#x2019;s task and not human friendly. All
-environments in which humans are present are nor organized nor predictable
-Some jobs have been substituted by machines but are specific and repetitive.
-Closest contact consumer public with automation is with machines that have a
-single skill. Vacuum robot can only vacuum, and it&#x2019;s its only capability,
-dishwasher can only wash dishes, dough mixer does only</p>
+Challenges</h2>
+<p>Robotics dominates many fields, but as discussed, often the environment is
+controlled, designed to help the robot in its task, and not human-friendly. If
+the purpose is to integrate robots into the human environment, robots must
+adapt to humans, not vice-versa. All environments in which humans are present
+are not organized or predictable, and this means one issue is that robots have
+to accommodate for these conditions. A challenge is definitely to introduce
+the machine to an unstructured environment, and this implies many
+sub-issues.</p>
+<p>Having surroundings that might change forces the machines to have a great
+amount of perception. The system has to be extremely aware of the objects and
+people around it to operate in a safe and meaningful way. This translates into
+equipping many sensors and using real-time data from all available sources.
+Moreover, the machine cannot rely on these detection instruments mounted on
+the external world since a humanoid robot is expected to be mobile. Having a
+multi-purpose system that can act in different scenarios implies, indeed, a
+self-contained arrangement of sensors.</p>
+<p>The perception brings, in cascade, the necessity of storing this
+information and creating an internal copy of the surroundings that works as a
+base for planning and future predictions. Creating a digital twin for the
+environment is not essential for all the actions since some of them can be
+executed in real-time, but it is required to plan their effects and combine
+results together. For example, if a sponge is needed to clean a table, it
+would be faster to have the knowledge of its last position, but it can also be
+researched on demand and used while observing the effects in real-time till
+the table is clean. On the other hand, complex actions that combine multiple
+primitives need a future prediction of their effects on the environment, so
+its internal representation is required.</p>
+<p>With changing surroundings, it is possible also that the expected position
+of objects is no longer consistent with the representation. This forces the
+system to find an alternative or explore the environment till the object is
+found. Other kinds of exploration possible are the exploration of the action
+space to infer new actions and results, or the exploration of objects&#x2019;
+capabilities to learn new affordances and usages. <span class="citation"
+data-cites="Ahmetoglu_2022">(Ahmetoglu et al. 2022)</span></p>
+<p>Another factor worth taking into consideration is the planning subject.
+Plans have to be structured in a meaningful way otherwise, an incorrect
+sequence won&#x2019;t just produce an incorrect result but might bring the system
+further away from the final goal. The combinations of actions generated
+usually have importance in the order of execution, so the product of the
+skills has to be considered carefully.</p>
+<p>Furthermore, objects and tools are usually designed for humans, so their
+capabilities might vary depending on the machine used and might influence the
+actions in the planning phase. Giving meanings to the objects, both in terms
+of affordances and representations, is still a tricky challenge in robotics
+and partially involves the previously investigated challenges of planning and
+exploration.</p>
+<p>Also, obstacle avoidance, whenever there is an object in the trajectory of
+movement, is a factor to take into consideration. The robot is required to be
+aware of the surroundings and itself, not to collide, hurt, damage, or just
+fail the designated goal. Humans adapt previously known actions whenever an
+obstacle or an impediment is present.</p>
+<p>Part of the adaptation challenge is also being able to transfer the skills
+known to new locations and scenarios. For example, learning how to turn a key
+for the door and use the action for the key of the car or the knob to turn on
+the stove. This is an essential capability that is difficult to implement in a
+machine.</p>
+<p>Another more hidden challenge is how the actions are merged among them.
+Usually, humans, when they pass from one action to another, apply a smooth
+transition. This means that the movements don&#x2019;t have to fully start and end as
+they are learned, or the result will be artificial and sub-optimal.</p>
+<p>Furthermore, object handling, grasping, and manipulation present some
+issues that are the object of research. How to pick the item desired, where,
+with which grasp, and with which force intensity are issues that can undermine
+the final result.</p>
+<p>Lastly, another challenge that will be encountered is the recognition when
+the action is completed. Being aware of the right final state is essential for
+successfully matching the expectations for the goal requested.</p>
+<p>These challenges discussed are crucial aspects to consider, but not all of
+them will be addressed in this project, and some will also be simplified.
+Nevertheless, it&#x2019;s worth noting the scope and limitations of this work and the
+boundaries within which the research operates.</p>
 </section>
 <section id="fooobjectives" class="level2" data-number="1.3">
 <h2 data-number="1.3"><span class="header-section-number">1.3</span>
 Objectives</h2>
-<p>combine not only movement one after the other (end-to-end) but combine
-parts of them</p>
+<p>The aim of this research is to investigate novel skill generation by
+combining previously taught ones with the use of CNMPs. The research aims to
+be applied to robotics scenarios involving trajectories for object
+manipulation and high-level goal achievement. The generation of new
+combinations of skills will be performed by connecting skill segments that the
+robot learned by demonstration. The amount of demonstrations given should be
+reasonable for the system to be applied in real life by a human. The
+combination of actions will be investigated in both the concatenation of
+trajectories end-to-end and the use of parts of them. The ultimate goal is to
+create a system that allows a robot, given some demonstrations, to reuse the
+skills acquired to complete different objectives whose trajectories were never
+taught explicitly. Furthermore, the adaptation should ideally be acceptable in
+different configurations of the environment and ideally in different
+scenarios.</p>
 </section>
 <section id="foothesis-structure" class="level2" data-number="1.4">
 <h2 data-number="1.4"><span class="header-section-number">1.4</span> Thesis
 Structure</h2>
-<p>Accordingly, the remainder of this thesis is structured as follows.
-discusses the background of the topic, the current advancements in the field,
-and the related research with a literature review. In <a
-href="#foochap:platforms" data-reference-type="ref"
+<p>Accordingly, the remainder of this thesis is structured as follows.</p>
+<p>discusses the background of the topic, the current advancements in the
+field, and the related research with a literature review.</p>
+<p>In <a href="#foochap:platforms" data-reference-type="ref"
 data-reference="chap:platforms">3</a> the instruments and frameworks used in
 this research are listed and analyzed to be able to understand the initial
-setup and replicate the results. The <a href="#foochap:design"
-data-reference-type="ref" data-reference="chap:design">4</a> explains the
-design and architecture of the proposed method. In order to understand the
-logic, the conceptual passages and mathematical background. The <a
-href="#foochap:implementation" data-reference-type="ref"
+setup and replicate the results.</p>
+<p>The <a href="#foochap:design" data-reference-type="ref"
+data-reference="chap:design">4</a> explains the design and architecture of the
+proposed method. In order to understand the logic, the conceptual passages and
+mathematical background.</p>
+<p>The <a href="#foochap:implementation" data-reference-type="ref"
 data-reference="chap:implementation">5</a> analyzes the key points of the
 implemented solution through the explanation of the most important passages in
-the code developed. The <a href="#foochap:validation"
-data-reference-type="ref" data-reference="chap:validation">6</a> shows the
-final results and the testing on real-life robotic platforms. Finally,
-concludes this thesis by summarising its main contribution and future
-work.</p>
+the code developed.</p>
+<p>The <a href="#foochap:validation" data-reference-type="ref"
+data-reference="chap:validation">6</a> shows the final results and the testing
+on real-life robotic platforms.</p>
+<p>Finally, concludes this thesis by summarising its main contribution and
+future work.</p>
 </section>
 </section>
 <section id="foochap:background" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> State of the
 Art</h1>
-<p>Background here.</p>
-<p>This section is likely to contain a lot of citations. For instance in <span
-class="citation" data-cites="Ugur-RSS-19">(Ugur 2019)</span> the authors
-propose a novel means for tackling with the problem of preventing bad things
-from happening. And in <span class="citation"
+<p>Key challenge is creating robots that are capable of directly interacting
+with the world around them and robot manipulation is central in this. <span
+class="citation" data-cites="kroemer2021review">(Kroemer, Niekum, e Konidaris
+2021)</span></p>
+<p>The ability to solve high level goals in robot is increasing <span
+class="citation" data-cites="gupta2019relay">(Gupta et al. 2019)</span>, <span
+class="citation" data-cites="simeonov2021long">(Simeonov et al. 2021)</span>
+thanks to ...</p>
+<p>Some may follow natural language instructions <span class="citation"
+data-cites="hu2019hierarchical">(Hu et al. 2019)</span> Gaussian processes are
+used in ML <span class="citation" data-cites="seeger2004gaussian">(Seeger
+2004)</span> For instance in <span class="citation"
+data-cites="Ugur-RSS-19">(Ugur 2019)</span> the authors propose a novel ...
+And in <span class="citation"
 data-cites="DBLP:journals/corr/abs-1807-01613">(Garnelo et al. 2018)</span> we
 can find Conditional Neural Processes.</p>
-<section id="foocnmps" class="level2" data-number="2.1">
-<h2 data-number="2.1"><span class="header-section-number">2.1</span>
+<section id="foogaussian-processes" class="level2" data-number="2.1">
+<h2 data-number="2.1"><span class="header-section-number">2.1</span> Gaussian
+Processes</h2>
+</section>
+<section id="foocnp" class="level2" data-number="2.2">
+<h2 data-number="2.2"><span class="header-section-number">2.2</span> CNP</h2>
+</section>
+<section id="foocnmps" class="level2" data-number="2.3">
+<h2 data-number="2.3"><span class="header-section-number">2.3</span>
 CNMPs</h2>
-<p>Description in detail of CNMP work</p>
+<p>Description in detail of CNMP work Allows to learn skills in tens,
+ratherthousands, of real-world interactions</p>
 </section>
 </section>
 <section id="foochap:platforms" class="level1" data-number="3">
@@ -408,14 +626,26 @@ Platforms</h1>
 <section id="foobaxter-robot" class="level2" data-number="3.1">
 <h2 data-number="3.1"><span class="header-section-number">3.1</span> Baxter
 Robot</h2>
+<figure id="foofig:baxter">
+<img src="Images/baxter.png" />
+<figcaption>Baxter Robot platform</figcaption>
+</figure>
 </section>
 <section id="foour10-robot" class="level2" data-number="3.2">
 <h2 data-number="3.2"><span class="header-section-number">3.2</span> UR10
 Robot</h2>
+<figure id="foofig:ur10">
+<img src="Images/ur10.png" />
+<figcaption>UR10 Robot platform</figcaption>
+</figure>
 </section>
 <section id="foof-robotiq-gripper" class="level2" data-number="3.3">
 <h2 data-number="3.3"><span class="header-section-number">3.3</span> 3F
 Robotiq Gripper</h2>
+<figure id="foofig:gripper3f">
+<img src="Images/gripper3f.png" />
+<figcaption>3F Robotiq Gripper platform</figcaption>
+</figure>
 </section>
 <section id="fooframeworks" class="level2" data-number="3.4">
 <h2 data-number="3.4"><span class="header-section-number">3.4</span>
@@ -441,8 +671,9 @@ class="header-section-number">3.4.0.0.3</span> Jupyter Notebook</h5>
 <h2 data-number="4.1"><span class="header-section-number">4.1</span>
 End-To-End Concatenation</h2>
 </section>
-<section id="foop" class="level2" data-number="4.2">
-<h2 data-number="4.2"><span class="header-section-number">4.2</span> P</h2>
+<section id="foopartial-combination" class="level2" data-number="4.2">
+<h2 data-number="4.2"><span class="header-section-number">4.2</span> Partial
+Combination</h2>
 <figure id="foofig:classes">
 <embed src="figures/classes.pdf" />
 <figcaption>A class diagram created with PlantUML</figcaption>
@@ -472,21 +703,102 @@ labels. For instance, in , we describe an hello world program in Java.</p>
 <section id="foochap:validation" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Validation
 and Testing</h1>
-<p>Validation and testing on platform here</p>
+<p>Result validation and testing on real-life robots here</p>
 </section>
 <section id="foochap:conclusions" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span>
 Conclusions</h1>
-<p>Humans ar capable of In this thesis we provided a</p>
-<section id="foofuture-work" class="level2 unnumbered">
-<h2 class="unnumbered">Future work</h2>
+<p>Humans are capable of executing a wide variety of complex actions, based on
+prior experience. In this thesis, we provided a possible approach to novel
+high-level skill generation by combining movement primitives learned by CNMP
+models.</p>
+<section id="foofuture-work" class="level2" data-number="7.1">
+<h2 data-number="7.1"><span class="header-section-number">7.1</span> Future
+work</h2>
+<p>Possible future works are ...</p>
 <div id="foorefs" class="references csl-bib-body hanging-indent" role="list">
+<div id="fooref-Ahmetoglu_2022" class="csl-entry" role="listitem">
+Ahmetoglu, Alper, M. Yunus Seker, Justus Piater, Erhan Oztop, e Emre Ugur.
+2022. <span>&#xAB;DeepSym: Deep Symbol Generation and Rule Learning for Planning
+from Unsupervised Robot Interaction&#xBB;</span>. <em>Journal of Artificial
+Intelligence Research</em> 75 (novembre): 709&#x2013;45. <a
+href="https://doi.org/10.1613/jair.1.13754">https://doi.org/10.1613/jair.1.13754</a>.
+</div>
+<div id="fooref-deak2003development" class="csl-entry" role="listitem">
+Deak, Gedeon O. 2003. <span>&#xAB;The development of cognitive flexibility and
+language abilities&#xBB;</span>. <em>Advances in child development and
+behavior</em> 31: 273&#x2013;328.
+</div>
+<div id="fooref-dechant2021toward" class="csl-entry" role="listitem">
+DeChant, Chad, e Daniel Bauer. 2021. <span>&#xAB;Toward robots that learn to
+summarize their actions in natural language: a set of tasks&#xBB;</span>. In
+<em>5th Annual Conference on Robot Learning, Blue Sky Submission Track</em>.
+<a
+href="https://openreview.net/forum?id=n3AW_ISWCXf">https://openreview.net/forum?id=n3AW_ISWCXf</a>.
+</div>
+<div id="fooref-egidi2006decomposition" class="csl-entry" role="listitem">
+Egidi, Massimo. 2006. <span>&#xAB;Decomposition patterns in problem
+solving&#xBB;</span>. <em>Contributions to Economic Analysis</em> 280: 15&#x2013;46.
+</div>
 <div id="fooref-DBLP:journals/corr/abs-1807-01613" class="csl-entry"
 role="listitem">
 Garnelo, Marta, Dan Rosenbaum, Chris J. Maddison, Tiago Ramalho, David Saxton,
 Murray Shanahan, Yee Whye Teh, Danilo J. Rezende, e S. M. Ali Eslami. 2018.
 <span>&#xAB;Conditional Neural Processes&#xBB;</span>. <em>CoRR</em> abs/1807.01613. <a
 href="http://arxiv.org/abs/1807.01613">http://arxiv.org/abs/1807.01613</a>.
+</div>
+<div id="fooref-gupta2019relay" class="csl-entry" role="listitem">
+Gupta, Abhishek, Vikash Kumar, Corey Lynch, Sergey Levine, e Karol Hausman.
+2019. <span>&#xAB;Relay Policy Learning: Solving Long-Horizon Tasks via Imitation
+and Reinforcement Learning&#xBB;</span>. <a
+href="https://arxiv.org/abs/1910.11956">https://arxiv.org/abs/1910.11956</a>.
+</div>
+<div id="fooref-horton2012affordances" class="csl-entry" role="listitem">
+Horton, Thomas E, Arpan Chakraborty, e Robert St Amant. 2012.
+<span>&#xAB;Affordances for robots: a brief survey&#xBB;</span>. <em>AVANT. Pismo
+Awangardy Filozoficzno-Naukowej</em> 2: 70&#x2013;84.
+</div>
+<div id="fooref-hu2019hierarchical" class="csl-entry" role="listitem">
+Hu, Hengyuan, Denis Yarats, Qucheng Gong, Yuandong Tian, e Mike Lewis. 2019.
+<span>&#xAB;Hierarchical decision making by generating and following natural
+language instructions&#xBB;</span>. <em>Advances in neural information processing
+systems</em> 32.
+</div>
+<div id="fooref-karmiloff1994beyond" class="csl-entry" role="listitem">
+Karmiloff-Smith, By A. 1994. <span>&#xAB;Beyond modularity: A developmental
+perspective on cognitive science&#xBB;</span>. <em>European journal of disorders of
+communication</em> 29 (1): 95&#x2013;105.
+</div>
+<div id="fooref-konidaris2019necessity" class="csl-entry" role="listitem">
+Konidaris, George. 2019. <span>&#xAB;On the necessity of abstraction&#xBB;</span>.
+<em>Current opinion in behavioral sciences</em> 29: 1&#x2013;7.
+</div>
+<div id="fooref-kroemer2021review" class="csl-entry" role="listitem">
+Kroemer, Oliver, Scott Niekum, e George Konidaris. 2021. <span>&#xAB;A review of
+robot learning for manipulation: Challenges, representations, and
+algorithms&#xBB;</span>. <em>The Journal of Machine Learning Research</em> 22 (1):
+1395&#x2013;1476.
+</div>
+<div id="fooref-maranesi2014cortical" class="csl-entry" role="listitem">
+Maranesi, Monica, Luca Bonini, e Leonardo Fogassi. 2014. <span>&#xAB;Cortical
+processing of object affordances for self and others&#x2019; action&#xBB;</span>.
+<em>Frontiers in psychology</em> 5: 538.
+</div>
+<div id="fooref-osiurak2017affordance" class="csl-entry" role="listitem">
+Osiurak, Fran&#xE7;ois, Yves Rossetti, e Arnaud Badets. 2017. <span>&#xAB;What is an
+affordance? 40 years later&#xBB;</span>. <em>Neuroscience &amp; Biobehavioral
+Reviews</em> 77: 403&#x2013;17.
+</div>
+<div id="fooref-seeger2004gaussian" class="csl-entry" role="listitem">
+Seeger, Matthias. 2004. <span>&#xAB;Gaussian processes for machine
+learning&#xBB;</span>. <em>International journal of neural systems</em> 14 (02):
+69&#x2013;106.
+</div>
+<div id="fooref-simeonov2021long" class="csl-entry" role="listitem">
+Simeonov, Anthony, Yilun Du, Beomjoon Kim, Francois Hogan, Joshua Tenenbaum,
+Pulkit Agrawal, e Alberto Rodriguez. 2021. <span>&#xAB;A long horizon planning
+framework for manipulating rigid pointcloud objects&#xBB;</span>. In <em>Conference
+on Robot Learning</em>, 1582&#x2013;1601. PMLR.
 </div>
 <div id="fooref-Ugur-RSS-19" class="csl-entry" role="listitem">
 Ugur, Muhammet Yunus Seker AND Mert Imre AND Justus Piater AND Emre. 2019.

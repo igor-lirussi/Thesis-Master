@@ -19,7 +19,7 @@
 
         <meta name="generator" content="pandoc-uikit" />
                 <meta name="author" content="Lirussi Igor" />
-                        <meta name="date" content="2023-11-16" />
+                        <meta name="date" content="2023-11-20" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
                         <style type="text/css">
@@ -101,7 +101,7 @@
                         <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
                     <h1 class="uk-heading">Master Thesis - Igor Lirussi</h1>
-                                        <h1 class="uk-heading" style="margin:0">2023-11-16</h1>
+                                        <h1 class="uk-heading" style="margin:0">2023-11-20</h1>
                                                             <p class="uk-text-large">Lirussi
 Igor</p>
                                     </div>
@@ -204,9 +204,15 @@ Igor</p>
                                                         3F Robotiq
                                                         Gripper</a></li>
                                                         <li><a
+                                                        href="#fooft-300-s-force-torque-sensor"
+                                                        id="footoc-ft-300-s-force-torque-sensor"><span
+                                                        class="toc-section-number">3.4</span>
+                                                        FT 300-S Force Torque
+                                                        Sensor</a></li>
+                                                        <li><a
                                                         href="#fooframeworks"
                                                         id="footoc-frameworks"><span
-                                                        class="toc-section-number">3.4</span>
+                                                        class="toc-section-number">3.5</span>
                                                         Frameworks</a></li>
                                                         </ul></li>
                                                         <li><a
@@ -323,6 +329,9 @@ Will write at the end.</p>
 <span class="math inline">\(\beta_t(i)\)</span></p>
 <p>Backward variable</p>
 <p><br />
+<span class="math inline">\(\gamma\)</span></p>
+<p>External parameter (Task parameter)</p>
+<p><br />
 <span class="math inline">\(\Theta\)</span></p>
 <p>Parameter set</p>
 <p><br />
@@ -368,6 +377,24 @@ CNMP</p>
 <p><br />
 YOLO</p>
 <p>You Only Look Once model</p>
+<p><br />
+UR10</p>
+<p>Universal Robot 10</p>
+<p><br />
+DOF</p>
+<p>Degrees of freedom</p>
+<p><br />
+IMU</p>
+<p>Inertial measurement unit</p>
+<p><br />
+RPC</p>
+<p>Remote Procedure Call</p>
+<p><br />
+CPU</p>
+<p>Central Processing Unit</p>
+<p><br />
+GPU</p>
+<p>Graphic Processing Unit</p>
 <p><br />
 </p>
 </div>
@@ -456,7 +483,7 @@ degree of intelligent behavior <span class="citation"
 data-cites="dechant2021toward">(DeChant e Bauer 2021)</span>, but versatile
 humanoid robots are still not pervasive in the current status of society.</p>
 <p>In this study, we propose a computational model that is biologically
-inspired. Our approach consists of the use of mathematics and artificial
+inspired. Our approach consists in the use of mathematics and artificial
 intelligence to emulate human abstraction and adaptation capabilities in the
 execution of a series of primitive actions. We want to prove how demonstrating
 basic movements to a robot and composing them together with flexibility may
@@ -558,8 +585,8 @@ combination of actions will be investigated in both the concatenation of
 trajectories end-to-end and the use of parts of them. The ultimate goal is to
 create a system that allows a robot, given some demonstrations, to reuse the
 skills acquired to complete different objectives whose trajectories were never
-taught explicitly. Furthermore, the adaptation should ideally be acceptable in
-different configurations of the environment and ideally in different
+taught explicitly. Furthermore, the adaptation should be acceptable in
+different configurations of the environment and, ideally in different
 scenarios.</p>
 </section>
 <section id="foothesis-structure" class="level2" data-number="1.4">
@@ -623,9 +650,57 @@ ratherthousands, of real-world interactions</p>
 <section id="foochap:platforms" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span>
 Platforms</h1>
+<p>In this chapter, all the physical and digital platforms utilized will be
+explained to give a proper understanding of the initial architecture and a
+more comprehensive idea of the environment of the experiments. The first part
+will state the devices and their setup, capabilities, and configuration used.
+Subsequently, the frameworks and libraries employed will be listed and
+described.</p>
 <section id="foobaxter-robot" class="level2" data-number="3.1">
 <h2 data-number="3.1"><span class="header-section-number">3.1</span> Baxter
 Robot</h2>
+<p>The Baxter robot is an industrial robot built by Rethink Robotics in 2011
+<span class="citation" data-cites="wiki:baxter">(Wikipedia contributors
+2023)</span>. The platform [Fig. <a href="#foofig:baxter"
+data-reference-type="ref" data-reference="fig:baxter">3.1</a>] has two robotic
+arms with interchangeable grippers at the wrist (End Effectors). The robot is
+180cm tall and, with its pedestal, weighs 140 kg. The arms have 7 degrees of
+freedom (DOF), which implies they have seven joints each. This makes it
+kinematic redundant, meaning that for some points reached in space, multiple
+pose configurations of the arms are possible. These two factors combined allow
+the robot to have an impressive capability in manipulation. The robot can be
+equipped with suction caps or two-jaw parallel grippers; we chose the last
+ones in our configuration. The gripper, in addition to its position, also
+offers information regarding the force applied while grasping an object.</p>
+<p>The robot was designed with attention to collaborative tasks with humans.
+For this reason, it eases teaching by demonstration by having integrated two
+touch sensors in the wrists that unlock the motors of the arms, allowing the
+user to move them easily and record the trajectories executed. The robot helps
+the movement with a feature called "Zero-g mode", in which the weight of the
+joints is neutralized actively by the motors. This enables the teaching expert
+to demonstrate movements in a similar environment without gravity, without
+having to carry the instrumentation load in time constantly. Furthermore, the
+robot has many input buttons and LEDs, they are present on the hands, arms,
+and chest, and they allow the programming of custom behaviors. They are
+especially useful in retrieving and giving instructions to the robot without
+reaching a computer, like closing the gripper at the desired moment, getting
+feedback, or starting the trajectory recordings.</p>
+<p>Another feature worth mentioning is the increased safety of operating
+around humans. Thanks to active and passive safety systems equipped in the
+platform, it doesn&#x2019;t require a cage for protection. On the other hand, making
+the robot less hazardous comes with the cost of precision. A motor driving a
+spring that drives Baxter&#x2019;s arm instead of just a direct motor impacts the
+precision of movements, sometimes in terms of centimeters. This doesn&#x2019;t make
+the robot perfectly suitable for industrial applications, but especially
+appropriate for research and for the adaptability in our project.</p>
+<p>The head of the robot includes a ring of sonar sensors for people
+detection, a wide-angle camera, and a movable display that acts like a face.
+Another benefit of the robot lies at the end of both hands. Immediately next
+to the attachment for the tools, an infrared (IR) sensor provides data on the
+distance from a solid object (i.e., a table) and an inertial measurement unit
+(IMU). Moreover, an embedded RGB camera is also present, allowing to see
+closely the object approached or to change the point of view on it without
+additional external cameras.</p>
 <figure id="foofig:baxter">
 <img src="Images/baxter.png" />
 <figcaption>Baxter Robot platform</figcaption>
@@ -634,33 +709,182 @@ Robot</h2>
 <section id="foour10-robot" class="level2" data-number="3.2">
 <h2 data-number="3.2"><span class="header-section-number">3.2</span> UR10
 Robot</h2>
+<p>UR10 is a single industrial robot arm that shines in reliability and
+precision [Fig. <a href="#foofig:ur10" data-reference-type="ref"
+data-reference="fig:ur10">3.2</a>]. It has been manufactured by Universal
+Robots and combines long reach with a high payload <span class="citation"
+data-cites="url:ur10">(Universal Robots 2023)</span>. It is intended for
+medium-duty tasks, so it&#x2019;s compact in its overall dimensions compared to a
+fully intended industrial robot. It can reach an impressive height of 2.3m on
+its pedestal. In our experiments, it was mounted on a pedestal 0.85m tall to
+increase the reachability at table level.</p>
+<p>The arm has a reaching radius of 1,3m from the mounting point, which
+implies a workspace of approximately 5,3 square meters at the base level. The
+robot has 6 Degrees of Freedom, with six rotating joints. It is able to reach
+any point in its reaching radius but has no kinematics redundancy, meaning
+only one position is possible for any given point. The total payload that can
+be carried is 10 kg.</p>
 <figure id="foofig:ur10">
 <img src="Images/ur10.png" />
 <figcaption>UR10 Robot platform</figcaption>
 </figure>
+<p>Like the previous robot, this one is designed to work collaboratively with
+humans. It features built-in safety features, such as force/torque sensors, to
+detect and respond to external forces or unexpected events. A button to
+release the motor breaks is present on the floating touch screen and allows
+the robot&#x2019;s motion by hand. This robot also doesn&#x2019;t require a safety cage
+around for protection, but the emergency stop button always has to be within
+easy reach.</p>
+<p>The robot design emphasizes modularity, making it easier for users to
+customize and adapt it for different tasks or use various end effectors. We
+coupled it with a three-finger gripper described in the next paragraph.</p>
 </section>
 <section id="foof-robotiq-gripper" class="level2" data-number="3.3">
 <h2 data-number="3.3"><span class="header-section-number">3.3</span> 3F
 Robotiq Gripper</h2>
+<p>At the end of the UR10 Robotic Arm, a Robotiq 3-Finger Adaptive Robot
+Gripper was mounted [Fig. <a href="#foofig:gripper3f"
+data-reference-type="ref" data-reference="fig:gripper3f">3.3</a>]. The gripper
+has a human-inspired design and has three fingers with three joints each <span
+class="citation" data-cites="url:3fgripper">(Robotiq 2023a)</span>. The
+physical platform was chosen for its precision and safety, and it pairs well
+with the UR10 capabilities. The gripper offers different grip modes; the ones
+available are: "basic", "wide", "scissor" and "pinch". Each is appropriate for
+distinctive objects to grip; the basic one is the most versatile, but the wide
+one has more stability for big or long objects, and the pinch one is the best
+for small objects. The "scissor mode" closes together the two fingers on the
+same side, for high-precision manipulation. We mainly used the "pinch"
+setting.</p>
 <figure id="foofig:gripper3f">
 <img src="Images/gripper3f.png" />
 <figcaption>3F Robotiq Gripper platform</figcaption>
 </figure>
+<p>The gripper has a mass of 2.3 kg in contrast with a grip payload of 10 kg.
+The grip force applied can range from 30 to 70 N, depending on the grip mode
+selected. The precision declared is up to 0.05 mm.</p>
+<p>This platform was designed as well for collaborative robotic applications,
+allowing it to work safely alongside human operators. It incorporates safety
+features to detect and respond to external forces, stopping in case of high
+forces applied. The torque and speed of gripping data are available and
+exposed through a dedicated ROS topic. Speed and torque are also adjustable
+for the intended use. It is possible to control and retrieve data for each
+finger individually.</p>
 </section>
-<section id="fooframeworks" class="level2" data-number="3.4">
-<h2 data-number="3.4"><span class="header-section-number">3.4</span>
+<section id="fooft-300-s-force-torque-sensor" class="level2"
+data-number="3.4">
+<h2 data-number="3.4"><span class="header-section-number">3.4</span> FT 300-S
+Force Torque Sensor</h2>
+<p>Between the UR10 robot and the 3F Finger Gripper, an FT 300-S Force Torque
+Sensor [Fig. <a href="#foofig:ft-sensor" data-reference-type="ref"
+data-reference="fig:ft-sensor">3.4</a>] was mounted to increase precision and
+repeatability. The sensor offers high-resolution real-time measurements
+regarding the force and torque applied to the three space dimensions and
+improves the capabilities of the robot, making it able to detect the payload
+carried or the amount of pressure between the object carried and the static
+environment (i.e., the table).</p>
+<p>The device was built for compatibility with the Universal Robot series and
+has an IP65 rating. It also enables precise object placement such as
+alignment, indexing, and insertion <span class="citation"
+data-cites="url:ftsensor">(Robotiq 2023b)</span>. The FT 300-S is commonly
+used in tasks where force and torque sensing are critical, but we used it to
+increase the reliability of the payload measurements.</p>
+<figure id="foofig:ft-sensor">
+<img src="Images/ft_sensor.png" />
+<figcaption>FT 300-S Force Torque Sensor</figcaption>
+</figure>
+</section>
+<section id="fooframeworks" class="level2" data-number="3.5">
+<h2 data-number="3.5"><span class="header-section-number">3.5</span>
 Frameworks</h2>
-<section id="fooros" class="level5" data-number="3.4.0.0.1">
-<h5 data-number="3.4.0.0.1"><span
-class="header-section-number">3.4.0.0.1</span> ROS</h5>
+<section id="fooros" class="level5" data-number="3.5.0.0.1">
+<h5 data-number="3.5.0.0.1"><span
+class="header-section-number">3.5.0.0.1</span> ROS</h5>
+<p>The Robot Operating System (ROS) <span class="citation"
+data-cites="url:ros">(ROS 2023)</span> is a framework to ease the deployment
+of robot applications. The system is a set of software libraries and tools
+that combine the state-of-the-art drivers for the most common robot interfaces
+and contain the most used algorithms for robotics. ROS acts like a middleware
+framework, allowing ease of communication of software with the robotic
+hardware. It is widely used in research, from mobile robots to
+manipulators.</p>
+<p>It&#x2019;s platform-independent and open source, so it is possible to create a
+custom robotics device compatible with it, and it&#x2019;s possible to develop
+personalized libraries. Its modular architecture allows the creation or use of
+a series of executable pieces of code called nodes, which run on a single or
+even on many computers. The nodes communicate among themselves with messages
+in the form of data structures previously defined. The distributed system
+allows to decuple the computation of heavy tasks, like vision, 3D
+reconstruction, and navigation, from the robot&#x2019;s hardware.</p>
+<p>Communication occurs through "topics" and "services". Nodes running on any
+computer ping the "master node" designated to retrieve all the possible topics
+and services exposed from other nodes in the network. A node can be a
+"publisher" or "subscriber" to a topic, sending messages to it or receiving
+messages from it. Communication with topics is not blocking and it is
+many-to-many: multiple nodes can publish, and simultaneously, multiple nodes
+can subscribe to a topic. Services work in a similar way, but the
+communication blocks the computation till the data requested is retrieved.
+Their mechanism is analogous to Remote Procedure Calls (RPCs).</p>
+<p>ROS is available with two commonly used programming languages: Python and
+C++. We used the Python version with the "rospy" package in the experiments
+with both robots.</p>
 </section>
-<section id="foopytorch" class="level5" data-number="3.4.0.0.2">
-<h5 data-number="3.4.0.0.2"><span
-class="header-section-number">3.4.0.0.2</span> Pytorch</h5>
+<section id="foopytorch" class="level5" data-number="3.5.0.0.2">
+<h5 data-number="3.5.0.0.2"><span
+class="header-section-number">3.5.0.0.2</span> Pytorch</h5>
+<p>Pytorch is a Deep Learning framework <span class="citation"
+data-cites="paszke2019pytorch">(Paszke et al. 2019)</span> that focuses on
+speed and usability with an imperative and Pythonic programming style. The
+Python library <span class="citation" data-cites="url:pytorch">(Pytorch
+2023)</span> offers a wide variety of models and building blocks for
+constructing neural networks. By design, it eases the debugging for the user
+with a rich ecosystem of dedicated tools. It works on the CPU and on hardware
+accelerators like GPUs. For this reason, PyTorch provides a multi-dimensional
+array called a tensor, which is similar to NumPy arrays. Conversions among
+both of them will be present in the code implementation.</p>
 </section>
-<section id="foojupyter-notebook" class="level5" data-number="3.4.0.0.3">
-<h5 data-number="3.4.0.0.3"><span
-class="header-section-number">3.4.0.0.3</span> Jupyter Notebook</h5>
+<section id="foojupyter-notebook" class="level5" data-number="3.5.0.0.3">
+<h5 data-number="3.5.0.0.3"><span
+class="header-section-number">3.5.0.0.3</span> Jupyter Notebook</h5>
+<p>Jupyter Notebook is an open-source interactive web application <span
+class="citation" data-cites="url:jupyter">(Jupyter Notebook 2023)</span>. It
+supports multiple programming languages and offers a cell-based environment
+where code and description/graphical results can be blended. Jupyter Notebook
+integrates seamlessly with popular Python libraries, such as NumPy, Pandas,
+Matplotlib, and scikit-learn; some of them will be described later. It was
+used occasionally in our experiments to provide a fast and interactive coding
+experience with Python. The notebooks can be easily shared, and the process is
+clearly visualized. It was specifically useful in plotting multiple graphs
+during the training stages of neural networks or debugging operations on
+multi-dimensional arrays.</p>
+</section>
+<section id="fooanaconda-and-python-libraries" class="level5"
+data-number="3.5.0.0.4">
+<h5 data-number="3.5.0.0.4"><span
+class="header-section-number">3.5.0.0.4</span> Anaconda and Python
+Libraries</h5>
+<p>Anaconda is an open-source software that contains open-source tools and
+packages for data science, machine learning, and scientific computing <span
+class="citation" data-cites="url:anaconda">(Anaconda 2023)</span>. It has been
+used to track the packages utilized in the robotic platforms and in the
+models&#x2019; development and training. The Conda package manager was the most used
+tool to easily install, update, and manage various software packages and
+dependencies. Some of the most important libraries are listed below.</p>
+<section id="foomatplotlib" class="level6" data-number="3.5.0.0.4.1">
+<h6 data-number="3.5.0.0.4.1"><span
+class="header-section-number">3.5.0.0.4.1</span> MatplotLib</h6>
+<p>Matplotlib is a comprehensive 2D plotting library for Python that generates
+high-quality charts, plots, and visualizations. It has been widely used to
+double-check the quality of the training or plot the trajectories recorded
+with the robots.</p>
+</section>
+<section id="foonumpy" class="level6" data-number="3.5.0.0.4.2">
+<h6 data-number="3.5.0.0.4.2"><span
+class="header-section-number">3.5.0.0.4.2</span> Numpy</h6>
+<p>NumPy is a package for numerical computing in Python. It supports large,
+multi-dimensional arrays and matrices and a collection of mathematical
+functions to operate on these arrays. It has been used for array slicing,
+normalization, and smoothing data.</p>
+</section>
 </section>
 </section>
 </section>
@@ -724,6 +948,10 @@ from Unsupervised Robot Interaction&#xBB;</span>. <em>Journal of Artificial
 Intelligence Research</em> 75 (novembre): 709&#x2013;45. <a
 href="https://doi.org/10.1613/jair.1.13754">https://doi.org/10.1613/jair.1.13754</a>.
 </div>
+<div id="fooref-url:anaconda" class="csl-entry" role="listitem">
+Anaconda. 2023. <span>&#xAB;Anaconda&#xBB;</span>. <a href="https://www.anaconda.com"
+class="uri">https://www.anaconda.com</a>.
+</div>
 <div id="fooref-deak2003development" class="csl-entry" role="listitem">
 Deak, Gedeon O. 2003. <span>&#xAB;The development of cognitive flexibility and
 language abilities&#xBB;</span>. <em>Advances in child development and
@@ -764,6 +992,10 @@ Hu, Hengyuan, Denis Yarats, Qucheng Gong, Yuandong Tian, e Mike Lewis. 2019.
 language instructions&#xBB;</span>. <em>Advances in neural information processing
 systems</em> 32.
 </div>
+<div id="fooref-url:jupyter" class="csl-entry" role="listitem">
+Jupyter Notebook. 2023. <span>&#xAB;Jupyter Notebook&#xBB;</span>. <a
+href="https://jupyter.org" class="uri">https://jupyter.org</a>.
+</div>
 <div id="fooref-karmiloff1994beyond" class="csl-entry" role="listitem">
 Karmiloff-Smith, By A. 1994. <span>&#xAB;Beyond modularity: A developmental
 perspective on cognitive science&#xBB;</span>. <em>European journal of disorders of
@@ -789,6 +1021,31 @@ Osiurak, Fran&#xE7;ois, Yves Rossetti, e Arnaud Badets. 2017. <span>&#xAB;What i
 affordance? 40 years later&#xBB;</span>. <em>Neuroscience &amp; Biobehavioral
 Reviews</em> 77: 403&#x2013;17.
 </div>
+<div id="fooref-paszke2019pytorch" class="csl-entry" role="listitem">
+Paszke, Adam, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory
+Chanan, Trevor Killeen, et al. 2019. <span>&#xAB;PyTorch: An Imperative Style,
+High-Performance Deep Learning Library&#xBB;</span>. <a
+href="https://arxiv.org/abs/1912.01703">https://arxiv.org/abs/1912.01703</a>.
+</div>
+<div id="fooref-url:pytorch" class="csl-entry" role="listitem">
+Pytorch. 2023. <span>&#xAB;Tensors and Dynamic neural networks in Python with
+strong GPU acceleration&#xBB;</span>. <a href="https://pytorch.org"
+class="uri">https://pytorch.org</a>.
+</div>
+<div id="fooref-url:3fgripper" class="csl-entry" role="listitem">
+Robotiq. 2023a. <span>&#xAB;3-Finger Adaptive Robot Gripper&#xBB;</span>. <a
+href="https://robotiq.com/products/3-finger-adaptive-robot-gripper"
+class="uri">https://robotiq.com/products/3-finger-adaptive-robot-gripper</a>.
+</div>
+<div id="fooref-url:ftsensor" class="csl-entry" role="listitem">
+&#x2014;&#x2014;&#x2014;. 2023b. <span>&#xAB;FT 300-S Force Torque Sensor&#xBB;</span>. <a
+href="https://robotiq.com/products/ft-300-force-torque-sensor"
+class="uri">https://robotiq.com/products/ft-300-force-torque-sensor</a>.
+</div>
+<div id="fooref-url:ros" class="csl-entry" role="listitem">
+ROS. 2023. <span>&#xAB;Robot Operating System&#xBB;</span>. <a
+href="https://www.ros.org" class="uri">https://www.ros.org</a>.
+</div>
 <div id="fooref-seeger2004gaussian" class="csl-entry" role="listitem">
 Seeger, Matthias. 2004. <span>&#xAB;Gaussian processes for machine
 learning&#xBB;</span>. <em>International journal of neural systems</em> 14 (02):
@@ -805,6 +1062,18 @@ Ugur, Muhammet Yunus Seker AND Mert Imre AND Justus Piater AND Emre. 2019.
 <span>&#xAB;Conditional Neural Movement Primitives&#xBB;</span>. In <em>Proceedings of
 Robotics: Science and Systems</em>. FreiburgimBreisgau, Germany. <a
 href="https://doi.org/10.15607/RSS.2019.XV.071">https://doi.org/10.15607/RSS.2019.XV.071</a>.
+</div>
+<div id="fooref-url:ur10" class="csl-entry" role="listitem">
+Universal Robots. 2023. <span>&#xAB;UR10 (robot) &#x2014; medium duty industrial
+collaborative robot&#xBB;</span>. <a
+href="https://www.universal-robots.com/products/ur10-robot/"
+class="uri">https://www.universal-robots.com/products/ur10-robot/</a>.
+</div>
+<div id="fooref-wiki:baxter" class="csl-entry" role="listitem">
+Wikipedia contributors. 2023. <span>&#xAB;Baxter (robot) &#x2014;
+<span>Wikipedia</span><span>,</span> The Free Encyclopedia&#xBB;</span>. <a
+href="https://en.wikipedia.org/w/index.php?title=Baxter_(robot)&amp;oldid=1183931177"
+class="uri">https://en.wikipedia.org/w/index.php?title=Baxter_(robot)&amp;oldid=1183931177</a>.
 </div>
 </div>
 </section>

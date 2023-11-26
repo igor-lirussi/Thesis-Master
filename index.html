@@ -19,7 +19,7 @@
 
         <meta name="generator" content="pandoc-uikit" />
                 <meta name="author" content="Lirussi Igor" />
-                        <meta name="date" content="2023-11-20" />
+                        <meta name="date" content="2023-11-26" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
                         <style type="text/css">
@@ -101,7 +101,7 @@
                         <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
                     <h1 class="uk-heading">Master Thesis - Igor Lirussi</h1>
-                                        <h1 class="uk-heading" style="margin:0">2023-11-20</h1>
+                                        <h1 class="uk-heading" style="margin:0">2023-11-26</h1>
                                                             <p class="uk-text-large">Lirussi
 Igor</p>
                                     </div>
@@ -171,15 +171,19 @@ Igor</p>
                                                         class="toc-section-number">2.1</span>
                                                         Gaussian
                                                         Processes</a></li>
-                                                        <li><a href="#foocnp"
-                                                        id="footoc-cnp"><span
-                                                        class="toc-section-number">2.2</span>
-                                                        CNP</a></li>
                                                         <li><a
-                                                        href="#foocnmps"
-                                                        id="footoc-cnmps"><span
+                                                        href="#fooconditional-neural-processes"
+                                                        id="footoc-conditional-neural-processes"><span
+                                                        class="toc-section-number">2.2</span>
+                                                        Conditional Neural
+                                                        Processes</a></li>
+                                                        <li><a
+                                                        href="#fooconditional-neural-movement-primitives"
+                                                        id="footoc-conditional-neural-movement-primitives"><span
                                                         class="toc-section-number">2.3</span>
-                                                        CNMPs</a></li>
+                                                        Conditional Neural
+                                                        Movement
+                                                        Primitives</a></li>
                                                         </ul></li>
                                                         <li><a
                                                         href="#foochap:platforms"
@@ -272,9 +276,9 @@ CESENA CAMPUS</strong><br />
 <p>School of Engineering and Architecture<br />
 Second Cycle Degree/Two-year Master in<br />
 Computer Science and Engineering</p>
-<p><strong>Novel high-level skill generation<br />
-in robotics by combining movement primitives<br />
-learned by CNMP models</strong></p>
+<p><strong>Novel robotic skill synthesis<br />
+with Conditional Neural<br />
+Movement Primitives</strong></p>
 <p>Master&#x2019;s thesis in<br />
 <span class="smallcaps">Intelligent Robotic Systems</span></p>
 <div class="flushleft">
@@ -315,11 +319,32 @@ Will write at the end.</p>
 <p><span class="math inline">\(a_{ij}\)</span></p>
 <p>Description of <span class="math inline">\(a_{ij}\)</span></p>
 <p><br />
-<span class="math inline">\(\mathbf{A}\)</span></p>
-<p>State transition matrix of a hidden Markov model</p>
-<p><br />
 <span class="math inline">\(t\)</span></p>
-<p>Time</p>
+<p>time</p>
+<p><br />
+<span class="math inline">\(r\)</span></p>
+<p>representation</p>
+<p><br />
+<span class="math inline">\(x\)</span></p>
+<p>target point</p>
+<p><br />
+<span class="math inline">\(SM(t)\)</span></p>
+<p>Sensorimotor data at time t</p>
+<p><br />
+<span class="math inline">\(E\)</span></p>
+<p>Encoder network</p>
+<p><br />
+<span class="math inline">\(Q\)</span></p>
+<p>Decoder network</p>
+<p><br />
+<span class="math inline">\(O\)</span></p>
+<p>Set of observation points</p>
+<p><br />
+<span class="math inline">\(D\)</span></p>
+<p>Set of demonstration trajectories</p>
+<p><br />
+<span class="math inline">\(T\)</span></p>
+<p>Set of target points desired</p>
 <p><br />
 </p>
 <p><br />
@@ -332,14 +357,20 @@ Will write at the end.</p>
 <span class="math inline">\(\gamma\)</span></p>
 <p>External parameter (Task parameter)</p>
 <p><br />
-<span class="math inline">\(\Theta\)</span></p>
-<p>Parameter set</p>
+<span class="math inline">\(\theta\)</span></p>
+<p>Parameter set of Decoder Network</p>
+<p><br />
+<span class="math inline">\(\phi\)</span></p>
+<p>Parameter set of Encoder Network</p>
 <p><br />
 <span class="math inline">\(\sigma\)</span></p>
 <p>Standard Deviation</p>
 <p><br />
 <span class="math inline">\(\mu\)</span></p>
 <p>Mean</p>
+<p><br />
+<span class="math inline">\(\tau\)</span></p>
+<p>Trajectory</p>
 <p><br />
 </p>
 </div>
@@ -348,7 +379,10 @@ Will write at the end.</p>
 <h1 class="unnumbered">List of Acronyms/Abbreviations</h1>
 <div class="tabbing">
 <p>&#x304;&#x304;</p>
-<p>2D</p>
+<p>1D</p>
+<p>One Dimensional</p>
+<p><br />
+2D</p>
 <p>Two Dimensional</p>
 <p><br />
 3D</p>
@@ -366,11 +400,35 @@ RGB</p>
 RGBD</p>
 <p>Red Green Blue Depth</p>
 <p><br />
+SL</p>
+<p>Supervised Learning</p>
+<p><br />
+LfD</p>
+<p>Learning from Demonstration</p>
+<p><br />
+DL</p>
+<p>Deep Learnign</p>
+<p><br />
+GMM</p>
+<p>Gaussian Mixture Model</p>
+<p><br />
+HMM</p>
+<p>Hidden Markov Model</p>
+<p><br />
 GP</p>
 <p>Gaussian Processes</p>
 <p><br />
+NP</p>
+<p>Neural Processes</p>
+<p><br />
 CNP</p>
 <p>Conditional Neural Processes</p>
+<p><br />
+DNP</p>
+<p>Dynamic Movement Primitives</p>
+<p><br />
+Pro-MP</p>
+<p>Probabilistic Movement Primitives</p>
 <p><br />
 CNMP</p>
 <p>Conditional Neural Movement Primitives</p>
@@ -492,9 +550,10 @@ primitives are reused and combined differently for different goals, avoiding
 explicit teaching of multiple objectives. The trajectories for the skills
 learned are adapted to the environment and partially composed thanks to the
 interpolation abilities of Conditional Neural Movement Primitives (CNMP)
-networks <span class="citation" data-cites="Ugur-RSS-19">(Ugur 2019)</span>.
-Lastly, the approach has been implemented and tested on an anthropomorphic
-robot and on an industrial collaborative robot.</p>
+networks <span class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A. M. I. A.
+J. P. A. E. Ugur 2019)</span>. Lastly, the approach has been implemented and
+tested on an anthropomorphic robot and on an industrial collaborative
+robot.</p>
 </section>
 <section id="foochallenges" class="level2" data-number="1.2">
 <h2 data-number="1.2"><span class="header-section-number">1.2</span>
@@ -543,7 +602,8 @@ skills has to be considered carefully.</p>
 capabilities might vary depending on the machine used and might influence the
 actions in the planning phase. Giving meanings to the objects, both in terms
 of affordances and representations, is still a tricky challenge in robotics
-and partially involves the previously investigated challenges of planning and
+<span class="citation" data-cites="7523298">(Jamone et al. 2018)</span> and
+partially involves the previously investigated challenges of planning and
 exploration.</p>
 <p>Also, obstacle avoidance, whenever there is an object in the trajectory of
 movement, is a factor to take into consideration. The robot is required to be
@@ -575,9 +635,10 @@ boundaries within which the research operates.</p>
 <h2 data-number="1.3"><span class="header-section-number">1.3</span>
 Objectives</h2>
 <p>The aim of this research is to investigate novel skill generation by
-combining previously taught ones with the use of CNMPs. The research aims to
-be applied to robotics scenarios involving trajectories for object
-manipulation and high-level goal achievement. The generation of new
+combining previously taught ones with the use of CNMPs <span class="citation"
+data-cites="Ugur-RSS-19">(M. Y. S. A. M. I. A. J. P. A. E. Ugur 2019)</span>.
+The research aims to be applied to robotics scenarios involving trajectories
+for object manipulation and high-level goal achievement. The generation of new
 combinations of skills will be performed by connecting skill segments that the
 robot learned by demonstration. The amount of demonstrations given should be
 reasonable for the system to be applied in real life by a human. The
@@ -617,34 +678,312 @@ future work.</p>
 <section id="foochap:background" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> State of the
 Art</h1>
-<p>Key challenge is creating robots that are capable of directly interacting
-with the world around them and robot manipulation is central in this. <span
-class="citation" data-cites="kroemer2021review">(Kroemer, Niekum, e Konidaris
-2021)</span></p>
-<p>The ability to solve high level goals in robot is increasing <span
-class="citation" data-cites="gupta2019relay">(Gupta et al. 2019)</span>, <span
-class="citation" data-cites="simeonov2021long">(Simeonov et al. 2021)</span>
-thanks to ...</p>
-<p>Some may follow natural language instructions <span class="citation"
-data-cites="hu2019hierarchical">(Hu et al. 2019)</span> Gaussian processes are
-used in ML <span class="citation" data-cites="seeger2004gaussian">(Seeger
-2004)</span> For instance in <span class="citation"
-data-cites="Ugur-RSS-19">(Ugur 2019)</span> the authors propose a novel ...
-And in <span class="citation"
-data-cites="DBLP:journals/corr/abs-1807-01613">(Garnelo et al. 2018)</span> we
-can find Conditional Neural Processes.</p>
+<p>In this chapter, we will proceed with the literature analysis and
+state-of-the-art methods related to the topic. Furthermore, some basic notions
+regarding the previous research relied upon will be explained.</p>
+<p>Trajectory generation for robotics is a topic closely related to
+manipulation and navigation. Every movement can be described as a trajectory,
+defined as the composition of the path taken by an agent (or its joints) in
+time <span class="citation" data-cites="biagiotti2008trajectory">(Biagiotti e
+Melchiorri 2008)</span>. In this discussion, we will focus more on the
+manipulation part, being the most clear example of how combining different
+trajectories can produce novel robotic skills. Manipulation is one of the most
+distinctive capabilities of robots, since their main objective is to perform
+physical tasks in the real world. Any process that presents the necessity of a
+human to engage with a physical object meaningfully can solely be automated by
+robot manipulation. <span class="citation" data-cites="rosen2022role">(Rosen
+et al. 2022)</span></p>
+<p>Creating robots capable of directly interacting with the world around them
+is still a key challenge in robotics, and manipulation is central to this.
+<span class="citation" data-cites="kroemer2021review">(Kroemer, Niekum, e
+Konidaris 2021)</span> Nevertheless, the ability to solve high-level goals in
+robots is increasing <span class="citation" data-cites="gupta2019relay">(Gupta
+et al. 2019)</span>, <span class="citation"
+data-cites="simeonov2021long">(Simeonov et al. 2021)</span> thanks to the
+recent advances in artificial intelligence. Some approaches may follow natural
+language instructions to achieve complex sequences of actions <span
+class="citation" data-cites="hu2019hierarchical">(Hu et al. 2019)</span>, but
+according to the research objective, a certain degree of autonomy is desired.
+This implies typically giving only the final goal and not the step-by-step
+instructions.</p>
+<p>A commonly used technique in robotics is Learning from Demonstration (LfD)
+<span class="citation" data-cites="ARGALL2009469">(Argall et al. 2009)</span>,
+and then <span class="citation"
+data-cites="ravichandar2020recent">(Ravichandar et al. 2020)</span>. It allows
+for solving a wide variety of robotics problems by imitating an external
+agent. The demonstrator, often a human or another system, provides examples
+(expert demonstrations) of how to perform a task, and the learning agent
+generalizes from these demonstrations to acquire the ability to perform the
+task later independently.</p>
+<p>Famous learning from demonstration research includes statistical modeling
+<span class="citation" data-cites="calinon2016tutorial">(Calinon 2016)</span>,
+dynamic systems <span class="citation" data-cites="schaal2006dynamic">(Schaal
+2006)</span>, and their union in <span class="citation"
+data-cites="ugur2020compliant">(E. Ugur e Girgin 2020)</span>. In Dynamic
+Movement Primitives (DMPs) <span class="citation"
+data-cites="schaal2006dynamic">(Schaal 2006)</span>, a trajectory is
+represented with a set of differential equations and learned with as little as
+one shot. Thanks to the "point attractor" mechanism, it guarantees reaching a
+point even under perturbations. DMPs have successfully been utilized in
+difficult manipulation tasks such as in-hand manipulation and flipping boxes
+using chopsticks <span class="citation"
+data-cites="pastor2009learning">(Pastor et al. 2009)</span>. On the other
+hand, DMPs require additional tuning to determine the number of basis
+functions. Moreover, their approach is not designed to learn from multiple
+trajectories and, therefore, cannot encode the important parts of multiple
+demonstrations <span class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A. M.
+I. A. J. P. A. E. Ugur 2019)</span>.</p>
+<p>In the Probabilistic Movement Primitives (ProMP) <span class="citation"
+data-cites="paraschos2013probabilistic">(Paraschos et al. 2013)</span>,
+instead, the distribution of basis functions is often represented using a
+probabilistic framework, typically a Gaussian Mixture Model (GMM) or a similar
+probabilistic model. Historically, Gaussian Mixture Models <span
+class="citation" data-cites="nguyen2009model">(Nguyen-Tuong, Seeger, e Peters
+2009)</span> have been prominent among various probabilistic approaches since
+they provide adaptable solutions to the challenge of modeling trajectories. On
+the other hand, GMMs involve estimating many parameters, especially when
+dealing with high-dimensional data or a large number of components. This can
+make training and inference computationally expensive, particularly when the
+dataset is extensive, and if not done correctly, can lead to some failures,
+Figure <a href="#foofig:prompcnmp" data-reference-type="ref"
+data-reference="fig:prompcnmp">2.1</a>.</p>
+<figure id="foofig:prompcnmp">
+<img src="Images/ProMPvsCNMP.png" />
+<figcaption>In ProMPs the distribution of basis functions is often represented
+using a probabilistic framework, but can lead to some failures.</figcaption>
+</figure>
+<p>Another probabilistic model, like GMMs, often used in statistical modeling
+techniques is Hidden Markov Models (HMMs) <span class="citation"
+data-cites="lee2011incremental">(Lee e Ott 2011)</span>. HMMs were
+successfully applied to learn multi-modal models from temperature, pressure,
+and fingertip information for exploratory object classification tasks <span
+class="citation" data-cites="chu2013using">(Chu et al. 2013)</span>.</p>
+<p>A recent model developed in robotics called Conditional Neural Movement
+Primitives (CNMP) <span class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A.
+M. I. A. J. P. A. E. Ugur 2019)</span> also learns from demonstrations, but
+instead of using GMMs, they use neural networks to model the mapping from
+conditions to trajectories directly. Neural networks allow the model to scale
+better and to offer robust data approximation via gradient descent. Until
+recently, neural networks in deep learning were trained to approximate a
+single-output function. However, when data is a distribution, the single
+function cannot approximate the underlying model. So the network can be
+modeled as a probabilistic approximator, that can predict the distribution
+parameters, mean, and variance. This makes CNMPs well-suited for tasks with
+complex, high-dimensional state spaces. It allows one to learn skills in tens,
+rather than thousands, of real-world interactions and interpolate among
+them.</p>
+<p>Based on the above-mentioned observations, the proposal is as follows. In
+the following research, the ability of CNMPs to interpolate the trajectories
+demonstrated is exploited to synthesize new complex skills. The model is based
+on Gaussian Processes (GP) <span class="citation"
+data-cites="seeger2004gaussian">(Seeger 2004)</span>, Neural Processes (NPs)
+<span class="citation" data-cites="garnelo2018neural">(Garnelo, Schwarz, et
+al. 2018)</span>, and Conditional Neural Processes (CNPs) <span
+class="citation" data-cites="DBLP:journals/corr/abs-1807-01613">(Garnelo,
+Rosenbaum, et al. 2018)</span>. For context, an explanation in detail of these
+above-mentioned methods will follow.</p>
 <section id="foogaussian-processes" class="level2" data-number="2.1">
 <h2 data-number="2.1"><span class="header-section-number">2.1</span> Gaussian
 Processes</h2>
+<p>Gaussian Processes <span class="citation"
+data-cites="seeger2004gaussian">(Seeger 2004)</span> are probabilistic models
+that define a distribution over functions, Figure <a href="#foofig:gp"
+data-reference-type="ref" data-reference="fig:gp">2.2</a>. This means that
+they leverage pre-existing knowledge about a set of functions and infer during
+test-time specific functions that fit the data provided. Given a set of
+observed points, there are infinite possible functions that pass through them.
+Gaussian processes provide an elegant solution to this challenge by assigning
+a probability to each of these potential functions. The mean of this
+probability distribution then represents the most probable characterization of
+the data given the observation points <span class="citation"
+data-cites="Goertler2018VisualExplorationGaussian">(J. G&#xF6;rtler
+2018)</span>.</p>
+<p>This is called regression and is used, for example, in robotics or time
+series forecasting. Gaussian processes are not limited to regression, and they
+can also be extended to classification and clustering tasks <span
+class="citation" data-cites="kapoor2010gaussian">(Kapoor et al. 2010)</span>
+<span class="citation" data-cites="kim2007clustering">(Kim e Lee
+2007)</span>.</p>
+<figure id="foofig:gp">
+<img src="Images/GP.png" />
+<figcaption>Gaussian Processes are probabilistic models that define a
+distribution over functions.</figcaption>
+</figure>
+<p>Many supervised learning problems can be seen as function approximations
+since a dataset of observations <span class="math inline">\(\{x_i,
+y_i\}^{n-1}_{i=0}\)</span> is basically a number <span
+class="math inline">\(n\)</span> of evaluations <span
+class="math inline">\(y_i = f(x_i)\)</span> of an unknown function <span
+class="math inline">\(f\)</span>. A supervised learning algorithm returns an
+approximated function <span class="math inline">\(g\)</span>. The goal is to
+minimize the loss between the real function <span
+class="math inline">\(f\)</span> and the predicted one <span
+class="math inline">\(g\)</span>. The evaluation is carried out on unlabelled
+data points <span class="math inline">\(x_j\)</span>.</p>
+<p>On the other hand, the disadvantages of Gaussian Processes are prior
+selection and training time for large datasets. Scaling issues with GPs have
+been addressed in <span class="citation"
+data-cites="snelson2006sparse">(Snelson e Ghahramani 2006)</span>. The limited
+expressivity from functional restriction was addressed with DeepGPs in <span
+class="citation" data-cites="damianou2013deep">(Damianou e Lawrence
+2013)</span> <span class="citation"
+data-cites="salimbeni2017doubly">(Salimbeni e Deisenroth 2017)</span>.
+Overcoming these issues and attempting to combine Deep Learning (DL) with GPs
+was proposed in <span class="citation" data-cites="wilson2016deep">(Wilson et
+al. 2016)</span>, but the approach remains close to GPs since the network is
+used to learn more expressive kernels to use with GPs.</p>
 </section>
-<section id="foocnp" class="level2" data-number="2.2">
-<h2 data-number="2.2"><span class="header-section-number">2.2</span> CNP</h2>
+<section id="fooconditional-neural-processes" class="level2"
+data-number="2.2">
+<h2 data-number="2.2"><span class="header-section-number">2.2</span>
+Conditional Neural Processes</h2>
+<p>In <span class="citation"
+data-cites="DBLP:journals/corr/abs-1807-01613">(Garnelo, Rosenbaum, et al.
+2018)</span>, the authors propose a novel research in which the inference
+potential of Gaussian Processes and the performance of neural networks are
+blended together. Neural networks are extensively employed as approximators of
+functions and have demonstrated considerable efficacy but often require large
+datasets for training. In CNPs, the prior knowledge is directly derived from
+the data, allowing them to infer the underlying function distribution based on
+observations. CNPs are built with three main blocks: Encoder, Aggregator, and
+Decoder. Encoder <span class="math inline">\(E\)</span> and Decoder <span
+class="math inline">\(Q\)</span> are typically Multi-layer perceptrons. The
+model structure is shown in Figure <a href="#foofig:cnp"
+data-reference-type="ref" data-reference="fig:cnp">2.3</a>.</p>
+<figure id="foofig:cnp">
+<img src="Images/CNP.png" />
+<figcaption>The structure of a CNP network, with three main blocks: Encoder,
+Aggregator, and Decoder.</figcaption>
+</figure>
+<p>The model scales with complexity <span
+class="math inline">\(O(n+m)\)</span> for making <span
+class="math inline">\(m\)</span> predictions from <span
+class="math inline">\(n\)</span> observations, while GPs scale with <span
+class="math inline">\(O(n+m)^3\)</span>. CNPs don&#x2019;t require the specification
+of a kernel cause they learn it from the data provided in training. The
+tradeoff is that the representations of the observations have fixed
+dimensionality.</p>
+<p>The work is based on the previous research of Neural Processes (NPs) <span
+class="citation" data-cites="garnelo2018neural">(Garnelo, Schwarz, et al.
+2018)</span>. NPs are suggested as a means to manage the substantial
+computational demands of GPs while leveraging their flexibility and efficiency
+with data. NPs help create different predictions by learning a shared hidden
+representation. However, they have trouble with long sequences because they
+automatically pick certain points. Building on NPs, Conditional Neural
+Processes (CNPs) are strong models that make training more efficient by
+allowing explicit conditioning.</p>
+<figure id="foofig:cnp_data">
+<img src="Images/CNPdata.png" />
+<figcaption>CNP allows precise predictions for targets sampled from a
+distribution conditioned with observations</figcaption>
+</figure>
+<p>The approach allows precise predictions for targets sampled from a
+distribution conditioned with observations, Figure <a href="#foofig:cnp_data"
+data-reference-type="ref" data-reference="fig:cnp_data">2.4</a>. Given a
+varying number of observations <span class="math inline">\(O\)</span>, a
+neural network <span class="math inline">\(E\)</span> is utilized as an
+encoder to generate a fixed-size representation <span
+class="math inline">\(r_i\)</span>.</p>
+<p>Observations fed to the network don&#x2019;t have an order, following the
+stochastic processes, because subsequently, they are aggregated with the
+average operation to obtain a single representation <span
+class="math inline">\(r\)</span>. Any commutative operation is valid and
+usable. The resulting representation <span class="math inline">\(r\)</span>
+contains the conditioning information and is fed to a decoder network <span
+class="math inline">\(Q\)</span> along with the desired target <span
+class="math inline">\(x_j\)</span> to query. The decoder network <span
+class="math inline">\(Q\)</span> has parameters <span
+class="math inline">\(\theta\)</span>. For all the targets <span
+class="math inline">\(x_j \in T\)</span> the decoder outputs the mean and
+standard deviation.</p>
+<p>The formulation of the encoding of each observation is: <span
+class="math display">\[r_i = E_\phi(x_i,y_i), \quad \forall(x_i,y_i) \in
+O\]</span> and the following commutative operation between the encodings to
+create a single one: <span class="math display">\[r = r_1 \oplus r_2 \oplus
+... \oplus r_i,\]</span> The commutative operation expressed by <span
+class="math inline">\(\oplus\)</span>, can be summation, average, product, and
+so on.</p>
+<p>The vector generated is concatenated with the target variables. The merged
+representation is passed to the decoder to obtain the output as: <span
+class="math display">\[\phi_j = Q_\theta(x_j, r), \quad \forall x_j \in
+T\]</span> Where the output is: <span class="math display">\[\phi_j = (\mu_j,
+\sigma_j^2)\]</span> which are the mean and the standard deviation of the
+output variable.</p>
+<p>In summary, the CNP model, with averaging operation, can be formulated as:
+<span class="math display">\[\mu_j, \sigma_j^2 = Q_\theta \left( x_j \oplus
+\frac{ \sum_{i}^{n} E\phi((x_i,y_i)) }{n}  \right)\]</span></p>
 </section>
-<section id="foocnmps" class="level2" data-number="2.3">
+<section id="fooconditional-neural-movement-primitives" class="level2"
+data-number="2.3">
 <h2 data-number="2.3"><span class="header-section-number">2.3</span>
-CNMPs</h2>
-<p>Description in detail of CNMP work Allows to learn skills in tens,
-ratherthousands, of real-world interactions</p>
+Conditional Neural Movement Primitives</h2>
+<p>Finally, in <span class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A. M.
+I. A. J. P. A. E. Ugur 2019)</span>, Conditional Neural Movement Primitives
+are proposed as a model. CNMPs, as the name suggests, are an extension of CNPs
+and are particularly well suited for the robotics domain. The model
+illustration can be seen in Figure <a href="#foofig:cnmp"
+data-reference-type="ref" data-reference="fig:cnmp">2.5</a>.</p>
+<figure id="foofig:cnmp">
+<img src="Images/CNMP.png" />
+<figcaption>CNMP model, it is conceived to work with temporal relations
+between sensorimotor data and different task parameters</figcaption>
+</figure>
+<p>The "learning from demonstration" framework can learn non-linear
+relationships between trajectories and reproduce them in joint or task space.
+In this case, a trajectory is formally defined as a temporal function, <span
+class="math inline">\(\tau = \tau (t)\)</span>, where the sensorimotor data in
+time describes how a robot moves. So, each trajectory <span
+class="math inline">\(\tau\)</span> is a list of ordered sensorimotor values:
+<span class="math display">\[\tau = \{ SM(t_1), SM(t_2), ... , SM(t_T )
+\}\]</span> where <span class="math inline">\(SM(t_i)\)</span> is the
+sensorimotor data at an instant of time <span
+class="math inline">\(t_i\)</span>. So, the challenge of trajectory generation
+becomes figuring out a series of commands <span
+class="math inline">\(SM(t_i)\)</span> that creates the movement desired <span
+class="citation" data-cites="gasparetto2007new">(Gasparetto e Zanotto
+2007)</span>. Finally, with a set of observations <span
+class="math inline">\(O\)</span>, the model has to learn the function <span
+class="math inline">\(\tau = f(t|O)\)</span>, using <span
+class="math inline">\(N\)</span> expert demonstrations, <span
+class="math inline">\(D = \{\tau_1, \tau_2, ... , \tau_N \}\)</span>.</p>
+<p>CNMPs are conceived to work with temporal relations <span
+class="math inline">\(t\)</span> and different task parameters <span
+class="math inline">\(\gamma\)</span>. CNMPs maintain the permutation
+invariance of CNPs over observations <span class="math inline">\(O\)</span>
+and queries <span class="math inline">\(T\)</span>. Furthermore, to make the
+model time-invariant, the sensorimotor trajectories are often scaled in the
+interval [0,1]. The task parameter <span class="math inline">\(\gamma\)</span>
+effectively adds one or more dimensionalities to the network&#x2019;s input, and it&#x2019;s
+passed to both the encoder and the decoder. An observation becomes the
+concatenation of <span class="math inline">\(SM(t_i)\)</span>, <span
+class="math inline">\(t_i\)</span>, and <span
+class="math inline">\(\gamma\)</span>. The dimensionality of <span
+class="math inline">\(SM(t_i)\)</span> depends on factors like the Degrees of
+Freedom of the robot joints and the number of variables corresponding to the
+actuators. For the aggregation of the representations, the averaging operation
+has been chosen. During training, a random trajectory <span
+class="math inline">\(\tau_i\)</span> is selected from the <span
+class="math inline">\(D\)</span> set of expert demonstrations. Next, a random
+number <span class="math inline">\(n\)</span> of random observation points are
+selected from the trajectory <span class="math inline">\(\tau_i\)</span>. The
+encoder takes the <span class="math inline">\(n\)</span> observations and
+produces <span class="math inline">\(n\)</span> representations. The final
+representation is obtained by averaging the representations produced by the
+encoder fed with all the observation points. The target data is predicted
+using the representation and the query time <span
+class="math inline">\(t\)</span> concatenated to the task parameter <span
+class="math inline">\(\gamma\)</span></p>
+<p>The encoder and the decoder are trained jointly with the error calculated
+from the following loss function: <span class="math display">\[L(\theta,
+\delta)= -logP(y_i|\mu_i, softmax(\sigma_j))\]</span> using both mean and
+standard deviation produced by the network. As a note, the uncertainty of the
+prediction provided by the variance is useful for the model&#x2019;s active
+exploration to choose wisely where the next observations are needed. Moreover,
+the capacity of CNMPs to deal with high-dimensionality input can also be used
+to input images in the model. Image completion indeed can be seen as a
+regression task. Leveraging the interpolation capabilities of CNMPs, our
+approach will investigate novel synthesis by combining and concatenating
+previously taught ones.</p>
 </section>
 </section>
 <section id="foochap:platforms" class="level1" data-number="3">
@@ -800,13 +1139,18 @@ Frameworks</h2>
 <h5 data-number="3.5.0.0.1"><span
 class="header-section-number">3.5.0.0.1</span> ROS</h5>
 <p>The Robot Operating System (ROS) <span class="citation"
-data-cites="url:ros">(ROS 2023)</span> is a framework to ease the deployment
-of robot applications. The system is a set of software libraries and tools
-that combine the state-of-the-art drivers for the most common robot interfaces
-and contain the most used algorithms for robotics. ROS acts like a middleware
-framework, allowing ease of communication of software with the robotic
-hardware. It is widely used in research, from mobile robots to
-manipulators.</p>
+data-cites="url:ros">(ROS 2023)</span> is a framework to standardize the
+deployment of robot applications. The system is a set of software libraries
+and tools that combine the state-of-the-art drivers for the most common robot
+interfaces and contain the most used algorithms for robotics.</p>
+<p>Since robotics programming is a complex challenge, the idea behind ROS is
+to use the "divide et impera" approach and split it into multiple
+sub-problems. This division requires a distributed strategy, and distribution
+implies communication among parts. One of ROS&#x2019;s main objectives is to
+standardize communication. For this reason, ROS acts like a middleware
+framework, allowing the ease of the dialog between software and the robotic
+hardware. It is widely used in research and industry, from mobile robots to
+manipulators. In our research, we used ROS version 1.</p>
 <p>It&#x2019;s platform-independent and open source, so it is possible to create a
 custom robotics device compatible with it, and it&#x2019;s possible to develop
 personalized libraries. Its modular architecture allows the creation or use of
@@ -952,6 +1296,32 @@ href="https://doi.org/10.1613/jair.1.13754">https://doi.org/10.1613/jair.1.13754
 Anaconda. 2023. <span>&#xAB;Anaconda&#xBB;</span>. <a href="https://www.anaconda.com"
 class="uri">https://www.anaconda.com</a>.
 </div>
+<div id="fooref-ARGALL2009469" class="csl-entry" role="listitem">
+Argall, Brenna D., Sonia Chernova, Manuela Veloso, e Brett Browning. 2009.
+<span>&#xAB;A survey of robot learning from demonstration&#xBB;</span>. <em>Robotics and
+Autonomous Systems</em> 57 (5): 469&#x2013;83. https://doi.org/<a
+href="https://doi.org/10.1016/j.robot.2008.10.024">https://doi.org/10.1016/j.robot.2008.10.024</a>.
+</div>
+<div id="fooref-biagiotti2008trajectory" class="csl-entry" role="listitem">
+Biagiotti, Luigi, e Claudio Melchiorri. 2008. <em>Trajectory planning for
+automatic machines and robots</em>. Springer Science &amp; Business Media.
+</div>
+<div id="fooref-calinon2016tutorial" class="csl-entry" role="listitem">
+Calinon, Sylvain. 2016. <span>&#xAB;A tutorial on task-parameterized movement
+learning and retrieval&#xBB;</span>. <em>Intelligent service robotics</em> 9: 1&#x2013;29.
+</div>
+<div id="fooref-chu2013using" class="csl-entry" role="listitem">
+Chu, Vivian, Ian McMahon, Lorenzo Riano, Craig G McDonald, Qin He, Jorge
+Martinez Perez-Tejada, Michael Arrigo, et al. 2013. <span>&#xAB;Using robotic
+exploratory procedures to learn the meaning of haptic adjectives&#xBB;</span>. In
+<em>2013 IEEE International Conference on Robotics and Automation</em>,
+3048&#x2013;55. IEEE.
+</div>
+<div id="fooref-damianou2013deep" class="csl-entry" role="listitem">
+Damianou, Andreas, e Neil D Lawrence. 2013. <span>&#xAB;Deep gaussian
+processes&#xBB;</span>. In <em>Artificial intelligence and statistics</em>, 207&#x2013;15.
+PMLR.
+</div>
 <div id="fooref-deak2003development" class="csl-entry" role="listitem">
 Deak, Gedeon O. 2003. <span>&#xAB;The development of cognitive flexibility and
 language abilities&#xBB;</span>. <em>Advances in child development and
@@ -975,6 +1345,16 @@ Murray Shanahan, Yee Whye Teh, Danilo J. Rezende, e S. M. Ali Eslami. 2018.
 <span>&#xAB;Conditional Neural Processes&#xBB;</span>. <em>CoRR</em> abs/1807.01613. <a
 href="http://arxiv.org/abs/1807.01613">http://arxiv.org/abs/1807.01613</a>.
 </div>
+<div id="fooref-garnelo2018neural" class="csl-entry" role="listitem">
+Garnelo, Marta, Jonathan Schwarz, Dan Rosenbaum, Fabio Viola, Danilo J
+Rezende, SM Eslami, e Yee Whye Teh. 2018. <span>&#xAB;Neural processes&#xBB;</span>.
+<em>arXiv preprint arXiv:1807.01622</em>.
+</div>
+<div id="fooref-gasparetto2007new" class="csl-entry" role="listitem">
+Gasparetto, Alessandro, e V Zanotto. 2007. <span>&#xAB;A new method for smooth
+trajectory planning of robot manipulators&#xBB;</span>. <em>Mechanism and machine
+theory</em> 42 (4): 455&#x2013;71.
+</div>
 <div id="fooref-gupta2019relay" class="csl-entry" role="listitem">
 Gupta, Abhishek, Vikash Kumar, Corey Lynch, Sergey Levine, e Karol Hausman.
 2019. <span>&#xAB;Relay Policy Learning: Solving Long-Horizon Tasks via Imitation
@@ -992,14 +1372,37 @@ Hu, Hengyuan, Denis Yarats, Qucheng Gong, Yuandong Tian, e Mike Lewis. 2019.
 language instructions&#xBB;</span>. <em>Advances in neural information processing
 systems</em> 32.
 </div>
+<div id="fooref-Goertler2018VisualExplorationGaussian" class="csl-entry"
+role="listitem">
+J. G&#xF6;rtler, O. Deussen, R. Kehlbeck. 2018. <span>&#xAB;A Visual Exploration of
+Gaussian Processes&#xBB;</span>. In <em>Proceedings of the Workshop on
+Visualization for AI Explainability (VISxAI)</em>. <a
+href="https://www.jgoertler.com/visual-exploration-gaussian-processes/">https://www.jgoertler.com/visual-exploration-gaussian-processes/</a>.
+</div>
+<div id="fooref-7523298" class="csl-entry" role="listitem">
+Jamone, Lorenzo, Emre Ugur, Angelo Cangelosi, Luciano Fadiga, Alexandre
+Bernardino, Justus Piater, e Jos&#xE9; Santos-Victor. 2018. <span>&#xAB;Affordances in
+Psychology, Neuroscience, and Robotics: A Survey&#xBB;</span>. <em>IEEE
+Transactions on Cognitive and Developmental Systems</em> 10 (1): 4&#x2013;25. <a
+href="https://doi.org/10.1109/TCDS.2016.2594134">https://doi.org/10.1109/TCDS.2016.2594134</a>.
+</div>
 <div id="fooref-url:jupyter" class="csl-entry" role="listitem">
 Jupyter Notebook. 2023. <span>&#xAB;Jupyter Notebook&#xBB;</span>. <a
 href="https://jupyter.org" class="uri">https://jupyter.org</a>.
+</div>
+<div id="fooref-kapoor2010gaussian" class="csl-entry" role="listitem">
+Kapoor, Ashish, Kristen Grauman, Raquel Urtasun, e Trevor Darrell. 2010.
+<span>&#xAB;Gaussian processes for object categorization&#xBB;</span>. <em>International
+journal of computer vision</em> 88: 169&#x2013;88.
 </div>
 <div id="fooref-karmiloff1994beyond" class="csl-entry" role="listitem">
 Karmiloff-Smith, By A. 1994. <span>&#xAB;Beyond modularity: A developmental
 perspective on cognitive science&#xBB;</span>. <em>European journal of disorders of
 communication</em> 29 (1): 95&#x2013;105.
+</div>
+<div id="fooref-kim2007clustering" class="csl-entry" role="listitem">
+Kim, Hyun-Chul, e Jaewook Lee. 2007. <span>&#xAB;Clustering based on gaussian
+processes&#xBB;</span>. <em>Neural computation</em> 19 (11): 3088&#x2013;3107.
 </div>
 <div id="fooref-konidaris2019necessity" class="csl-entry" role="listitem">
 Konidaris, George. 2019. <span>&#xAB;On the necessity of abstraction&#xBB;</span>.
@@ -1011,15 +1414,36 @@ robot learning for manipulation: Challenges, representations, and
 algorithms&#xBB;</span>. <em>The Journal of Machine Learning Research</em> 22 (1):
 1395&#x2013;1476.
 </div>
+<div id="fooref-lee2011incremental" class="csl-entry" role="listitem">
+Lee, Dongheui, e Christian Ott. 2011. <span>&#xAB;Incremental kinesthetic teaching
+of motion primitives using the motion refinement tube&#xBB;</span>. <em>Autonomous
+Robots</em> 31: 115&#x2013;31.
+</div>
 <div id="fooref-maranesi2014cortical" class="csl-entry" role="listitem">
 Maranesi, Monica, Luca Bonini, e Leonardo Fogassi. 2014. <span>&#xAB;Cortical
 processing of object affordances for self and others&#x2019; action&#xBB;</span>.
 <em>Frontiers in psychology</em> 5: 538.
 </div>
+<div id="fooref-nguyen2009model" class="csl-entry" role="listitem">
+Nguyen-Tuong, Duy, Matthias Seeger, e Jan Peters. 2009. <span>&#xAB;Model learning
+with local gaussian process regression&#xBB;</span>. <em>Advanced Robotics</em> 23
+(15): 2015&#x2013;34.
+</div>
 <div id="fooref-osiurak2017affordance" class="csl-entry" role="listitem">
 Osiurak, Fran&#xE7;ois, Yves Rossetti, e Arnaud Badets. 2017. <span>&#xAB;What is an
 affordance? 40 years later&#xBB;</span>. <em>Neuroscience &amp; Biobehavioral
 Reviews</em> 77: 403&#x2013;17.
+</div>
+<div id="fooref-paraschos2013probabilistic" class="csl-entry" role="listitem">
+Paraschos, Alexandros, Christian Daniel, Jan R Peters, e Gerhard Neumann.
+2013. <span>&#xAB;Probabilistic movement primitives&#xBB;</span>. <em>Advances in neural
+information processing systems</em> 26.
+</div>
+<div id="fooref-pastor2009learning" class="csl-entry" role="listitem">
+Pastor, Peter, Heiko Hoffmann, Tamim Asfour, e Stefan Schaal. 2009.
+<span>&#xAB;Learning and generalization of motor skills by learning from
+demonstration&#xBB;</span>. In <em>2009 IEEE International Conference on Robotics
+and Automation</em>, 763&#x2013;68. IEEE.
 </div>
 <div id="fooref-paszke2019pytorch" class="csl-entry" role="listitem">
 Paszke, Adam, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory
@@ -1031,6 +1455,12 @@ href="https://arxiv.org/abs/1912.01703">https://arxiv.org/abs/1912.01703</a>.
 Pytorch. 2023. <span>&#xAB;Tensors and Dynamic neural networks in Python with
 strong GPU acceleration&#xBB;</span>. <a href="https://pytorch.org"
 class="uri">https://pytorch.org</a>.
+</div>
+<div id="fooref-ravichandar2020recent" class="csl-entry" role="listitem">
+Ravichandar, Harish, Athanasios S Polydoros, Sonia Chernova, e Aude Billard.
+2020. <span>&#xAB;Recent advances in robot learning from demonstration&#xBB;</span>.
+<em>Annual review of control, robotics, and autonomous systems</em> 3:
+297&#x2013;330.
 </div>
 <div id="fooref-url:3fgripper" class="csl-entry" role="listitem">
 Robotiq. 2023a. <span>&#xAB;3-Finger Adaptive Robot Gripper&#xBB;</span>. <a
@@ -1046,6 +1476,22 @@ class="uri">https://robotiq.com/products/ft-300-force-torque-sensor</a>.
 ROS. 2023. <span>&#xAB;Robot Operating System&#xBB;</span>. <a
 href="https://www.ros.org" class="uri">https://www.ros.org</a>.
 </div>
+<div id="fooref-rosen2022role" class="csl-entry" role="listitem">
+Rosen, Eric, Ben M Abbatematteo, Skye Thompson, Tuluhan Akbulut, e George
+Konidaris. 2022. <span>&#xAB;On the Role of Structure in Manipulation Skill
+Learning&#xBB;</span>. In <em>CoRL 2022 Workshop on Learning, Perception, and
+Abstraction for Long-Horizon Planning</em>.
+</div>
+<div id="fooref-salimbeni2017doubly" class="csl-entry" role="listitem">
+Salimbeni, Hugh, e Marc Deisenroth. 2017. <span>&#xAB;Doubly stochastic variational
+inference for deep Gaussian processes&#xBB;</span>. <em>Advances in neural
+information processing systems</em> 30.
+</div>
+<div id="fooref-schaal2006dynamic" class="csl-entry" role="listitem">
+Schaal, Stefan. 2006. <span>&#xAB;Dynamic movement primitives-a framework for motor
+control in humans and humanoid robotics&#xBB;</span>. In <em>Adaptive motion of
+animals and machines</em>, 261&#x2013;80. Springer.
+</div>
 <div id="fooref-seeger2004gaussian" class="csl-entry" role="listitem">
 Seeger, Matthias. 2004. <span>&#xAB;Gaussian processes for machine
 learning&#xBB;</span>. <em>International journal of neural systems</em> 14 (02):
@@ -1056,6 +1502,15 @@ Simeonov, Anthony, Yilun Du, Beomjoon Kim, Francois Hogan, Joshua Tenenbaum,
 Pulkit Agrawal, e Alberto Rodriguez. 2021. <span>&#xAB;A long horizon planning
 framework for manipulating rigid pointcloud objects&#xBB;</span>. In <em>Conference
 on Robot Learning</em>, 1582&#x2013;1601. PMLR.
+</div>
+<div id="fooref-snelson2006sparse" class="csl-entry" role="listitem">
+Snelson, Edward, e Zoubin Ghahramani. 2006. <span>&#xAB;Sparse Gaussian processes
+using pseudo-inputs&#xBB;</span>. <em>Advances in Neural Information Processing
+Systems</em> 18: 1259&#x2013;66.
+</div>
+<div id="fooref-ugur2020compliant" class="csl-entry" role="listitem">
+Ugur, Emre, e Hakan Girgin. 2020. <span>&#xAB;Compliant parametric dynamic movement
+primitives&#xBB;</span>. <em>Robotica</em> 38 (3): 457&#x2013;74.
 </div>
 <div id="fooref-Ugur-RSS-19" class="csl-entry" role="listitem">
 Ugur, Muhammet Yunus Seker AND Mert Imre AND Justus Piater AND Emre. 2019.
@@ -1074,6 +1529,11 @@ Wikipedia contributors. 2023. <span>&#xAB;Baxter (robot) &#x2014;
 <span>Wikipedia</span><span>,</span> The Free Encyclopedia&#xBB;</span>. <a
 href="https://en.wikipedia.org/w/index.php?title=Baxter_(robot)&amp;oldid=1183931177"
 class="uri">https://en.wikipedia.org/w/index.php?title=Baxter_(robot)&amp;oldid=1183931177</a>.
+</div>
+<div id="fooref-wilson2016deep" class="csl-entry" role="listitem">
+Wilson, Andrew Gordon, Zhiting Hu, Ruslan Salakhutdinov, e Eric P Xing. 2016.
+<span>&#xAB;Deep kernel learning&#xBB;</span>. In <em>Artificial intelligence and
+statistics</em>, 370&#x2013;78. PMLR.
 </div>
 </div>
 </section>

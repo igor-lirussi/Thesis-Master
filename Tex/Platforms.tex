@@ -69,8 +69,9 @@ The device was built for compatibility with the Universal Robot series and has a
 
 \section{Frameworks}
 \paragraph{ROS}
-The Robot Operating System (ROS) \cite{url:ros} is a framework to ease the deployment of robot applications. The system is a set of software libraries and tools that combine the state-of-the-art drivers for the most common robot interfaces and contain the most used algorithms for robotics. 
-ROS acts like a middleware framework, allowing ease of communication of software with the robotic hardware. It is widely used in research, from mobile robots to manipulators.  
+The Robot Operating System (ROS) \cite{url:ros} is a framework to standardize the deployment of robot applications. The system is a set of software libraries and tools that combine the state-of-the-art drivers for the most common robot interfaces and contain the most used algorithms for robotics. 
+
+Since robotics programming is a complex challenge, the idea behind ROS is to use the "divide et impera" approach and split it into multiple sub-problems. This division requires a distributed strategy, and distribution implies communication among parts. One of ROS's main objectives is to standardize communication. For this reason, ROS acts like a middleware framework, allowing the ease of the dialog between software and the robotic hardware. It is widely used in research and industry, from mobile robots to manipulators. In our research, we used ROS version 1. 
 
 It's platform-independent and open source, so it is possible to create a custom robotics device compatible with it, and it's possible to develop personalized libraries. Its modular architecture allows the creation or use of a series of executable pieces of code called nodes, which run on a single or even on many computers. The nodes communicate among themselves with messages in the form of data structures previously defined. The distributed system allows to decuple the computation of heavy tasks, like vision, 3D reconstruction, and navigation, from the robot's hardware. 
 

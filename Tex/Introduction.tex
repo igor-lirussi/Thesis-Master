@@ -57,13 +57,13 @@ The perception brings, in cascade, the necessity of storing this information and
 With changing surroundings, it is possible also that the expected position of objects is no longer consistent with the representation. This forces the system to find an alternative or explore the environment till the object is found. Other kinds of exploration possible are the exploration of the action space to infer new actions and results, or the exploration of objects' capabilities to learn new affordances and usages. \cite{Ahmetoglu_2022} 
 
 % planning 
-Another factor worth taking into consideration is the planning subject. Plans have to be structured in a meaningful way otherwise, an incorrect sequence won't just produce an incorrect result but might bring the system further away from the final goal. The combinations of actions generated usually have importance in the order of execution, so the product of the skills has to be considered carefully. 
+Another factor worth taking into consideration is the subject of planning. Plans have to be structured in a meaningful way otherwise an incorrect sequence won't just produce an incorrect result but might bring the system further away from the final goal. The combinations of actions generated usually have importance in the order of execution, so the product of the skills has to be considered carefully. 
 
 % objects are designed for humans, have capabilities for humans, give meaning to the object 
 Furthermore, objects and tools are usually designed for humans, so their capabilities might vary depending on the machine used and might influence the actions in the planning phase. Giving meanings to the objects, both in terms of affordances and representations, is still a tricky challenge in robotics \cite{7523298} and partially involves the previously investigated challenges of planning and exploration. 
 
 % obstacle avoidance in movement execution
-Also, obstacle avoidance, whenever there is an object in the trajectory of movement, is a factor to take into consideration. The robot is required to be aware of the surroundings and itself, not to collide, hurt, damage, or just fail the designated goal. Humans adapt previously known actions whenever an obstacle or an impediment is present. 
+Also, obstacle avoidance, whenever there is an object in the trajectory of movement, is a factor to take into consideration. The robot is required to be aware of the surroundings and itself, not to collide, hurt, damage them, or just fail the designated goal. Humans adapt previously known actions whenever an obstacle or an impediment is present. 
 
 % how to adapt actions to positions or different contexts
 Part of the adaptation challenge is also being able to transfer the skills known to new locations and scenarios. For example, learning how to turn a key for the door and use the action for the key of the car or the knob to turn on the stove. This is an essential capability that is difficult to implement in a machine.   
@@ -84,7 +84,7 @@ The aim of this research is to investigate novel skill generation by combining p
 The research aims to be applied to robotics scenarios involving trajectories for object manipulation and high-level goal achievement. 
 The generation of new combinations of skills will be performed by connecting skill segments that the robot learned by demonstration. The amount of demonstrations given should be reasonable for the system to be applied in real life by a human. 
 The combination of actions will be investigated in both the concatenation of trajectories end-to-end and the use of parts of them. 
-The ultimate goal is to create a system that allows a robot, given some demonstrations, to reuse the skills acquired to complete different objectives whose trajectories were never taught explicitly. Furthermore, the adaptation should be acceptable in different configurations of the environment and, ideally in different scenarios.
+The ultimate goal is to create a system that allows a robot, given some demonstrations, to reuse the skills acquired to complete different objectives whose trajectories were never taught explicitly. Furthermore, the adaptation should be acceptable in different configurations of the environment and, ideally, in different scenarios.
 
 
 \section{Thesis Structure} 

@@ -22,6 +22,7 @@
                         <meta name="date" content="2023-11-27" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
+                <style type="text/css">q { quotes: "&#x201C;" "&#x201D;" "&#x2018;" "&#x2019;"; }</style>
                         <style type="text/css">
             pre > code.sourceCode { white-space: pre; position: relative; }
             pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -592,8 +593,8 @@ found. Other kinds of exploration possible are the exploration of the action
 space to infer new actions and results, or the exploration of objects&#x2019;
 capabilities to learn new affordances and usages. <span class="citation"
 data-cites="Ahmetoglu_2022">(Ahmetoglu et al. 2022)</span></p>
-<p>Another factor worth taking into consideration is the planning subject.
-Plans have to be structured in a meaningful way otherwise, an incorrect
+<p>Another factor worth taking into consideration is the subject of planning.
+Plans have to be structured in a meaningful way otherwise an incorrect
 sequence won&#x2019;t just produce an incorrect result but might bring the system
 further away from the final goal. The combinations of actions generated
 usually have importance in the order of execution, so the product of the
@@ -607,9 +608,9 @@ partially involves the previously investigated challenges of planning and
 exploration.</p>
 <p>Also, obstacle avoidance, whenever there is an object in the trajectory of
 movement, is a factor to take into consideration. The robot is required to be
-aware of the surroundings and itself, not to collide, hurt, damage, or just
-fail the designated goal. Humans adapt previously known actions whenever an
-obstacle or an impediment is present.</p>
+aware of the surroundings and itself, not to collide, hurt, damage them, or
+just fail the designated goal. Humans adapt previously known actions whenever
+an obstacle or an impediment is present.</p>
 <p>Part of the adaptation challenge is also being able to transfer the skills
 known to new locations and scenarios. For example, learning how to turn a key
 for the door and use the action for the key of the car or the knob to turn on
@@ -647,7 +648,7 @@ trajectories end-to-end and the use of parts of them. The ultimate goal is to
 create a system that allows a robot, given some demonstrations, to reuse the
 skills acquired to complete different objectives whose trajectories were never
 taught explicitly. Furthermore, the adaptation should be acceptable in
-different configurations of the environment and, ideally in different
+different configurations of the environment and, ideally, in different
 scenarios.</p>
 </section>
 <section id="foothesis-structure" class="level2" data-number="1.4">
@@ -706,8 +707,25 @@ class="citation" data-cites="hu2019hierarchical">(Hu et al. 2019)</span>, but
 according to the research objective, a certain degree of autonomy is desired.
 This implies typically giving only the final goal and not the step-by-step
 instructions.</p>
+<p>Recently, a lot of research has invested in deep reinforcement learning to
+map sensor inputs of a robot directly to motor torques <span class="citation"
+data-cites="khazatsky2021can">(Khazatsky et al. 2021)</span>. These approaches
+provide independence, due to not hard-coded behaviors, and versatility by
+leveraging recent advancements in training deep networks. However, they
+encounter difficulties because of the demand for a huge amount of samples and
+underlying complexity. Reinforcement learning embraces the full complexity of
+these problems by requiring both interactive, sequential prediction as in
+"learning from demonstration" (LfD) and complex reward structures with only
+<q>bandit</q> style feedback on the actions chosen <span class="citation"
+data-cites="kober2013reinforcement">(Kober, Bagnell, e Peters 2013)</span>.
+For this reason, recent research aims to minimize what must be learned and to
+support sequential composition <span class="citation"
+data-cites="rosen2022role">(Rosen et al. 2022)</span>. However, the collection
+of trajectory samples in the real world requires too much time, so a framework
+for robotic simulation is often used to simplify the setting.</p>
 <p>A commonly used technique in robotics is Learning from Demonstration (LfD)
-<span class="citation" data-cites="ARGALL2009469">(Argall et al. 2009)</span>,
+<span class="citation" data-cites="ARGALL2009469">(Argall et al. 2009)</span>
+<span class="citation" data-cites="schaal1999imitation">(Schaal 1999)</span>,
 and then <span class="citation"
 data-cites="ravichandar2020recent">(Ravichandar et al. 2020)</span>. It allows
 for solving a wide variety of robotics problems by imitating an external
@@ -721,15 +739,23 @@ dynamic systems <span class="citation" data-cites="schaal2006dynamic">(Schaal
 2006)</span>, and their union in <span class="citation"
 data-cites="ugur2020compliant">(E. Ugur e Girgin 2020)</span>. In Dynamic
 Movement Primitives (DMPs) <span class="citation"
-data-cites="schaal2006dynamic">(Schaal 2006)</span>, a trajectory is
-represented with a set of differential equations and learned with as little as
-one shot. Thanks to the "point attractor" mechanism, it guarantees reaching a
-point even under perturbations. DMPs have successfully been utilized in
-difficult manipulation tasks such as in-hand manipulation and flipping boxes
-using chopsticks <span class="citation"
-data-cites="pastor2009learning">(Pastor et al. 2009)</span>. On the other
-hand, DMPs require additional tuning to determine the number of basis
-functions. Moreover, their approach is not designed to learn from multiple
+data-cites="schaal2006dynamic">(Schaal 2006)</span> <span class="citation"
+data-cites="ijspeert2002learning">(Ijspeert, Nakanishi, e Schaal 2002)</span>,
+a trajectory is represented with a set of differential equations and learned
+with as little as one shot. DMPs demonstrated a good capability in learning a
+remarkable variety of dynamic behaviors <span class="citation"
+data-cites="mulling2013learning">(M&#xFC;lling et al. 2013)</span>. Thanks to the
+"point attractor" mechanism, it guarantees reaching a point even under
+perturbations. DMPs have successfully been utilized in difficult manipulation
+tasks such as in-hand manipulation and flipping boxes using chopsticks <span
+class="citation" data-cites="pastor2009learning">(Pastor et al. 2009)</span>.
+On the other hand, additional tuning is needed to determine the number of
+basis functions. Moreover, the motor learning problems that are most
+intriguing often involve a high number of dimensions <span class="citation"
+data-cites="kober2008policy">(Kober e Peters 2008)</span>, and DMPs still
+struggle to be integrated with high-dimensional, multi-modal data <span
+class="citation" data-cites="saveriano2021dynamic">(Saveriano et al.
+2021)</span>. Finally, their approach is not designed to learn from multiple
 trajectories and, therefore, cannot encode the important parts of multiple
 demonstrations <span class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A. M.
 I. A. J. P. A. E. Ugur 2019)</span>.</p>
@@ -737,15 +763,18 @@ I. A. J. P. A. E. Ugur 2019)</span>.</p>
 data-cites="paraschos2013probabilistic">(Paraschos et al. 2013)</span>,
 instead, the distribution of basis functions is often represented using a
 probabilistic framework, typically a Gaussian Mixture Model (GMM) or a similar
-probabilistic model. Historically, Gaussian Mixture Models <span
-class="citation" data-cites="nguyen2009model">(Nguyen-Tuong, Seeger, e Peters
-2009)</span> have been prominent among various probabilistic approaches since
-they provide adaptable solutions to the challenge of modeling trajectories. On
-the other hand, GMMs involve estimating many parameters, especially when
-dealing with high-dimensional data or a large number of components. This can
-make training and inference computationally expensive, particularly when the
-dataset is extensive, and if not done correctly, can lead to some failures,
-Figure <a href="#foofig:prompcnmp" data-reference-type="ref"
+probabilistic model. Probabilistic models allow to capture the variability
+across demonstrations and different Degrees of Freedom and, furthermore,
+enable variable conditioning in which predictions can be refined through new
+observations. Historically, Gaussian Mixture Models <span class="citation"
+data-cites="nguyen2009model">(Nguyen-Tuong, Seeger, e Peters 2009)</span> have
+been prominent among various probabilistic approaches since they provide
+adaptable solutions to the challenge of modeling trajectories. On the other
+hand, GMMs involve estimating many parameters, especially when dealing with
+high-dimensional data or a large number of components. This can make training
+and inference computationally expensive, particularly when the dataset is
+extensive, and if not done correctly, can lead to some failures, Figure <a
+href="#foofig:prompcnmp" data-reference-type="ref"
 data-reference="fig:prompcnmp">2.1</a>.</p>
 <figure id="foofig:prompcnmp">
 <img src="Images/ProMPvsCNMP.png" />
@@ -975,7 +1004,7 @@ class="math inline">\(t\)</span> concatenated to the task parameter <span
 class="math inline">\(\gamma\)</span></p>
 <p>The encoder and the decoder are trained jointly with the error calculated
 from the following loss function: <span class="math display">\[L(\theta,
-\delta)= -logP(y_i|\mu_i, softmax(\sigma_j))\]</span> using both mean and
+\phi)= -logP(y_i|\mu_i, softmax(\sigma_j))\]</span> using both mean and
 standard deviation produced by the network. As a note, the uncertainty of the
 prediction provided by the variance is useful for the model&#x2019;s active
 exploration to choose wisely where the next observations are needed. Moreover,
@@ -1372,6 +1401,11 @@ Hu, Hengyuan, Denis Yarats, Qucheng Gong, Yuandong Tian, e Mike Lewis. 2019.
 language instructions&#xBB;</span>. <em>Advances in neural information processing
 systems</em> 32.
 </div>
+<div id="fooref-ijspeert2002learning" class="csl-entry" role="listitem">
+Ijspeert, Auke, Jun Nakanishi, e Stefan Schaal. 2002. <span>&#xAB;Learning
+attractor landscapes for learning motor primitives&#xBB;</span>. <em>Advances in
+neural information processing systems</em> 15.
+</div>
 <div id="fooref-Goertler2018VisualExplorationGaussian" class="csl-entry"
 role="listitem">
 J. G&#xF6;rtler, O. Deussen, R. Kehlbeck. 2018. <span>&#xAB;A Visual Exploration of
@@ -1400,9 +1434,25 @@ Karmiloff-Smith, By A. 1994. <span>&#xAB;Beyond modularity: A developmental
 perspective on cognitive science&#xBB;</span>. <em>European journal of disorders of
 communication</em> 29 (1): 95&#x2013;105.
 </div>
+<div id="fooref-khazatsky2021can" class="csl-entry" role="listitem">
+Khazatsky, Alexander, Ashvin Nair, Daniel Jing, e Sergey Levine. 2021.
+<span>&#xAB;What can i do here? learning new skills by imagining visual
+affordances&#xBB;</span>. In <em>2021 IEEE International Conference on Robotics and
+Automation (ICRA)</em>, 14291&#x2013;97. IEEE.
+</div>
 <div id="fooref-kim2007clustering" class="csl-entry" role="listitem">
 Kim, Hyun-Chul, e Jaewook Lee. 2007. <span>&#xAB;Clustering based on gaussian
 processes&#xBB;</span>. <em>Neural computation</em> 19 (11): 3088&#x2013;3107.
+</div>
+<div id="fooref-kober2013reinforcement" class="csl-entry" role="listitem">
+Kober, Jens, J Andrew Bagnell, e Jan Peters. 2013. <span>&#xAB;Reinforcement
+learning in robotics: A survey&#xBB;</span>. <em>The International Journal of
+Robotics Research</em> 32 (11): 1238&#x2013;74.
+</div>
+<div id="fooref-kober2008policy" class="csl-entry" role="listitem">
+Kober, Jens, e Jan Peters. 2008. <span>&#xAB;Policy search for motor primitives in
+robotics&#xBB;</span>. <em>Advances in neural information processing systems</em>
+21.
 </div>
 <div id="fooref-konidaris2019necessity" class="csl-entry" role="listitem">
 Konidaris, George. 2019. <span>&#xAB;On the necessity of abstraction&#xBB;</span>.
@@ -1423,6 +1473,12 @@ Robots</em> 31: 115&#x2013;31.
 Maranesi, Monica, Luca Bonini, e Leonardo Fogassi. 2014. <span>&#xAB;Cortical
 processing of object affordances for self and others&#x2019; action&#xBB;</span>.
 <em>Frontiers in psychology</em> 5: 538.
+</div>
+<div id="fooref-mulling2013learning" class="csl-entry" role="listitem">
+M&#xFC;lling, Katharina, Jens Kober, Oliver Kroemer, e Jan Peters. 2013.
+<span>&#xAB;Learning to select and generalize striking movements in robot table
+tennis&#xBB;</span>. <em>The International Journal of Robotics Research</em> 32
+(3): 263&#x2013;79.
 </div>
 <div id="fooref-nguyen2009model" class="csl-entry" role="listitem">
 Nguyen-Tuong, Duy, Matthias Seeger, e Jan Peters. 2009. <span>&#xAB;Model learning
@@ -1487,10 +1543,19 @@ Salimbeni, Hugh, e Marc Deisenroth. 2017. <span>&#xAB;Doubly stochastic variatio
 inference for deep Gaussian processes&#xBB;</span>. <em>Advances in neural
 information processing systems</em> 30.
 </div>
+<div id="fooref-saveriano2021dynamic" class="csl-entry" role="listitem">
+Saveriano, Matteo, Fares J Abu-Dakka, Alja&#x17E; Kramberger, e Luka Peternel. 2021.
+<span>&#xAB;Dynamic movement primitives in robotics: A tutorial survey&#xBB;</span>.
+<em>The International Journal of Robotics Research</em>, 02783649231201196.
+</div>
+<div id="fooref-schaal1999imitation" class="csl-entry" role="listitem">
+Schaal, Stefan. 1999. <span>&#xAB;Is imitation learning the route to humanoid
+robots?&#xBB;</span> <em>Trends in cognitive sciences</em> 3 (6): 233&#x2013;42.
+</div>
 <div id="fooref-schaal2006dynamic" class="csl-entry" role="listitem">
-Schaal, Stefan. 2006. <span>&#xAB;Dynamic movement primitives-a framework for motor
-control in humans and humanoid robotics&#xBB;</span>. In <em>Adaptive motion of
-animals and machines</em>, 261&#x2013;80. Springer.
+&#x2014;&#x2014;&#x2014;. 2006. <span>&#xAB;Dynamic movement primitives-a framework for motor control in
+humans and humanoid robotics&#xBB;</span>. In <em>Adaptive motion of animals and
+machines</em>, 261&#x2013;80. Springer.
 </div>
 <div id="fooref-seeger2004gaussian" class="csl-entry" role="listitem">
 Seeger, Matthias. 2004. <span>&#xAB;Gaussian processes for machine

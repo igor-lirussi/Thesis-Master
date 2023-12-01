@@ -200,6 +200,8 @@ jobs:
           git clean -fxd
           git clone https://github.com/igor-lirussi/pandoc-uikit
           rm -rdf pandoc-uikit/.git*
+          git checkout -f main Extra
+          cp Extra/favicon.ico .
           git checkout -f main figures
           git checkout -f main Images
           git checkout -f main index.html

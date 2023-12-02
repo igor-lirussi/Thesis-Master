@@ -161,7 +161,7 @@ The plottings of the matrix depicted in \cref{fig:tp-multiple-shift} and \cref{f
 \paragraph{Building the function to query the network with the matrix obtained. }
 The second key part uses the matrix built before to query the network at every timestep with the changing observations. It is responsible for the final results obtained and visualized in \cref{fig:tp-multiple-shift-results}.
 
-This part, instead of passing to the network the array of multiple observations, passes the computed array with a single observation of every time step. In the \cref{lst:shift-tp-more-conditions-function}, it is possible to see how the model is fed with the observation at $time\_index$ and the current time. The matrix previously built is split in the array $matirx\_time$  (first column of the matrix), and the matrix of observations for every time step $matrix\_observations$.
+This part, instead of passing to the network the array of multiple observations, passes the computed array with a single observation of every time step. In the \cref{lst:shift-tp-more-conditions-function}, it is possible to see how the model is fed with the observation at $time\_index$ and the current $time$. The matrix previously built is split in the array $matirx\_time$  (first column of the matrix), and the matrix of observations for every time step $matrix\_observations$.
 
 \lstinputlisting[float,	language=Python, caption={Extract of code for task shift with multiple observations, using the matrix obtained},label={lst:shift-tp-more-conditions-function}]{listings/shift-tp-more-conditions-function.txt}
 

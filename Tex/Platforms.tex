@@ -55,18 +55,24 @@ This platform was designed as well for collaborative robotic applications, allow
 
 
 \section{FT 300-S Force Torque Sensor}
-Between the UR10 robot and the 3F Finger Gripper, an FT 300-S Force Torque Sensor [Fig. \ref{fig:ft-sensor}] was mounted to increase precision and repeatability. The sensor offers high-resolution real-time measurements regarding the force and torque applied to the three space dimensions and improves the capabilities of the robot, making it able to detect the payload carried or the amount of pressure between the object carried and the static environment (i.e., the table). 
+Between the UR10 robot and the 3F Finger Gripper, an FT 300-S Force Torque Sensor [Fig. \ref{fig:ft-sensor}] was mounted to increase precision and repeatability. 
 
-The device was built for compatibility with the Universal Robot series and has an IP65 rating. It also enables precise object placement such as alignment, indexing, and insertion \cite{url:ftsensor}. The FT 300-S is commonly used in tasks where force and torque sensing are critical, but we used it to increase the reliability of the payload measurements. 
+The sensor offers high-resolution real-time measurements regarding the force and torque applied to the three space dimensions and improves the capabilities of the robot. This device makes the UR10 able to detect the payload carried or the amount of pressure between the object or gripper and the static environment (i.e., the table). 
+
+The device was built for compatibility with the Universal Robot series and has an IP65 rating. It also enables precise object placement such as alignment, indexing, and insertion \cite{url:ftsensor}. 
+
+It exposes the six readings of the forces and torques in the three axes through a port opened in the computer connected to it. In out setup it has been connected straight to the UR10 computer, allowing any user to retrieve the necessary data.  
+
+The FT 300-S is commonly used in tasks where force and torque sensing are critical, but we used it to increase the reliability of the payload measurements and the safety of the operations. 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\linewidth]{Images/ft_sensor.png}
+	\includegraphics[width=0.9\linewidth]{Images/ft_sensor.png}
 	\caption{FT 300-S Force Torque Sensor}
 	\label{fig:ft-sensor}
 \end{figure}
 
-
+\newpage
 \section{Frameworks}
 \paragraph{ROS}
 The Robot Operating System (ROS) \cite{url:ros} is a framework to standardize the deployment of robot applications. The system is a set of software libraries and tools that combine the state-of-the-art drivers for the most common robot interfaces and contain the most used algorithms for robotics. 

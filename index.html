@@ -884,7 +884,13 @@ probabilistic framework, typically a Gaussian Mixture Model (GMM) or a similar
 probabilistic model. Probabilistic models allow to capture the variability
 across demonstrations and different Degrees of Freedom and, furthermore,
 enable variable conditioning in which predictions can be refined through new
-observations. Historically, Gaussian Mixture Models <span class="citation"
+observations.</p>
+<figure id="foofig:prompcnmp">
+<img src="Images/ProMPvsCNMP.png" />
+<figcaption>In ProMPs the distribution of basis functions is often represented
+using a probabilistic framework, but can lead to some failures.</figcaption>
+</figure>
+<p>Historically, Gaussian Mixture Models <span class="citation"
 data-cites="nguyen2009model">(Nguyen-Tuong, Seeger, e Peters 2009)</span> have
 been prominent among various probabilistic approaches since they provide
 adaptable solutions to the challenge of modeling trajectories. On the other
@@ -894,11 +900,6 @@ and inference computationally expensive, particularly when the dataset is
 extensive, and if not done correctly, can lead to some failures, Figure <a
 href="#foofig:prompcnmp" data-reference-type="ref"
 data-reference="fig:prompcnmp">2.1</a>.</p>
-<figure id="foofig:prompcnmp">
-<img src="Images/ProMPvsCNMP.png" />
-<figcaption>In ProMPs the distribution of basis functions is often represented
-using a probabilistic framework, but can lead to some failures.</figcaption>
-</figure>
 <p>Another probabilistic model, like GMMs, often used in statistical modeling
 techniques is Hidden Markov Models (HMMs) <span class="citation"
 data-cites="lee2011incremental">(Lee e Ott 2011)</span>. HMMs were
@@ -938,9 +939,10 @@ that define a distribution over functions, Figure <a href="#foofig:gp"
 data-reference-type="ref" data-reference="fig:gp">2.2</a>. This means that
 they leverage pre-existing knowledge about a set of functions and infer during
 test-time specific functions that fit the data provided. Given a set of
-observed points, there are infinite possible functions that pass through them.
-Gaussian processes provide an elegant solution to this challenge by assigning
-a probability to each of these potential functions. The mean of this
+observed points, there are infinite possible functions that pass through
+them.</p>
+<p>Gaussian processes provide an elegant solution to this challenge by
+assigning a probability to each of these potential functions. The mean of this
 probability distribution then represents the most probable characterization of
 the data given the observation points <span class="citation"
 data-cites="Goertler2018VisualExplorationGaussian">(J. G&#xF6;rtler
@@ -974,11 +976,11 @@ data-cites="snelson2006sparse">(Snelson e Ghahramani 2006)</span>. The limited
 expressivity from functional restriction was addressed with DeepGPs in <span
 class="citation" data-cites="damianou2013deep">(Damianou e Lawrence
 2013)</span> <span class="citation"
-data-cites="salimbeni2017doubly">(Salimbeni e Deisenroth 2017)</span>.
-Overcoming these issues and attempting to combine Deep Learning (DL) with GPs
-was proposed in <span class="citation" data-cites="wilson2016deep">(Wilson et
-al. 2016)</span>, but the approach remains close to GPs since the network is
-used to learn more expressive kernels to use with GPs.</p>
+data-cites="salimbeni2017doubly">(Salimbeni e Deisenroth 2017)</span>.</p>
+<p>Overcoming these issues and attempting to combine Deep Learning (DL) with
+GPs was proposed in <span class="citation" data-cites="wilson2016deep">(Wilson
+et al. 2016)</span>, but the approach remains close to GPs since the network
+is used to learn more expressive kernels to use with GPs.</p>
 </section>
 <section id="fooconditional-neural-processes" class="level2"
 data-number="2.2">
@@ -1413,18 +1415,19 @@ thanks to the interpolation abilities of CNMP networks.</p>
 skill composition with CNMPs, modeling how it is possible to go from one
 movement primitive to the other. The motivation of this order is that this
 part enables the partial combination and is used as well in the transition
-moment of end-to-end skill concatenation. Next, it will be analyzed how it is
-possible to concatenate them one after the other to achieve meaningful
-execution in order to reach the final goal position or even goal-state.</p>
+moment of end-to-end skill concatenation.</p>
+<p>Next, it will be analyzed how it is possible to concatenate them one after
+the other to achieve meaningful execution in order to reach the final goal
+position or even goal-state.</p>
 <section id="foopartial-skill-combination" class="level2" data-number="4.1">
 <h2 data-number="4.1"><span class="header-section-number">4.1</span> Partial
 Skill Combination</h2>
 <p>In order to synthesize a new skill by combining parts of others, it is
 required to teach the model at least two different types of movement
 primitives. Subsequently, the robot has to be able to pass from one action
-(skill) to the other. The moment of this transition has to be arbitrarily
-decided according to the necessities and not specifically crafted at teaching
-time.</p>
+(skill) to the other.</p>
+<p>The moment of this transition has to be arbitrarily decided according to
+the necessities and not specifically crafted at teaching time.</p>
 <p>The challenge of this apparently straightforward problem resides in the
 moment of the transition, because it has to be executed in a meaningful,
 natural, and safe way. These simple three requirements will lead the following
@@ -1434,12 +1437,12 @@ now on, a simplistic example (<a href="#foofig:trajX"
 data-reference-type="ref" data-reference="fig:trajX">4.1</a>) will be used to
 further clarify the explanations given. Nevertheless, the simplification
 doesn&#x2019;t exclude the possibility of more elaborate tasks that require complex
-movements or sensorimotor data. The two actions discussed will be a simple
-movement upwards and a similar movement downwards. They can represent, for
-example, a trajectory in real life, a manipulator movement, or a joint
-trajectory. This allows a discussion that starts from a single 1D dimension
-and keeps the understanding manageable at the subsequent introduction of new
-dimensions.</p>
+movements or sensorimotor data.</p>
+<p>The two actions discussed will be a simple movement upwards and a similar
+movement downwards. They can represent, for example, a trajectory in real
+life, a manipulator movement, or a joint trajectory. This allows a discussion
+that starts from a single 1D dimension and keeps the understanding manageable
+at the subsequent introduction of new dimensions.</p>
 <figure id="foofig:trajX">
 <img src="figures/trajX.png" />
 <figcaption>Trajectories for two different skills demonstrated and generated
@@ -1451,8 +1454,8 @@ data-reference="fig:trajX">4.1</a> are visible as the three colorful thinner
 lines ascending and three colorful thinner lines descending. The two triplets
 differ to some extent, so the network has enough knowledge to create as well
 new trajectories never seen. This will prove later that the method designed
-also works with newly generated movement primitives. The thicker points in the
-<a href="#foofig:trajX" data-reference-type="ref"
+also works with newly generated movement primitives.</p>
+<p>The thicker points in the <a href="#foofig:trajX" data-reference-type="ref"
 data-reference="fig:trajX">4.1</a> are the conditions, these force the model
 to generate a trajectory that passes through that state. The movement
 primitive created is denoted as the grey line passing through the condition
@@ -1482,20 +1485,21 @@ demonstrations allows a certain flexibility, so a second approach might
 suggest generating a second trajectory starting from the end points of the
 first one. This solution only delays the problem subsequently because the
 condition point(s) on the second trajectory will be dependent on the first
-one, and this requires further calculation, and won&#x2019;t be solely used for the
-effective purpose of making a trajectory reach the desired state. In <a
+one, requiring further calculation, and won&#x2019;t be solely used for the effective
+purpose of making a trajectory reach the desired state. In <a
 href="#foofig:trajX-failing-approaches" data-reference-type="ref"
 data-reference="fig:trajX-failing-approaches">4.2</a>, right plot, the first
-part of the trajectory is generated with the left-most condition (time 0,3).
-Subsequently, the second part is generated using a conditioning point at the
-end of the left part plus the desired one. These two conditioning points will
-likely not be on the same trajectory generated: let&#x2019;s recall the robot arms
-generally have 6 or 7 DoF, <a href="#foochap:platforms"
-data-reference-type="ref" data-reference="chap:platforms">3</a>, and even the
-cartesian space has three dimensions plus the 4D quaternion for the
-orientation, so the probability of trajectories intersecting in spaces of at
-least six dimensions is minimal. This will lead the CNMP model to average the
-two trajectories obtained by the two conditions on different points. In <a
+part of the trajectory is generated with the left-most condition (<span
+class="math inline">\(time=0.3\)</span>). Subsequently, the second part is
+generated using a conditioning point at the end of the left part plus the
+desired one. These two conditioning points will likely not be on the same
+trajectory generated: let&#x2019;s recall the robot arms generally have 6 or 7 DoF,
+<a href="#foochap:platforms" data-reference-type="ref"
+data-reference="chap:platforms">3</a>, and even the cartesian space has three
+dimensions plus the 4D quaternion for the orientation, so the probability of
+trajectories intersecting in spaces of at least six dimensions is minimal.
+This will lead the CNMP model to average the two trajectories obtained by the
+two conditions on different points. In <a
 href="#foofig:trajX-failing-approaches" data-reference-type="ref"
 data-reference="fig:trajX-failing-approaches">4.2</a>, right plot, we see the
 second trajectory part passing in the middle of the two right-most
@@ -1506,19 +1510,26 @@ using conditioning points, there is a tradeoff between jumping and not meeting
 the conditions for the second trajectory.</p>
 <p>Since the stitching of parts is not a feasible option, the approach
 selected implies giving the same network the two skills and obtaining a
-coherent output. The CNMP model is capable of storing different movement
-primitives of different skills without requiring multiple networks. The
-selection of the right trajectory is due to the conditioning points
-(observations) previously explained. The observations are indeed useful for
-both finding the interpolated trajectory from the demonstrations passing in a
-new state and also for identifying the correct skill. In <a
-href="#foofig:trajX" data-reference-type="ref"
-data-reference="fig:trajX">4.1</a>, the conditioning points identified
-uniquely the trajectory to generate. However, as it happens in <a
-href="#foofig:trajX+tp" data-reference-type="ref"
-data-reference="fig:trajX+tp">4.4</a>, the conditions might be uncertain, so
+coherent output.</p>
+<figure id="foofig:trajX+tp">
+<img src="figures/trajX+tp.png" />
+<figcaption> CNMP modeling uncertainty for a condition. In the parametrized
+CNMP, uncertainty is solved, and skills are encoded with task parameters 1 for
+ascending and 2 for descending. </figcaption>
+</figure>
+<p>The CNMP model is capable of storing different movement primitives of
+different skills without requiring multiple networks. The selection of the
+right trajectory is due to the conditioning points (observations) previously
+explained. The observations are indeed useful for both finding the
+interpolated trajectory from the demonstrations passing in a new state and
+also for identifying the correct skill. In <a href="#foofig:trajX"
+data-reference-type="ref" data-reference="fig:trajX">4.1</a>, the conditioning
+points identified uniquely the trajectory to generate. However, as it happens
+in <a href="#foofig:trajX+tp" data-reference-type="ref"
+data-reference="fig:trajX+tp">4.3</a>, the conditions might be uncertain, so
 the standard CNMP model averages the outputs, creating a misleading
-trajectory. To eliminate uncertainty, a task parameter <span
+trajectory.</p>
+<p>To eliminate uncertainty, a task parameter <span
 class="math inline">\(\gamma\)</span> (TP) can be included in both the input
 and the query of the network, as in <a href="#foofig:cnmp"
 data-reference-type="ref" data-reference="fig:cnmp">2.5</a>. The task
@@ -1532,12 +1543,6 @@ movement primitive.</p>
 <figcaption> Plot of the interpolation abilities of CNMPs also in the
 task-parameter dimension. </figcaption>
 </figure>
-<figure id="foofig:trajX+tp">
-<img src="figures/trajX+tp.png" />
-<figcaption> CNMP modeling uncertainty for a condition. In the parametrized
-CNMP, uncertainty is solved, and skills are encoded with task parameters 1 for
-ascending and 2 for descending. </figcaption>
-</figure>
 <p>How adding a dimension to the input is interpreted by the networks and
 what&#x2019;s in between the two parameters has been researched to understand better
 how to shift among them. In order to do this, a 3D plot is required. This is
@@ -1545,15 +1550,16 @@ achieved by leveraging the previously considered weakness of the model of
 having uncertain conditions. These points are shared by parameters among and
 maintain the same other dimensions while the external parameter <span
 class="math inline">\(\gamma\)</span> varies. This doesn&#x2019;t introduce any bias
-while the condition changes. The visualization of a continuous change between
-different task parameters is present in <a href="#foofig:graph-tp-transition"
-data-reference-type="ref" data-reference="fig:graph-tp-transition">4.3</a>. As
-it&#x2019;s possible to observe, the network interpolates nicely among the functions
-also in the tasks-parameter space. The movement of the conditioning point in
-time is depicted in the 3D plot with a red line ending in its final position.
-It is worth noting that to obtain the graph in <a
+while the condition changes.</p>
+<p>The visualization of a continuous change between different task parameters
+is present in <a href="#foofig:graph-tp-transition" data-reference-type="ref"
+data-reference="fig:graph-tp-transition">4.4</a>. As it&#x2019;s possible to observe,
+the network interpolates nicely among the functions also in the
+tasks-parameter space. The movement of the conditioning point in time is
+depicted in the 3D plot with a red line ending in its final position.</p>
+<p>It is worth noting that to obtain the graph in <a
 href="#foofig:graph-tp-transition" data-reference-type="ref"
-data-reference="fig:graph-tp-transition">4.3</a>, both task parameters in the
+data-reference="fig:graph-tp-transition">4.4</a>, both task parameters in the
 observations and in the query had to vary together. As visible in <a
 href="#foofig:cnmp" data-reference-type="ref"
 data-reference="fig:cnmp">2.5</a>, the original network design of CNMPs
@@ -1564,27 +1570,27 @@ query <span class="math inline">\(t\)</span>.</p>
 researched. In the first place, for all the time steps, only the task
 parameter of the condition was changed, maintaining the task parameter of the
 query constant. Next, the opposite was performed to understand how they
-influence the network result differently. The plots comparison is visible in
-<a href="#foofig:tp-influence" data-reference-type="ref"
-data-reference="fig:tp-influence">4.5</a>. On the top row, for task parameter
-2, the first graph shows how the result changes according to the variation of
-the task parameter in the condition. Meanwhile, the second graph shows how,
-for every time queried, keeping the parameter fixed to 2 in the conditions and
-changing it in the query doesn&#x2019;t produce a significant variation in the
-output. The second row repeats the procedure with the other task parameter to
-crosscheck the results. It is clearly emerging how the parameter in the
-observation seems to have a stronger influence than the one in the query,
-which doesn&#x2019;t seem to contribute significantly.</p>
-<p>The following subsections will investigate further the structure of the
-CNMP network and the design of two different architectures. This work proposes
-before a network with task parameters only in condition since it seems to be
-more influential, and next, the model with task parameters only in the query.
-These two architectures are respectively built and examined below.</p>
+influence the network result differently.</p>
 <figure id="foofig:tp-influence">
 <img src="figures/comparisonCNMPtp-influence.png" />
 <figcaption> Influence of task parameter from the conditioning points and from
 the queries. </figcaption>
 </figure>
+<p>The plots comparison is visible in <a href="#foofig:tp-influence"
+data-reference-type="ref" data-reference="fig:tp-influence">4.5</a>. On the
+top row, for task parameter 2, the first graph shows how the result changes
+according to the variation of the task parameter in the condition. Meanwhile,
+the second graph shows how, for every time queried, keeping the parameter
+fixed to 2 in the conditions and changing it in the query doesn&#x2019;t produce a
+significant variation in the output. The second row repeats the procedure with
+the other task parameter to crosscheck the results. It is clearly emerging how
+the parameter in the observation seems to have a stronger influence than the
+one in the query, which doesn&#x2019;t seem to contribute significantly.</p>
+<p>The following subsections will investigate the structure of the network and
+the design of two different architectures. This work proposes before a network
+with task parameters only in condition and, next, the model with task
+parameters only in the query. These two architectures are respectively built
+and examined below.</p>
 <section id="foocnmp-model-with-task-parameter-only-in-condition"
 class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1"><span class="header-section-number">4.1.1</span> CNMP
@@ -1634,6 +1640,9 @@ href="#foofig:comparisonCNMPvsCNMPonlyTPcondition" data-reference-type="ref"
 data-reference="fig:comparisonCNMPvsCNMPonlyTPcondition">4.7</a>, and although
 some interpolation differences are visible, they still clearly maintain a
 sufficient degree of correctness.</p>
+<p>The new network architecture maintains the same interpolation capabilities,
+but allows the user to query only the time, without worrying about the task
+parameter, that will be inferred constant form the observations.</p>
 <figure id="foofig:comparisonCNMPvsCNMPonlyTPcondition">
 <img src="figures/comparisonCNMPvsCNMPonlyTPcondition.png" />
 <figcaption> Interpolation comparison of CNMP model vs CNMP model with TP only
@@ -1646,16 +1655,17 @@ data-number="4.1.2">
 model with task-parameter only in query</h3>
 <p>This subsection analyses the opposite alternative to the previous
 investigation. The architecture of the CNMP model is altered to generate the
-results using the task parameters (TPs) only in the input of the query. This
-design allows having conditioning points that are parameter-less and querying
-the network subsequently with the time <span class="math inline">\(t\)</span>
-and the task parameter <span class="math inline">\(\gamma\)</span>.</p>
+results using the task parameters (TPs) only in the input of the query.</p>
+<p>This design allows having conditioning points that are parameter-less and
+querying the network subsequently with the time <span
+class="math inline">\(t\)</span> and the task parameter <span
+class="math inline">\(\gamma\)</span>.</p>
 <p>This architectural choice seems to be more appropriate for possible changes
 at run-time of skill by the model. However, it&#x2019;s clearly more challenging
-since the information is provided later in the pipeline. Moreover,
-conditioning points are responsible for the final position at every time <span
-class="math inline">\(t\)</span>, and feeding the network only subsequently
-with the task forces it to infer the <span
+since the information is provided later in the pipeline.</p>
+<p>Moreover, conditioning points are responsible for the final position at
+every time <span class="math inline">\(t\)</span>, and feeding the network
+only subsequently with the task forces it to infer the <span
 class="math inline">\(\gamma\)</span> of the conditions.</p>
 <figure id="foofig:CNMP_short_no_tp_observations">
 <img src="figures/CNMP_short_no_tp_observations.png" />
@@ -1669,6 +1679,8 @@ can be compared to the original model. The neural network now feeds the
 encoder with observations that don&#x2019;t have any parameter, delaying the <span
 class="math inline">\(\gamma\)</span> inference to the decoder. As a result,
 the encoder has an input dimension less than the original model.</p>
+<p>The second new model has been trained on the same dataset and verified with
+the same validation set as the previously discussed ones.</p>
 <div class="longtable">
 <p><span>|c|l|c|l|</span></p>
 <p><br />
@@ -1680,8 +1692,6 @@ the encoder has an input dimension less than the original model.</p>
 &amp; 2 &amp; 2.598636844065303e-07 &amp; 0.0002007523980230904<br />
 </p>
 </div>
-<p>The second new model has been trained on the same dataset and verified with
-the same validation set as the previously discussed ones.</p>
 <p>The quantitative comparison results in <a
 href="#footab:CNMPvsCNMPnoTPcondition" data-reference-type="ref"
 data-reference="tab:CNMPvsCNMPnoTPcondition">[tab:CNMPvsCNMPnoTPcondition]</a>
@@ -1690,6 +1700,11 @@ trajectories and interpolated trajectories. The modified architecture again
 demonstrates a rise in errors compared to the original model, but these
 errors, though now noticeable, do not compromise the usability of the
 model.</p>
+<figure id="foofig:comparisonCNMPvsCNMPonlyTPquery">
+<img src="figures/comparisonCNMPvsCNMPonlyTPquery.png" />
+<figcaption> Interpolation comparison of CNMP model vs CNMP model with TP only
+in the query. </figcaption>
+</figure>
 <p>Not the same can be said for the qualitative results of the interpolation.
 The comparison that can be seen in <a
 href="#foofig:comparisonCNMPvsCNMPonlyTPquery" data-reference-type="ref"
@@ -1701,11 +1716,6 @@ information goes through an inferior network depth compared to the full model.
 Nevertheless, these results leave room for further research on how to
 condition with one state parameterless and let the network, queried with
 different tasks, pass through that state.</p>
-<figure id="foofig:comparisonCNMPvsCNMPonlyTPquery">
-<img src="figures/comparisonCNMPvsCNMPonlyTPquery.png" />
-<figcaption> Interpolation comparison of CNMP model vs CNMP model with TP only
-in the query. </figcaption>
-</figure>
 </section>
 <section id="foocomparison-of-the-previous-models" class="level3"
 data-number="4.1.3">

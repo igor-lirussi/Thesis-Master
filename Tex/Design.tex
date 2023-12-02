@@ -10,7 +10,8 @@ As analyzed in the Intro (\cref{chap:introduction}), humans have remarkable cogn
 
 Being biologically inspired, this research aims to emulate this human flexibility in skill execution and task composition with the previously explained CNMP networks. Movement primitives that define skills are combined differently for different goals and are adapted to the environment and context thanks to the interpolation abilities of CNMP networks.
 
-The following discussion will proceed with analyzing before the partial skill composition with CNMPs, modeling how it is possible to go from one movement primitive to the other. The motivation of this order is that this part enables the partial combination and is used as well in the transition moment of end-to-end skill concatenation. 
+The following discussion will proceed with analyzing before the partial skill composition with CNMPs, modeling how it is possible to go from one movement primitive to the other. The motivation of this order is that this part enables the partial combination and is used as well in the transition moment of end-to-end skill concatenation.
+
 Next, it will be analyzed how it is possible to concatenate them one after the other to achieve meaningful execution in order to reach the final goal position or even goal-state.
 
 \newpage
@@ -19,11 +20,15 @@ Next, it will be analyzed how it is possible to concatenate them one after the o
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % requires change action (shift TP) halfway
-In order to synthesize a new skill by combining parts of others, it is required to teach the model at least two different types of movement primitives. Subsequently, the robot has to be able to pass from one action (skill) to the other. The moment of this transition has to be arbitrarily decided according to the necessities and not specifically crafted at teaching time. 
+In order to synthesize a new skill by combining parts of others, it is required to teach the model at least two different types of movement primitives. Subsequently, the robot has to be able to pass from one action (skill) to the other. 
+
+The moment of this transition has to be arbitrarily decided according to the necessities and not specifically crafted at teaching time. 
 
 The challenge of this apparently straightforward problem resides in the moment of the transition, because it has to be executed in a meaningful, natural, and safe way. These simple three requirements will lead the following examination through different approaches till the one designed. 
 
-For the purpose of a better understanding of the design and its steps, from now on, a simplistic example (\cref{fig:trajX}) will be used to further clarify the explanations given. Nevertheless, the simplification doesn't exclude the possibility of more elaborate tasks that require complex movements or sensorimotor data. The two actions discussed will be a simple movement upwards and a similar movement downwards. They can represent, for example, a trajectory in real life, a manipulator movement, or a joint trajectory. This allows a discussion that starts from a single 1D dimension and keeps the understanding manageable at the subsequent introduction of new dimensions. 
+For the purpose of a better understanding of the design and its steps, from now on, a simplistic example (\cref{fig:trajX}) will be used to further clarify the explanations given. Nevertheless, the simplification doesn't exclude the possibility of more elaborate tasks that require complex movements or sensorimotor data. 
+
+The two actions discussed will be a simple movement upwards and a similar movement downwards. They can represent, for example, a trajectory in real life, a manipulator movement, or a joint trajectory. This allows a discussion that starts from a single 1D dimension and keeps the understanding manageable at the subsequent introduction of new dimensions. 
 
 \begin{figure}
     \centering
@@ -33,6 +38,7 @@ For the purpose of a better understanding of the design and its steps, from now 
 \end{figure}
 
 Some demonstration trajectories are given for both skills, in the \cref{fig:trajX} are visible as the three colorful thinner lines ascending and three colorful thinner lines descending. The two triplets differ to some extent, so the network has enough knowledge to create as well new trajectories never seen. This will prove later that the method designed also works with newly generated movement primitives. 
+
 The thicker points in the \cref{fig:trajX} are the conditions, these force the model to generate a trajectory that passes through that state. The movement primitive created is denoted as the grey line passing through the condition point, along with the uncertainty of the prediction in every timestep as its width. 
 
 % do it without jumps
@@ -46,13 +52,22 @@ The simplest solution of executing one trajectory till a certain desired timeste
     \label{fig:trajX-failing-approaches}
 \end{figure}
 
-Being able through the CNMP model to generate trajectories from previous demonstrations allows a certain flexibility, so a second approach might suggest generating a second trajectory starting from the end points of the first one. This solution only delays the problem subsequently because the condition point(s) on the second trajectory will be dependent on the first one, and this requires further calculation, and won't be solely used for the effective purpose of making a trajectory reach the desired state. In \cref{fig:trajX-failing-approaches}, right plot, the first part of the trajectory is generated with the left-most condition (time 0,3). Subsequently, the second part is generated using a conditioning point at the end of the left part plus the desired one. These two conditioning points will likely not be on the same trajectory generated: let's recall the robot arms generally have 6 or 7 DoF, \cref{chap:platforms}, and even the cartesian space has three dimensions plus the 4D quaternion for the orientation, so the probability of trajectories intersecting in spaces of at least six dimensions is minimal. This will lead the CNMP model to average the two trajectories obtained by the two conditions on different points. In \cref{fig:trajX-failing-approaches}, right plot, we see the second trajectory part passing in the middle of the two right-most observations that would generate independently two different movement primitives. To pass from one to another of these last two trajectories, a shift will still be required, and this raises again the same problem. 
+Being able through the CNMP model to generate trajectories from previous demonstrations allows a certain flexibility, so a second approach might suggest generating a second trajectory starting from the end points of the first one. This solution only delays the problem subsequently because the condition point(s) on the second trajectory will be dependent on the first one, requiring further calculation, and won't be solely used for the effective purpose of making a trajectory reach the desired state. In \cref{fig:trajX-failing-approaches}, right plot, the first part of the trajectory is generated with the left-most condition ($time=0.3$). Subsequently, the second part is generated using a conditioning point at the end of the left part plus the desired one. These two conditioning points will likely not be on the same trajectory generated: let's recall the robot arms generally have 6 or 7 DoF, \cref{chap:platforms}, and even the cartesian space has three dimensions plus the 4D quaternion for the orientation, so the probability of trajectories intersecting in spaces of at least six dimensions is minimal. This will lead the CNMP model to average the two trajectories obtained by the two conditions on different points. In \cref{fig:trajX-failing-approaches}, right plot, we see the second trajectory part passing in the middle of the two right-most observations that would generate independently two different movement primitives. To pass from one to another of these last two trajectories, a shift will still be required, and this raises again the same problem. 
 So, even using conditioning points, there is a tradeoff between jumping and not meeting the conditions for the second trajectory.
 
 % same network
 Since the stitching of parts is not a feasible option, the approach selected implies giving the same network the two skills and obtaining a coherent output.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/trajX+tp.png}
+    \caption{ CNMP modeling uncertainty for a condition. In the parametrized CNMP, uncertainty is solved, and skills are encoded with task parameters 1 for ascending and 2 for descending. }
+    \label{fig:trajX+tp}
+\end{figure}
+
 % uncertainty of some observations
 The CNMP model is capable of storing different movement primitives of different skills without requiring multiple networks. The selection of the right trajectory is due to the conditioning points (observations) previously explained. The observations are indeed useful for both finding the interpolated trajectory from the demonstrations passing in a new state and also for identifying the correct skill. In \cref{fig:trajX}, the conditioning points identified uniquely the trajectory to generate. However, as it happens in \cref{fig:trajX+tp}, the conditions might be uncertain, so the standard CNMP model averages the outputs, creating a misleading trajectory. 
+
 % introduction TP to eliminate uncertainty
 To eliminate uncertainty, a task parameter $\gamma$ (TP) can be included in both the input and the query of the network, as in \cref{fig:cnmp}. The task parameter is a full-fledged new dimension of the network, like input time $t$ and the output value. In the case of the task parameters, the dimension added is an input dimension, which excludes uncertainty. Now, the network, given a condition, can uniquely identify the movement primitive.
 \begin{figure}
@@ -61,33 +76,31 @@ To eliminate uncertainty, a task parameter $\gamma$ (TP) can be included in both
     \caption{ Plot of the interpolation abilities of CNMPs also in the task-parameter dimension. }
     \label{fig:graph-tp-transition}
 \end{figure}
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/trajX+tp.png}
-    \caption{ CNMP modeling uncertainty for a condition. In the parametrized CNMP, uncertainty is solved, and skills are encoded with task parameters 1 for ascending and 2 for descending. }
-    \label{fig:trajX+tp}
-\end{figure}
  
 % What's among them? (using 1 condition) (shifting) network interpolates nicely
-How adding a dimension to the input is interpreted by the networks and what's in between the two parameters has been researched to understand better how to shift among them. In order to do this, a 3D plot is required. This is achieved by leveraging the previously considered weakness of the model of having uncertain conditions. These points are shared by parameters among and maintain the same other dimensions while the external parameter $\gamma$ varies. This doesn't introduce any bias while the condition changes. The visualization of a continuous change between different task parameters is present in \cref{fig:graph-tp-transition}. As it's possible to observe, the network interpolates nicely among the functions also in the tasks-parameter space. The movement of the conditioning point in time is depicted in the 3D plot with a red line ending in its final position.
+How adding a dimension to the input is interpreted by the networks and what's in between the two parameters has been researched to understand better how to shift among them. In order to do this, a 3D plot is required. This is achieved by leveraging the previously considered weakness of the model of having uncertain conditions. These points are shared by parameters among and maintain the same other dimensions while the external parameter $\gamma$ varies. This doesn't introduce any bias while the condition changes. 
+
+The visualization of a continuous change between different task parameters is present in \cref{fig:graph-tp-transition}. As it's possible to observe, the network interpolates nicely among the functions also in the tasks-parameter space. The movement of the conditioning point in time is depicted in the 3D plot with a red line ending in its final position.
+
 % network has 2 TP, in query and in observation, that varied together
 It is worth noting that to obtain the graph in \cref{fig:graph-tp-transition}, both task parameters in the observations and in the query had to vary together. As visible in \cref{fig:cnmp}, the original network design of CNMPs implies the presence of this parameter (as $\gamma$) for the conditioning points and for the query $t$.
 
 % if they don't? difference between observation and query, changing TP
-Successively, the difference in variating only one at a time has been researched. In the first place, for all the time steps, only the task parameter of the condition was changed, maintaining the task parameter of the query constant. Next, the opposite was performed to understand how they influence the network result differently. The plots comparison is visible in \cref{fig:tp-influence}.
-On the top row, for task parameter 2, the first graph shows how the result changes according to the variation of the task parameter in the condition. Meanwhile, the second graph shows how, for every time queried, keeping the parameter fixed to 2 in the conditions and changing it in the query doesn't produce a significant variation in the output. 
-The second row repeats the procedure with the other task parameter to crosscheck the results. 
-It is clearly emerging how the parameter in the observation seems to have a stronger influence than the one in the query, which doesn't seem to contribute significantly. 
+Successively, the difference in variating only one at a time has been researched. In the first place, for all the time steps, only the task parameter of the condition was changed, maintaining the task parameter of the query constant. Next, the opposite was performed to understand how they influence the network result differently.
 
-The following subsections will investigate further the structure of the CNMP network and the design of two different architectures. This work proposes before a network with task parameters only in condition since it seems to be more influential, and next, the model with task parameters only in the query. These two architectures are respectively built and examined below.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/comparisonCNMPtp-influence.png}
     \caption{ Influence of task parameter from the conditioning points and from the queries. }
     \label{fig:tp-influence}
 \end{figure}
+
+The plots comparison is visible in \cref{fig:tp-influence}. On the top row, for task parameter 2, the first graph shows how the result changes according to the variation of the task parameter in the condition. Meanwhile, the second graph shows how, for every time queried, keeping the parameter fixed to 2 in the conditions and changing it in the query doesn't produce a significant variation in the output. 
+The second row repeats the procedure with the other task parameter to crosscheck the results. 
+It is clearly emerging how the parameter in the observation seems to have a stronger influence than the one in the query, which doesn't seem to contribute significantly. 
+
+The following subsections will investigate the structure of the network and the design of two different architectures. This work proposes before a network with task parameters only in condition and, next, the model with task parameters only in the query. These two architectures are respectively built and examined below.
+
 
 
 
@@ -124,6 +137,8 @@ The quantitative comparison results in \cref{tab:CNMPvsCNMPnoTPquery} show the a
 
 The qualitative results of the interpolation can be seen in \cref{fig:comparisonCNMPvsCNMPonlyTPcondition}, and although some interpolation differences are visible, they still clearly maintain a sufficient degree of correctness.
 
+The new network architecture maintains the same interpolation capabilities, but allows the user to query only the time, without worrying about the task parameter, that will be inferred constant form the observations.
+
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/comparisonCNMPvsCNMPonlyTPcondition.png}
@@ -135,9 +150,13 @@ The qualitative results of the interpolation can be seen in \cref{fig:comparison
 
 %%%%%% Network with only TP in query %%%%%%
 \subsection{CNMP model with task-parameter only in query}
-This subsection analyses the opposite alternative to the previous investigation. The architecture of the CNMP model is altered to generate the results using the task parameters (TPs) only in the input of the query. This design allows having conditioning points that are parameter-less and querying the network subsequently with the time $t$ and the task parameter $\gamma$. 
+This subsection analyses the opposite alternative to the previous investigation. The architecture of the CNMP model is altered to generate the results using the task parameters (TPs) only in the input of the query.
 
-This architectural choice seems to be more appropriate for possible changes at run-time of skill by the model. However, it's clearly more challenging since the information is provided later in the pipeline. Moreover, conditioning points are responsible for the final position at every time $t$, and feeding the network only subsequently with the task forces it to infer the $\gamma$ of the conditions. 
+This design allows having conditioning points that are parameter-less and querying the network subsequently with the time $t$ and the task parameter $\gamma$. 
+
+This architectural choice seems to be more appropriate for possible changes at run-time of skill by the model. However, it's clearly more challenging since the information is provided later in the pipeline. 
+
+Moreover, conditioning points are responsible for the final position at every time $t$, and feeding the network only subsequently with the task forces it to infer the $\gamma$ of the conditions. 
 
 \begin{figure}
     \centering
@@ -147,6 +166,8 @@ This architectural choice seems to be more appropriate for possible changes at r
 \end{figure}
 
 In \cref{fig:CNMP_short_no_tp_observations}, the design changes can be compared to the original model. The neural network now feeds the encoder with observations that don't have any parameter, delaying the $\gamma$ inference to the decoder. As a result, the encoder has an input dimension less than the original model.
+
+The second new model has been trained on the same dataset and verified with the same validation set as the previously discussed ones.
 
 \begin{longtable}[c]{|c|l|c|l|}
 \caption{Comparison Table of original CNMP vs CNMP with TP only in query}
@@ -164,19 +185,17 @@ In \cref{fig:CNMP_short_no_tp_observations}, the design changes can be compared 
 \end{longtable}
 
 
-The second new model has been trained on the same dataset and verified with the same validation set as the previously discussed ones.
-
 The quantitative comparison results in \cref{tab:CNMPvsCNMPnoTPcondition} show the average mean square errors (MSE) for every task on demonstrated trajectories and interpolated trajectories. The modified architecture again demonstrates a rise in errors compared to the original model, but these errors, though now noticeable, do not compromise the usability of the model.
-
-Not the same can be said for the qualitative results of the interpolation. The comparison that can be seen in \cref{fig:comparisonCNMPvsCNMPonlyTPquery} shows a remarkable drop in the values in the interpolated area between the two functions. This will clearly impact the correctness of a transition among them. The inaccuracy is probably due to the fact that the parameter information goes through an inferior network depth compared to the full model.  
-Nevertheless, these results leave room for further research on how to condition with one state parameterless and let the network, queried with different tasks, pass through that state.
-
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/comparisonCNMPvsCNMPonlyTPquery.png}
     \caption{ Interpolation comparison of CNMP model vs CNMP model with TP only in the query. }
     \label{fig:comparisonCNMPvsCNMPonlyTPquery}
 \end{figure}
+Not the same can be said for the qualitative results of the interpolation. The comparison that can be seen in \cref{fig:comparisonCNMPvsCNMPonlyTPquery} shows a remarkable drop in the values in the interpolated area between the two functions. This will clearly impact the correctness of a transition among them. The inaccuracy is probably due to the fact that the parameter information goes through an inferior network depth compared to the full model.  
+Nevertheless, these results leave room for further research on how to condition with one state parameterless and let the network, queried with different tasks, pass through that state.
+
+
 
 
 %%%%%% Comparison %%%%%%

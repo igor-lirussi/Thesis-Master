@@ -26,13 +26,14 @@ A commonly used technique in robotics is Learning from Demonstration (LfD) \cite
 Famous learning from demonstration research includes statistical modeling \cite{calinon2016tutorial}, dynamic systems \cite{schaal2006dynamic}, and their union in \cite{ugur2020compliant}. In Dynamic Movement Primitives (DMPs) \cite{schaal2006dynamic} \cite{ijspeert2002learning}, a trajectory is represented with a set of differential equations and learned with as little as one shot. DMPs demonstrated a good capability in learning a remarkable variety of dynamic behaviors \cite{mulling2013learning}. Thanks to the "point attractor" mechanism, it guarantees reaching a point even under perturbations. DMPs have successfully been utilized in difficult manipulation tasks such as in-hand manipulation and flipping boxes using chopsticks \cite{pastor2009learning}. On the other hand, additional tuning is needed to determine the number of basis functions. Moreover, the motor learning problems that are most intriguing often involve a high number of dimensions \cite{kober2008policy}, and DMPs still struggle to be integrated with high-dimensional, multi-modal data \cite{saveriano2021dynamic}. Finally, their approach is not designed to learn from multiple trajectories and, therefore, cannot encode the important parts of multiple demonstrations \cite{Ugur-RSS-19}. 
 
 In the Probabilistic Movement Primitives (ProMP) \cite{paraschos2013probabilistic}, instead, the distribution of basis functions is often represented using a probabilistic framework, typically a Gaussian Mixture Model (GMM) or a similar probabilistic model.  Probabilistic models allow to capture the variability across demonstrations and different Degrees of Freedom and, furthermore,  enable variable conditioning in which predictions can be refined through new observations.
-Historically, Gaussian Mixture Models \cite{nguyen2009model} have been prominent among various probabilistic approaches since they provide adaptable solutions to the challenge of modeling trajectories. On the other hand, GMMs involve estimating many parameters, especially when dealing with high-dimensional data or a large number of components. This can make training and inference computationally expensive, particularly when the dataset is extensive, and if not done correctly, can lead to some failures, Figure \ref{fig:prompcnmp}.
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\linewidth]{Images/ProMPvsCNMP.png}
+	\includegraphics[width=0.6\linewidth]{Images/ProMPvsCNMP.png}
 	\caption{In ProMPs the distribution of basis functions is often represented using a probabilistic framework, but can lead to some failures.}
 	\label{fig:prompcnmp}
 \end{figure}
+
+Historically, Gaussian Mixture Models \cite{nguyen2009model} have been prominent among various probabilistic approaches since they provide adaptable solutions to the challenge of modeling trajectories. On the other hand, GMMs involve estimating many parameters, especially when dealing with high-dimensional data or a large number of components. This can make training and inference computationally expensive, particularly when the dataset is extensive, and if not done correctly, can lead to some failures, Figure \ref{fig:prompcnmp}.
 
 Another probabilistic model, like GMMs, often used in statistical modeling techniques is Hidden Markov Models (HMMs) \cite{lee2011incremental}. HMMs were successfully applied to learn multi-modal models from temperature, pressure, and fingertip information for exploratory object classification tasks \cite{chu2013using}.
 
@@ -45,12 +46,14 @@ The model is based on Gaussian Processes (GP) \cite{seeger2004gaussian}, Neural 
 For context, an explanation in detail of these above-mentioned methods will follow.
 
 
-
+\newpage
 %%%%%%% BACKGROUND IN DEPTH %%%%%%%
 %%%%%%% GP %%%%%%%
 \section{Gaussian Processes}
 Gaussian Processes \cite{seeger2004gaussian} are probabilistic models that define a distribution over functions, Figure \ref{fig:gp}.
-This means that they leverage pre-existing knowledge about a set of functions and infer during test-time specific functions that fit the data provided. Given a set of observed points, there are infinite possible functions that pass through them. Gaussian processes provide an elegant solution to this challenge by assigning a probability to each of these potential functions. The mean of this probability distribution then represents the most probable characterization of the data given the observation points \cite{Goertler2018VisualExplorationGaussian}. 
+This means that they leverage pre-existing knowledge about a set of functions and infer during test-time specific functions that fit the data provided. Given a set of observed points, there are infinite possible functions that pass through them. 
+
+Gaussian processes provide an elegant solution to this challenge by assigning a probability to each of these potential functions. The mean of this probability distribution then represents the most probable characterization of the data given the observation points \cite{Goertler2018VisualExplorationGaussian}. 
 
 This is called regression and is used, for example, in robotics or time series forecasting. Gaussian processes are not limited to regression, and they can also be extended to classification and clustering tasks \cite{kapoor2010gaussian} \cite{kim2007clustering}. 
 \begin{figure}
@@ -61,23 +64,26 @@ This is called regression and is used, for example, in robotics or time series f
 \end{figure}
 Many supervised learning problems can be seen as function approximations since a dataset of observations $ \{x_i, y_i\}^{n-1}_{i=0}$ is basically a number $n$ of evaluations $y_i = f(x_i)$ of an unknown function $f$. A supervised learning algorithm returns an approximated function $g$. The goal is to minimize the loss between the real function $f$ and the predicted one $g$. The evaluation is carried out on unlabelled data points $x_j$.
 
-On the other hand, the disadvantages of Gaussian Processes are prior selection and training time for large datasets. Scaling issues with GPs have been addressed in \cite{snelson2006sparse}. The limited expressivity from functional restriction was addressed with DeepGPs in \cite{damianou2013deep}  \cite{salimbeni2017doubly}. Overcoming these issues and attempting to combine Deep Learning (DL) with GPs was proposed in \cite{wilson2016deep}, but the approach remains close to GPs since the network is used to learn more expressive kernels to use with GPs.
+On the other hand, the disadvantages of Gaussian Processes are prior selection and training time for large datasets. Scaling issues with GPs have been addressed in \cite{snelson2006sparse}. The limited expressivity from functional restriction was addressed with DeepGPs in \cite{damianou2013deep}  \cite{salimbeni2017doubly}. 
+
+Overcoming these issues and attempting to combine Deep Learning (DL) with GPs was proposed in \cite{wilson2016deep}, but the approach remains close to GPs since the network is used to learn more expressive kernels to use with GPs.
 
 %%%%%%% CNP %%%%%%%
 \section{Conditional Neural Processes}
 In \cite{DBLP:journals/corr/abs-1807-01613}, the authors propose a novel research in which the inference potential of Gaussian Processes and the performance of neural networks are blended together. Neural networks are extensively employed as approximators of functions and have demonstrated considerable efficacy but often require large datasets for training. In CNPs, the prior knowledge is directly derived from the data, allowing them to infer the underlying function distribution based on observations. CNPs are built with three main blocks: Encoder, Aggregator, and Decoder. Encoder $E$ and Decoder $Q$ are typically Multi-layer perceptrons. The model structure is shown in Figure \ref{fig:cnp}. 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\linewidth]{Images/CNP.png}
+	\includegraphics[width=0.6\linewidth]{Images/CNP.png}
 	\caption{The structure of a CNP network, with three main blocks: Encoder, Aggregator, and Decoder.}
 	\label{fig:cnp}
 \end{figure}
 The model scales with complexity $O(n+m)$ for making $m$ predictions from $n$ observations, while GPs scale with $O(n+m)^3$. CNPs don't require the specification of a kernel cause they learn it from the data provided in training. The tradeoff is that the representations of the observations have fixed dimensionality.
 
-The work is based on the previous research of Neural Processes (NPs) \cite{garnelo2018neural}. NPs are suggested as a means to manage the substantial computational demands of GPs while leveraging their flexibility and efficiency with data. NPs help create different predictions by learning a shared hidden representation. However, they have trouble with long sequences because they automatically pick certain points. Building on NPs, Conditional Neural Processes (CNPs) are strong models that make training more efficient by allowing explicit conditioning.
+The work is based on the previous research of Neural Processes (NPs) \cite{garnelo2018neural}. NPs are suggested as a means to manage the substantial computational demands of GPs while leveraging their flexibility and efficiency with data. NPs help create different predictions by learning a shared hidden representation.
+However, they have trouble with long sequences because they automatically pick certain points. Building on NPs, Conditional Neural Processes (CNPs) are strong models that make training more efficient by allowing explicit conditioning.
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\linewidth]{Images/CNPdata.png}
+	\includegraphics[width=0.4\linewidth]{Images/CNPdata.png}
 	\caption{CNP allows precise predictions for targets sampled from a distribution conditioned with observations}
 	\label{fig:cnp_data}
 \end{figure}

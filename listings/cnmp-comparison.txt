@@ -1,0 +1,4 @@
+import numpy as np
+mse = np.mean((real_values - predicted_Y)**2)
+mae = np.mean(np.abs(real_values - predicted_Y))
+rmse = np.sqrt(mse)

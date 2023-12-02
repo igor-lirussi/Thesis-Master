@@ -3,11 +3,172 @@
 \label{chap:implementation}
 %----------------------------------------------------------------------------------------
 
-Write implementation here.
+This chapter gives a more in-depth view of the implementation of the methods discussed before. This doesn't mean other implementations are not possible or the method designed can't be built in other programming languages and frameworks.
 
-\lstinputlisting[float,	language=Java, caption={A piece of code},	label={lst:pieceofcode}]{listings/HelloWorld.java}
-You may need to reference listings in your thesis.
-%
-In this case, you are encouraged to make them \emph{floating}, and reference them by means of labels.
-%
-For instance, in \Cref{lst:pieceofcode}, we describe an hello world program in Java.
+The platforms and tools presented in the \cref{chap:platforms} are used. Python was chosen as a programming language for its ability to deal with data and machine learning but it can as well be used for robotics thanks to the "rospy" package. 
+
+The most important passages in the code developed and only the key points of the solution implemented will be explained below. They can be used as a reference for clarification, for another implementation, or for further improvements. 
+
+Following the structure of the \cref{chap:design}, this chapter is divided into two main subsections. 
+
+The first subsection explains the implementation of the partial skill combination.
+The parts of this section follow the previous chapter; the first is relative to the implementation of the CNMP model with the task parameter only in condition, and the second is relative to the CNMP model with the task-parameter only in query. The third part is a comparison of all three models. Lastly, the last two parts will explain how CNMP changing task executed in time with one conditioning or multiple conditions are developed.
+
+The second subsection shows the implementation of the previously explained End-To-End Skill Concatenation method. 
+
+Since the CNMP model has been used in both subsections, the structure is briefly reported in \cref{lst:cnmp}. The encoder and the decoder networks are multilayer perceptions consisting of three fully connected layers with the non-linear ReLU activation function. The dimensionality is fixed to 128 dimensions except for the first and last layers. 
+
+The encoder's first layer has a dimensionality equal to the sum of the input and output ones, since the observations have both of them. It will output the latent representations to aggregate together with position-independent operations, as in equation \ref{eq:commutative-operation}. 
+
+The first layer of the decoder has a dimensionality equal to 128 for the latent representation plus the input query desired to concatenate. The decoder outputs double the output dimensions since for each one is returned the mean and standard deviation. 
+
+\lstinputlisting[float,	language=Python, firstline=1, lastline=20, caption={CNMP model code},label={lst:cnmp}]{listings/cnmp.txt}
+
+The forward function built in \cref{lst:cnmp-forward-function} passes the observations provided to the encoder, then generates the mean of all the 128 latent representations created. For all the queries, the representation is concatenated to them and passed to the decoder. The decoder produces the mean and the standard deviation for each target queried. 
+
+\lstinputlisting[float,	language=Python, firstline=21, lastline=27, caption={CNMP model forward function},label={lst:cnmp-forward-function}]{listings/cnmp.txt}
+
+Lastly, the loss function implemented is visible in \cref{lst:cnmp-error-function} is the implementation of the log probability loss explained in the \cref{chap:background}. The standard deviation values $\sigma$ ("sigma" in the code at \emph{line 3}) are passed through the Softplus activation function. Softplus is a smooth approximation of the ReLU function and ensures that the standard deviation remains positive. 
+
+The following line creates a PyTorch distribution object. It specifies that the distribution, with independent axes, is Normal with mean mean and standard deviation sigma. 
+
+Finally, the negative log-likelihood of the target values given the distribution (dist) is computed. This is used for backpropagation in network training. 
+
+\lstinputlisting[float,	language=Python, firstline=29, caption={CNMP model loss function for trainig},label={lst:cnmp-error-function}]{listings/cnmp.txt}
+
+
+
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Partial Skill Combination}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In this section, the concept of task parameters was introduced. At the implementation level, it doesn't change the previously explained network structure since the dimension of the input will be increased, for example by one: $d\_x = 2$, and the code will adapt the network structure.
+
+An example of input for a query will be: 
+
+$tensor([[0.1357, 1.0]], dtype=torch.float64)$. 
+
+Finally, an observation will be in the form of $[0.6],[1.0],[0.45]$, where the two dimensions of the input (note the $1.0$ as TP) are concatenated with the output desired.
+
+Another crucial passage in the \cref{chap:design} was to vary independently the two task parameters of the observations and the queries in order to build the visualization of their influence in \cref{fig:tp-influence}. 
+
+To achieve this, a simple matrix of observations and queries was built, where each row contains observations and a time query to the network. Subsequently, the matrix was edited with constant task parameters in the observations, letting the TP vary in the queries, in order to build the plot. The opposite was implemented in order to build the plot where the task parameters vary in the observations and are constant in the queries. 
+
+
+%%%%%%  Network with only TP in condition  %%%%%%
+\subsection{CNMP model with task-parameter only in condition}
+In this section, a new architecture is implemented, as proposed in \cref{chap:design}, based on the previously explained CNMP model. 
+
+Among the edits in the code, one of the most important ones is the change of the model itself in the definition seen previously in \cref{lst:cnmp}. 
+
+\lstinputlisting[float,	language=Python, firstline=0, lastline=7, caption={CNMP model architecture change for TP only in conditions},label={lst:cnmp-just-condition}]{listings/cnmp-just-condition.txt}
+
+As is visible in the \cref{lst:cnmp-just-condition}, while the encoder stays the same, the decoder has input dimensions reduced. The subtraction is at \emph{line 3}, after the concatenation of the latent representation's 128 dimensions and the $d\_x$ input dimensions, where $d\_TP$ is the number of dimensions of the task parameters.
+
+\lstinputlisting[float,	language=Python, firstline=8, caption={CNMP training code change for TP only in conditions},label={lst:cnmp-just-condition-training}]{listings/cnmp-just-condition.txt}
+
+Another fundamental change in the process is the input at the prediction time. The \cref{lst:cnmp-just-condition-training}, taken from the prediction during training, shows the normal conditions in the first part of the function. In the second argument, the queries are passed. These are in the form of a matrix with inputs and task parameters in the columns, and the rows are the times.
+
+In the new version, it is possible to see how the matrix is deprived by the last $d\_x$ columns containing the task parameters. The input passed to the network corresponds indeed to the dimensionality of the decoder designed before in the model.
+
+This allows to query the network simply with an array of times $t$ desired. 
+
+
+
+%%%%%% Network with only TP in query %%%%%%
+\subsection{CNMP model with task-parameter only in query}
+In this part, another new architecture is proposed based on the previously explained CNMP model, as the opposite of the one presented in the previous part.
+
+To maintain the comparison coherent, between all the code developed, the most important changes here presented will follow in parallel the previous part. 
+
+One of the most important changes is again the model architecture itself, seen previously in \cref{lst:cnmp}.  
+
+\lstinputlisting[float,	language=Python, firstline=0, lastline=7, caption={CNMP model architecture change for TP only in query},label={lst:cnmp-just-query}]{listings/cnmp-just-query.txt}
+
+As possible to see in \cref{lst:cnmp-just-query}, the decoder this time was untouched, but the encoder was modified to accommodate different dimensions in his input. The dimensionality of the first layer of the network was reduced by the number of task parameter dimensions. At \emph{line 3}, the dimensions of the task parameter $d\_TP$ are subtracted from the dimensions of the observations $d\_x+d\_y$.
+
+\lstinputlisting[float,	language=Python, firstline=8, caption={CNMP training code change for TP only in query},label={lst:cnmp-just-query-training}]{listings/cnmp-just-query.txt}
+
+Similarly to the previous architecture, another fundamental change in the process is the input at the prediction time. The \cref{lst:cnmp-just-query-training}, taken from the prediction during training, shows this time the normal queries $v_X [ i ]$ in the second part of the function. In the first argument, though, the observations are passed in a different way. These are also in the form of a vector with inputs, outputs, and task parameters concatenated in order. 
+
+In the model implemented, the observations are deprived of the last $d\_x$ columns of the input relative to their task parameters. Now the observations passed to the network correspond to the dimensionality of the first layer of the decoder designed.
+
+This allows conditioning the network simply with conditions that are parameterless. 
+
+
+%%%%%% Comparison %%%%%%
+\subsection{Comparison of the previous models}
+
+For the comparisons among models developed a brief extract of code is reported in \cref{lst:cnmp-comparison}. Using the \emph{numpy} library the real values are compared to the predicted ones. 
+
+Different metrics have been used, initially, the Mean Squared Error (MSE) is calculated. It measures the average squared difference between the actual ($real\_values$) and predicted values ($predicted\_Y$). It penalizes larger errors more severely due to the squaring operation. Since the errors produced were minimal, this is the metric chosen and reported in \cref{tab:CNMP3vs}.
+
+Subsequently, also the Mean Absolute Error (MAE) is computed at \emph{line 3}. It provides the average absolute difference between the actual and predicted values.
+
+Lastly, the Root Mean Squared Error (RMSE) is calculated on the basis of this last, since it is the square root of the Mean Absolute Error. These metrics were chosen being the most commonly used in regression analysis.
+
+\lstinputlisting[float,	language=Python, caption={Extract of code for comparison of models},label={lst:cnmp-comparison}]{listings/cnmp-comparison.txt}
+
+
+%%%%%% shifting TP in time with 1 condition %%%%%%
+\subsection{CNMP changing task in time with one conditioning point}
+In this part is present a possible implementation of the method proposed to shift the execution of a skill in time.
+
+For the sake of simplicity, the model used was the proposed CNMP without task parameters in the query. This does not imply that the method does not work with the other CNMP architectures analyzed. 
+
+The method is a mathematical way to feed the model with the right conditions, so it is possible to implement it on other networks for custom needs or for better performance.
+
+Implementations for the other architectures were also developed but, for simplicity and avoiding repetitions, only one will be explained. 
+
+As depicted in \cref{fig:tpshift}, the shift implemented is linear, and, given an observation, goes from one task parameter to the other. In \cref{lst:shift-tp-one-condition} a matrix of times, linearly changing task parameters and values is created. The values column is empty and will be filled later.
+
+Subsequently, the model is queried for every timestep, with the TP changing \emph{line 7}. 
+Finally, values predicted are inserted in the third column of the matrix for every time step at \emph{line 10}. 
+
+At the end, the resulting matrix will have all the data required. The plotting process visible on the right in \cref{fig:tpshift} will not be described here cause it is not necessary, but it was achieved using the \emph{Matplotlib} python library.  
+
+\lstinputlisting[float,	language=Python, caption={Extract of code for task shift with one observation},label={lst:shift-tp-one-condition}]{listings/shift-tp-one-condition.txt}
+
+
+%%%%%% shifting TP in time with multiple conditions  %%%%%%
+\subsection{CNMP changing task in time with multiple conditioning points}
+Below are proposed key parts of the final implementation for changing multiple times tasks in the same prediction time span.
+
+There are two key functions for achieving this result, the first is dedicated to building a matrix of data and the second one has as duty the use of this matrix to generate the predictions. 
+
+\paragraph{Building the matrix of timestep and observation for the timesteps. }
+The first key part is building a matrix that defines how the conditioning point will move in time and task space. This function is responsible for the results visible in the \cref{fig:tp-multiple-shift} and \cref{fig:tp-multiple-shift-condition}. 
+
+The function receives the observation list, with time as the first dimension, and returns the matrix with the observation for every timestep. Initially, the observations are sorted based on their time. The matrix is defined with queries of time (in the first position) concatenated to only one observation at that specific time. The matrix has dimensions $1+d\_X+d\_Y$, recalling that $d\_X$ includes the $d\_TP$ dimensionality of the task parameters. 
+
+Subsequently, the action will be repeated for every timestep. The loop keeps also track of the current and next observation in time, starting from the first. Some optimizations were performed not to calculate the same couples of closest points every time but won't be reported here for shortness. 
+
+If the current time is less than the observation time or this is the last observation, the function fills the current timestep of the matrix with the current observation. This takes care of the initial and final periods.
+
+If the timestep is in between two observations, the core part happens. The code implementation should check the whole predictions in time of the two observations, finding the two closest points. In the code extract, this part is visible in \cref{lst:shift-tp-more-conditions-build-matrixPT1}. This operation can be done once per couple of observations. 
+
+\lstinputlisting[float,	language=Python, firstline=6, lastline=9, caption={Extract of code for task shift with multiple observations, couple of observation finding},label={lst:shift-tp-more-conditions-build-matrixPT1}]{listings/shift-tp-more-conditions-build-matrix.txt}
+
+Once the closest couple of points is found in the trajectories, the points among them will not bias the task parameter change. For this reason, the start and end obtained will be interpolated in the time period of the transition. The final interpolated point obtained for this timestep is the desired observation with the non-biasing position and the mixed TP. In the \cref{lst:shift-tp-more-conditions-build-matrixPT2}, it is possible to see how in the current timestep the interpolation is executed among the two previously defined points. The resulting conditioning point is inserted in the matrix after the current timestep.
+
+\lstinputlisting[float,	language=Python, firstline=14, lastline=17, caption={Extract of code for task shift with multiple observations, couple of observation interpolating},label={lst:shift-tp-more-conditions-build-matrixPT2}]{listings/shift-tp-more-conditions-build-matrix.txt}
+
+The plottings of the matrix depicted in \cref{fig:tp-multiple-shift} and \cref{fig:tp-multiple-shift-condition} are achieved again with the \emph{Matplotlib} python library. The relative code will not be reported as well because it's not necessary for the sake of the result but only to visualize the correctness of the procedure.
+
+
+\paragraph{Building the function to query the network with the matrix obtained. }
+The second key part uses the matrix built before to query the network at every timestep with the changing observations. It is responsible for the final results obtained and visualized in \cref{fig:tp-multiple-shift-results}.
+
+This part, instead of passing to the network the array of multiple observations, passes the computed array with a single observation of every time step. In the \cref{lst:shift-tp-more-conditions-function}, it is possible to see how the model is fed with the observation at $time\_index$ and the current time. The matrix previously built is split in the array $matirx\_time$  (first column of the matrix), and the matrix of observations for every time step $matrix\_observations$.
+
+\lstinputlisting[float,	language=Python, caption={Extract of code for task shift with multiple observations, using the matrix obtained},label={lst:shift-tp-more-conditions-function}]{listings/shift-tp-more-conditions-function.txt}
+
+The predicted output value is saved in an array and plotted, as in the results in \cref{fig:tp-multiple-shift-results}.
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{End-To-End Skill Concatenation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

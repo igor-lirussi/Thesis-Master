@@ -1,0 +1,11 @@
+mixed_tp=graph[0].copy() #first column time
+mixed_tp[:,1]=np.linspace(2,1,mixed_tp.shape[0]) #second column tp changing
+
+for index, el in enumerate(mixed_tp):
+    with torch.no_grad():
+        print("now time %f and TP %f"%(el[0], el[1]))
+        pred_y = model( torch.from_numpy(np.array([np.concatenate(([0.5],[el[1]],[0.6]))])) , 
+        torch.from_numpy(np.array([[el[0]]])) ).numpy()
+        print(pred_y[0][0]) #  value returned
+        mixed_tp[index,2]=pred_y[0][0] # fill 3rd column
+print(mixed_tp)

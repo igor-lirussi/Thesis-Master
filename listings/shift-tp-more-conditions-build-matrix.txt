@@ -1,0 +1,17 @@
+#in between two observations
+# should check the WHOLE time predictions of the two observations, find the two closest points
+# then interpolate
+print("\nFinding closest couple to set interpolation points to go from %.2f TP to %.2f TP"%(observations[curr_obs_num,1],observations[next_obs_num,1]))
+with torch.no_grad():
+pred_1ob = model( torch.from_numpy(np.array([observations[curr_obs_num,:]])) , torch.from_numpy(times_array.reshape(200,1)) ).numpy()
+pred_2ob = model( torch.from_numpy(np.array([observations[next_obs_num,:]])) , torch.from_numpy(times_array.reshape(200,1)) ).numpy()
+diff = abs(pred_1ob[:,0]-pred_2ob[:,0]) #computes the couples distances on the y predicted
+index_min=np.argmin(diff) # saves the closest couple
+print("First of couple (start param) X %.2f TP %.2f Y %.2f "%(times_array[index_min], observations[curr_obs_num,1], pred_1ob[index_min,0] ))
+print("Second of couple  (end param) X %.2f TP %.2f Y %.2f "%(times_array[index_min], observations[next_obs_num,1], pred_2ob[index_min,0] ))
+start_param=[ times_array[index_min] , observations[curr_obs_num,1] , pred_1ob[index_min,0] ]
+end_param = [ times_array[index_min] , observations[next_obs_num,1] , pred_2ob[index_min,0] ]
+# calculate the fraction of interpolation
+fraction = (curr_time - observations[curr_obs_num,0]) / (observations[next_obs_num,0] - observations[curr_obs_num,0])
+#interpolated_param = start_param + fraction * (end_param - start_param)
+observation_timestep_matrix[time_index,1+i]=start_param[i]+ fraction * (end_param[i] - start_param[i])

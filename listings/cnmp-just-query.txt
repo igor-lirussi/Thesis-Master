@@ -1,0 +1,8 @@
+        # Encoder takes observations which are (X,Y) tuples and produces latent representations for each of them
+        self.encoder = nn.Sequential(
+        nn.Linear(d_x-d_TP+d_y,128),nn.ReLU(), #edited here to pass only x without tp
+        nn.Linear(128,128),nn.ReLU(),
+        nn.Linear(128,128)
+        )
+
+predicted_Y,predicted_std = predict_model(np.array([np.concatenate((np.delete(v_X[i,0], -d_TP, axis=0),v_Y[i,0]))]), v_X[i], plot= False) #edited here to pass only with first element and not tp

@@ -1,0 +1,8 @@
+        #Decoder takes the (r_mean, target_t) tuple and produces mean and std values for each dimension of the output
+        self.decoder = nn.Sequential(
+        nn.Linear(128+d_x-d_TP,128),nn.ReLU(), #edited here to pass only x without tp
+        nn.Linear(128,128),nn.ReLU(),
+        nn.Linear(128,2*d_y)
+        )
+
+predicted_Y,predicted_std = predict_model(np.array([np.concatenate((v_X[i,0],v_Y[i,0]))]), np.delete(v_X[i], -d_TP, axis=1), plot= False) #edited here to pass v_X only with first element and not tp

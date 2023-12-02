@@ -1,0 +1,33 @@
+import torch
+class CNMP(nn.Module):
+    
+    def __init__(self):
+        super(CNMP, self).__init__()
+        
+        # Encoder takes observations which are (X,Y) tuples and produces latent representations for each of them
+        self.encoder = nn.Sequential(
+        nn.Linear(d_x+d_y,128),nn.ReLU(),
+        nn.Linear(128,128),nn.ReLU(),
+        nn.Linear(128,128)
+        )
+        
+        #Decoder takes the (r_mean, target_t) tuple and produces mean and std values for each dimension of the output
+        self.decoder = nn.Sequential(
+        nn.Linear(128+d_x,128),nn.ReLU(),
+        nn.Linear(128,128),nn.ReLU(),
+        nn.Linear(128,2*d_y)
+        )
+        
+    def forward(self,observations,target_t):
+        r = self.encoder(observations) # Generating observations
+        r_mean = torch.mean(r,dim=0) # Taking mean and generating the general representation
+        r_mean = r_mean.repeat(target_t.shape[0],1) # Duplicating general representation for every target_t
+        concat = torch.cat((r_mean,target_t),dim=-1) # Concatenating each target_t with general representation
+        output = self.decoder(concat) # Producing mean and std values for each target_t
+        return output
+
+def log_prob_loss(output, target):
+    mean, sigma = output.chunk(2, dim = -1)
+    sigma = F.softplus(sigma)
+    dist = D.Independent(D.Normal(loc=mean, scale=sigma), 1)
+    return -torch.mean(dist.log_prob(target))

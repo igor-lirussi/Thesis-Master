@@ -1,0 +1,4 @@
+for time_index, time in enumerate(matrix_times):
+    prediction = model( torch.from_numpy(np.array([ matrix_observations[time_index] ])) , torch.from_numpy(np.array([[time]])) ).numpy()
+    predicted_Y[time_index] = prediction[:,:d_y]
+    predicted_std[time_index] = np.log(1+np.exp(prediction[:,d_y:]))

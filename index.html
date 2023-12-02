@@ -513,6 +513,9 @@ SL</p>
 LfD</p>
 <p>Learning from Demonstration</p>
 <p><br />
+ML</p>
+<p>Machine Learning</p>
+<p><br />
 DL</p>
 <p>Deep Learnign</p>
 <p><br />
@@ -523,7 +526,10 @@ HMM</p>
 <p>Hidden Markov Model</p>
 <p><br />
 MSE</p>
-<p>Mean Square Error</p>
+<p>Mean Squared Error</p>
+<p><br />
+ReLU</p>
+<p>Rectified Linear Unit</p>
 <p><br />
 GP</p>
 <p>Gaussian Processes</p>
@@ -1258,17 +1264,23 @@ Force Torque Sensor</h2>
 <p>Between the UR10 robot and the 3F Finger Gripper, an FT 300-S Force Torque
 Sensor [Fig. <a href="#foofig:ft-sensor" data-reference-type="ref"
 data-reference="fig:ft-sensor">3.4</a>] was mounted to increase precision and
-repeatability. The sensor offers high-resolution real-time measurements
-regarding the force and torque applied to the three space dimensions and
-improves the capabilities of the robot, making it able to detect the payload
-carried or the amount of pressure between the object carried and the static
-environment (i.e., the table).</p>
+repeatability.</p>
+<p>The sensor offers high-resolution real-time measurements regarding the
+force and torque applied to the three space dimensions and improves the
+capabilities of the robot. This device makes the UR10 able to detect the
+payload carried or the amount of pressure between the object or gripper and
+the static environment (i.e., the table).</p>
 <p>The device was built for compatibility with the Universal Robot series and
 has an IP65 rating. It also enables precise object placement such as
 alignment, indexing, and insertion <span class="citation"
-data-cites="url:ftsensor">(Robotiq 2023b)</span>. The FT 300-S is commonly
-used in tasks where force and torque sensing are critical, but we used it to
-increase the reliability of the payload measurements.</p>
+data-cites="url:ftsensor">(Robotiq 2023b)</span>.</p>
+<p>It exposes the six readings of the forces and torques in the three axes
+through a port opened in the computer connected to it. In out setup it has
+been connected straight to the UR10 computer, allowing any user to retrieve
+the necessary data.</p>
+<p>The FT 300-S is commonly used in tasks where force and torque sensing are
+critical, but we used it to increase the reliability of the payload
+measurements and the safety of the operations.</p>
 <figure id="foofig:ft-sensor">
 <img src="Images/ft_sensor.png" />
 <figcaption>FT 300-S Force Torque Sensor</figcaption>
@@ -2344,10 +2356,10 @@ time step. In the <a href="#foolst:shift-tp-more-conditions-function"
 data-reference-type="ref"
 data-reference="lst:shift-tp-more-conditions-function">[lst:shift-tp-more-conditions-function]</a>,
 it is possible to see how the model is fed with the observation at <span
-class="math inline">\(time\_index\)</span> and the current time. The matrix
-previously built is split in the array <span
-class="math inline">\(matirx\_time\)</span> (first column of the matrix), and
-the matrix of observations for every time step <span
+class="math inline">\(time\_index\)</span> and the current <span
+class="math inline">\(time\)</span>. The matrix previously built is split in
+the array <span class="math inline">\(matirx\_time\)</span> (first column of
+the matrix), and the matrix of observations for every time step <span
 class="math inline">\(matrix\_observations\)</span>.</p>
 <div class="sourceCode" id="foolst:shift-tp-more-conditions-function"
 data-float="" data-language="Python"
@@ -2373,15 +2385,193 @@ End-To-End Skill Concatenation</h2>
 <section id="foochap:validation" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Validation
 and Testing</h1>
+<p>This chapter presents the validation and testing of the methods that were
+before designed and then implemented in this research. The accuracy of the
+results has already been discussed with the error comparison tables in the <a
+href="#foochap:design" data-reference-type="ref"
+data-reference="chap:design">4</a>. To demonstrate the applicability of this
+research, instead, the methods are tested on real-life robots, <a
+href="#foochap:platforms" data-reference-type="ref"
+data-reference="chap:platforms">3</a>.</p>
+<p>To achieve these results, some minor adaptations had to be made. For
+example, the number of input or output dimensions of the network changed to
+accommodate the joint space of the robots since the monodimensional example
+given in the design is not enough.</p>
+<p>Furthermore, the time scale for the movement primitives has been changed to
+a longer time period. The trajectories generated if in cartesian space, were
+passed to an inverse kinematic algorithm to retrieve the joint space.</p>
+<p>Overall, these variations don&#x2019;t impact though what has been discussed and
+implemented before.</p>
 <section id="foopartial-skill-combination-2" class="level2" data-number="6.1">
 <h2 data-number="6.1"><span class="header-section-number">6.1</span> Partial
 Skill Combination</h2>
-<p>Results with the real robots are shown below.</p>
+<p>To test the capabilities of the method developed, the robot selected is the
+UR10. It is worth noting that the research is not designed specifically for
+this robot and can be applied to any robot with different specifications.</p>
+<p>The UR10 robot in the setup described in the <a href="#foochap:platforms"
+data-reference-type="ref" data-reference="chap:platforms">3</a> has two main
+parts: the robot arm that executes the movements and the gripper that grasps
+the desired object.</p>
+<section id="foour10-robot-interface" class="level5" data-number="6.1.0.0.1">
+<h5 data-number="6.1.0.0.1"><span
+class="header-section-number">6.1.0.0.1</span> UR10 robot interface</h5>
+<p>For the sake of completeness, this paragraph briefly describes the Python
+interface developed to simplify the use of the robot in general and enable
+this experiment. This interface is available in a <a
+href="https://github.com/igor-lirussi/UR10_robot_interface">GitHub public
+repository</a> <span class="citation" data-cites="url:UR10repo">(Igor Lirussi
+2023c)</span>. The interface acts as a bridge between the user commands and
+the ROS topics exposed by the robot&#x2019;s computer.</p>
+<p>It implements a series of ROS Subscribers to retrieve the desired data
+published by the robot and save it into buffer variables. Some functions are
+present to get the variables about the current status of the robot, this makes
+the read operations fast and not blocking.</p>
+<p>Also, some ROS Publisher nodes are implemented to send commands and
+information to the robot. These nodes publish data to the robot&#x2019;s defined
+topics in order to move the device or set the desired settings. Functions are
+also present here to simplify the calls and send the ROS messages through the
+nodes implemented.</p>
+</section>
+<section id="foof-gripper-interface" class="level5" data-number="6.1.0.0.2">
+<h5 data-number="6.1.0.0.2"><span
+class="header-section-number">6.1.0.0.2</span> 3F Gripper interface</h5>
+<p>Another codebase repository used in this experiment has been developed to
+easily interface the gripper to the user and ease its operation.</p>
+<p>This interface is available in a <a
+href="https://github.com/igor-lirussi/Gripper3F_interface">GitHub public
+repository</a> <span class="citation" data-cites="url:3FGripperrepo">(Igor
+Lirussi 2023b)</span>. The code has been developed separately since the
+gripper is a different entity from the robot and has its own ROS services and
+IP address. The interface also acts as a connecting link between the Python
+commands and the ROS services made available by the gripper integrated
+circuit.</p>
+<p>In this case, since the gripper doesn&#x2019;t offer topics but services (see <a
+href="#foochap:platforms" data-reference-type="ref"
+data-reference="chap:platforms">3</a>) some ServiceProxies are implemented to
+simplify the operation of this last. The interface offers functions that ease
+the call of these services to open, close, set the aperture or force of the
+gripper, get the position, and so on.</p>
+</section>
+<section id="footrajectories-recorder-and-playback" class="level5"
+data-number="6.1.0.0.3">
+<h5 data-number="6.1.0.0.3"><span
+class="header-section-number">6.1.0.0.3</span> Trajectories recorder and
+playback</h5>
+<p>Finally, these two interfaces were used to build a code that allows
+recording the trajectory in time of the robot&#x2019;s joint positions. Furthermore,
+the trajectory recorded allows the recording of the cartesian position of the
+end effector and the gripper aperture.</p>
+<p>Moreover, for our experiment, also the code for playing back these
+trajectories has been written. This work allows the testing in real life of
+the trajectories generated by the CNMPs architectures developed before.</p>
+</section>
+<section id="footesting" class="level5" data-number="6.1.0.0.4">
+<h5 data-number="6.1.0.0.4"><span
+class="header-section-number">6.1.0.0.4</span> Testing</h5>
+<figure id="foofig:6Dteach">
+<img src="Images/6Dteach.jpg" />
+<figcaption> Some moments from learn by demonstration. On the left, action to
+overcome obstacles. On the right, action to pass under a tunnel. </figcaption>
+</figure>
+<p>The robot was initially used to record some trajectories. This is part of
+the initial teaching of the "learn by demonstration" process. The trajectories
+were recorded with the previous code repository developed.</p>
+<p>In <a href="#foofig:6Dteach" data-reference-type="ref"
+data-reference="fig:6Dteach">6.1</a>, it is possible to see two moments of
+this process. On the left image, the capture of an instant from the first
+action demonstration on how to overcome obstacles. In the right image, another
+action is taught on how to pass under a tunnel.</p>
+<figure id="foofig:6Dtrain">
+<img src="Images/6Dv.png" />
+<figcaption> The 6 dimensions of a recorded trajectory on a real robot and the
+resulting mixed trajectory in grey generated by the network. </figcaption>
+</figure>
+<p>The UR10 robot has 6 Degrees of Freedom (DoF), so the network input is
+expanded to 6 dimensions. The choice of joint space is motivated by not
+dealing later with the inverse kinematics to reproduce trajectories from
+cartesian space. The six dimensions, one for every joint, of the two
+trajectories recorded are visible in <a href="#foofig:6Dtrain"
+data-reference-type="ref" data-reference="fig:6Dtrain">6.2</a>.</p>
+<p>In the figure, the first action of passing over the obstacle is represented
+by the blue line in the graphs, it indicates the movement of every joint in
+time. Similarly, the action of passing through a tunnel is visible as the
+orange line for the same joints in time.</p>
+<p>After training the network with the two trajectories and obtaining a
+satisfactory result, the method proposed is applied. The output trajectory
+generated is visible in the grey line of every graph.</p>
+<p>It is worth noting that it is not a simple linear transition, but the
+network captures the non-linearity dependencies across the trajectories and
+interpolates them accordingly. This results in a mixture of skills that is
+coherent and maintains the properties of the actions.</p>
+<p>In the graph where the blue joint executes two curves, it is possible to
+notice this behavior. The trajectory generated does not pass directly from one
+conditioning point to the other. The final trajectory keeps the properties of
+the first blue one, descending for a while and then mixing with the orange
+one.</p>
+<figure id="foofig:6Dresult">
+<img src="Images/6Dresult.jpg" />
+<figcaption> Some instants from the playback of the trajectory generated where
+the robot successfully completes the combination of the two actions.
+</figcaption>
+</figure>
+<p>Finally, the trajectory generated is reproduced with the playback code
+developed. The robot successfully combines the actions and brings the object
+to the final destination without colliding with the environment. Some moments
+of the executions are visible in the <a href="#foofig:6Dresult"
+data-reference-type="ref" data-reference="fig:6Dresult">6.3</a>. The robot
+initially overcomes the obstacles with the first part of the action taught,
+then proceeds to successfully pass through the tunnel, changing its position
+and orientation.</p>
+</section>
 </section>
 <section id="fooend-to-end-skill-concatenation-2" class="level2"
 data-number="6.2">
 <h2 data-number="6.2"><span class="header-section-number">6.2</span>
 End-To-End Skill Concatenation</h2>
+<p>TODO</p>
+<section id="foobaxter-robot-interface" class="level5"
+data-number="6.2.0.0.1">
+<h5 data-number="6.2.0.0.1"><span
+class="header-section-number">6.2.0.0.1</span> Baxter robot interface</h5>
+<p>Another repository implemented for the experiments in real life is the
+interface for the Baxter robot in Python 3. This work was driven by the need
+for Python 3 compatible functions since Baxter has an interface but it is only
+Python 2 and it&#x2019;s not compatible with the majority of ML frameworks nowadays.
+This interface is available in a <a
+href="https://github.com/igor-lirussi/baxter-python3">GitHub public
+repository</a> <span class="citation" data-cites="url:Baxterrepo">(Igor
+Lirussi 2023a)</span>.</p>
+<p>Baxter exposes a ROS system as well, with ROS topics and services. For this
+reason, the interface uses nodes and ServiceProxies to send messages or call
+actions in the robot. To speed up the reading process, there are buffer
+variables for the data that the robot publishes. This has been especially
+useful in the recording stage since it increased the resolution of the
+recordings from 10Hz to 100Hz.</p>
+<p>The robot exposes plenty of options, being designed for collaborative
+tasks. It has the possibility to set the joint position, to set the cartesian
+position of the end effector, and to retrieve these last ones. Moreover, it&#x2019;s
+possible to set and get the gripper position or the display image, or read the
+data from the infrared sensors and cameras in the hands.</p>
+<p>All these options are available in the Python 3 interface developed.
+Moreover, some examples are present of how to move the robot or control from
+keyboard, how to get the data from the sensors and cameras, and how to use the
+inverse kinematic services and the grippers.</p>
+</section>
+<section id="footrajectories-recorder-and-playback-1" class="level5"
+data-number="6.2.0.0.2">
+<h5 data-number="6.2.0.0.2"><span
+class="header-section-number">6.2.0.0.2</span> Trajectories recorder and
+playback</h5>
+<p>Lastly, the interface developed contains also the code to record the
+trajectories of the arms of the robot and play them back.</p>
+<p>The recorder waits for the pressing of a button and starts to save current
+time and the position of the joints at the frequency desired. Moreover, the
+recorder also saves the end effector cartesian position and orientation for
+later comparison.</p>
+<p>Finally, the gripper position and force read are saved as well in the data
+for every timestep. This is useful for manipulation tasks that require
+handling objects.</p>
+</section>
 </section>
 </section>
 <section id="foochap:conclusions" class="level1" data-number="7">
@@ -2482,6 +2672,21 @@ Hu, Hengyuan, Denis Yarats, Qucheng Gong, Yuandong Tian, e Mike Lewis. 2019.
 <span>&#xAB;Hierarchical decision making by generating and following natural
 language instructions&#xBB;</span>. <em>Advances in neural information processing
 systems</em> 32.
+</div>
+<div id="fooref-url:Baxterrepo" class="csl-entry" role="listitem">
+Igor Lirussi. 2023a. <span>&#xAB;Baxter Python interface&#xBB;</span>. <a
+href="https://github.com/igor-lirussi/baxter-python3"
+class="uri">https://github.com/igor-lirussi/baxter-python3</a>.
+</div>
+<div id="fooref-url:3FGripperrepo" class="csl-entry" role="listitem">
+&#x2014;&#x2014;&#x2014;. 2023b. <span>&#xAB;Three Finger Gripper Python interface&#xBB;</span>. <a
+href="https://github.com/igor-lirussi/Gripper3F_interface"
+class="uri">https://github.com/igor-lirussi/Gripper3F_interface</a>.
+</div>
+<div id="fooref-url:UR10repo" class="csl-entry" role="listitem">
+&#x2014;&#x2014;&#x2014;. 2023c. <span>&#xAB;UR10 Python interface&#xBB;</span>. <a
+href="https://github.com/igor-lirussi/UR10_robot_interface"
+class="uri">https://github.com/igor-lirussi/UR10_robot_interface</a>.
 </div>
 <div id="fooref-ijspeert2002learning" class="csl-entry" role="listitem">
 Ijspeert, Auke, Jun Nakanishi, e Stefan Schaal. 2002. <span>&#xAB;Learning

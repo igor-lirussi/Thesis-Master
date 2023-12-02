@@ -19,7 +19,7 @@
 
         <meta name="generator" content="pandoc-uikit" />
                 <meta name="author" content="Lirussi Igor" />
-                        <meta name="date" content="2023-12-01" />
+                        <meta name="date" content="2023-12-02" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
                 <style type="text/css">q { quotes: "&#x201C;" "&#x201D;" "&#x2018;" "&#x2019;"; }</style>
@@ -102,7 +102,7 @@
                         <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
                     <h1 class="uk-heading">Master Thesis - Igor Lirussi</h1>
-                                        <h1 class="uk-heading" style="margin:0">2023-12-01</h1>
+                                        <h1 class="uk-heading" style="margin:0">2023-12-02</h1>
                                                             <p class="uk-text-large">Lirussi
 Igor</p>
                                     </div>
@@ -282,13 +282,80 @@ Igor</p>
                                                         href="#foochap:implementation"
                                                         id="footoc-chap:implementation"><span
                                                         class="toc-section-number">5</span>
-                                                        Implementation</a></li>
+                                                        Implementation</a>
+                                                        <ul>
+                                                        <li><a
+                                                        href="#foopartial-skill-combination-1"
+                                                        id="footoc-partial-skill-combination-1"><span
+                                                        class="toc-section-number">5.1</span>
+                                                        Partial Skill
+                                                        Combination</a>
+                                                        <ul>
+                                                        <li><a
+                                                        href="#foocnmp-model-with-task-parameter-only-in-condition-1"
+                                                        id="footoc-cnmp-model-with-task-parameter-only-in-condition-1"><span
+                                                        class="toc-section-number">5.1.1</span>
+                                                        CNMP model with
+                                                        task-parameter only in
+                                                        condition</a></li>
+                                                        <li><a
+                                                        href="#foocnmp-model-with-task-parameter-only-in-query-1"
+                                                        id="footoc-cnmp-model-with-task-parameter-only-in-query-1"><span
+                                                        class="toc-section-number">5.1.2</span>
+                                                        CNMP model with
+                                                        task-parameter only in
+                                                        query</a></li>
+                                                        <li><a
+                                                        href="#foocomparison-of-the-previous-models-1"
+                                                        id="footoc-comparison-of-the-previous-models-1"><span
+                                                        class="toc-section-number">5.1.3</span>
+                                                        Comparison of the
+                                                        previous
+                                                        models</a></li>
+                                                        <li><a
+                                                        href="#foocnmp-changing-task-in-time-with-one-conditioning-point-1"
+                                                        id="footoc-cnmp-changing-task-in-time-with-one-conditioning-point-1"><span
+                                                        class="toc-section-number">5.1.4</span>
+                                                        CNMP changing task in
+                                                        time with one
+                                                        conditioning
+                                                        point</a></li>
+                                                        <li><a
+                                                        href="#foocnmp-changing-task-in-time-with-multiple-conditioning-points-1"
+                                                        id="footoc-cnmp-changing-task-in-time-with-multiple-conditioning-points-1"><span
+                                                        class="toc-section-number">5.1.5</span>
+                                                        CNMP changing task in
+                                                        time with multiple
+                                                        conditioning
+                                                        points</a></li>
+                                                        </ul></li>
+                                                        <li><a
+                                                        href="#fooend-to-end-skill-concatenation-1"
+                                                        id="footoc-end-to-end-skill-concatenation-1"><span
+                                                        class="toc-section-number">5.2</span>
+                                                        End-To-End Skill
+                                                        Concatenation</a></li>
+                                                        </ul></li>
                                                         <li><a
                                                         href="#foochap:validation"
                                                         id="footoc-chap:validation"><span
                                                         class="toc-section-number">6</span>
                                                         Validation and
-                                                        Testing</a></li>
+                                                        Testing</a>
+                                                        <ul>
+                                                        <li><a
+                                                        href="#foopartial-skill-combination-2"
+                                                        id="footoc-partial-skill-combination-2"><span
+                                                        class="toc-section-number">6.1</span>
+                                                        Partial Skill
+                                                        Combination</a></li>
+                                                        <li><a
+                                                        href="#fooend-to-end-skill-concatenation-2"
+                                                        id="footoc-end-to-end-skill-concatenation-2"><span
+                                                        class="toc-section-number">6.2</span>
+                                                        End-To-End Skill
+                                                        Concatenation</a></li>
+                                                        </ul></li>
                                                         <li><a
                                                         href="#foochap:conclusions"
                                                         id="footoc-chap:conclusions"><span
@@ -973,10 +1040,11 @@ standard deviation.</p>
 <p>The formulation of the encoding of each observation is: <span
 class="math display">\[r_i = E_\phi(x_i,y_i), \quad \forall(x_i,y_i) \in
 O\]</span> and the following commutative operation between the encodings to
-create a single one: <span class="math display">\[r = r_1 \oplus r_2 \oplus
-... \oplus r_i,\]</span> The commutative operation expressed by <span
-class="math inline">\(\oplus\)</span>, can be summation, average, product, and
-so on.</p>
+create a single one: <span
+class="math display">\[\label{eq:commutative-operation}
+    r = r_1 \oplus r_2 \oplus ... \oplus r_i,\]</span> The commutative
+operation expressed by <span class="math inline">\(\oplus\)</span>, can be
+summation, average, product, and so on.</p>
 <p>The vector generated is concatenated with the target variables. The merged
 representation is passed to the decoder to obtain the output as: <span
 class="math display">\[\phi_j = Q_\theta(x_j, r), \quad \forall x_j \in
@@ -1410,7 +1478,7 @@ part of the trajectory is generated with the left-most condition (time 0,3).
 Subsequently, the second part is generated using a conditioning point at the
 end of the left part plus the desired one. These two conditioning points will
 likely not be on the same trajectory generated: let&#x2019;s recall the robot arms
-generally have 6 or 7 DoF <a href="#foochap:platforms"
+generally have 6 or 7 DoF, <a href="#foochap:platforms"
 data-reference-type="ref" data-reference="chap:platforms">3</a>, and even the
 cartesian space has three dimensions plus the 4D quaternion for the
 orientation, so the probability of trajectories intersecting in spaces of at
@@ -1868,23 +1936,453 @@ End-To-End Skill Concatenation</h2>
 <section id="foochap:implementation" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span>
 Implementation</h1>
-<p>Write implementation here.</p>
-<div class="sourceCode" id="foolst:pieceofcode" data-float=""
-data-language="Java" data-caption="A piece of code"
-label="lst:pieceofcode"><pre class="sourceCode java"><code class="sourceCode java"><span id="foolst:pieceofcode-1"><a href="#foolst:pieceofcode-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> HelloWorld <span class="op">{</span></span>
-<span id="foolst:pieceofcode-2"><a href="#foolst:pieceofcode-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
-<span id="foolst:pieceofcode-3"><a href="#foolst:pieceofcode-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Prints &quot;Hello, World&quot; to the terminal window.</span></span>
-<span id="foolst:pieceofcode-4"><a href="#foolst:pieceofcode-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">&quot;Hello, World&quot;</span><span class="op">);</span></span>
-<span id="foolst:pieceofcode-5"><a href="#foolst:pieceofcode-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="foolst:pieceofcode-6"><a href="#foolst:pieceofcode-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>You may need to reference listings in your thesis. In this case, you are
-encouraged to make them <em>floating</em>, and reference them by means of
-labels. For instance, in , we describe an hello world program in Java.</p>
+<p>This chapter gives a more in-depth view of the implementation of the
+methods discussed before. This doesn&#x2019;t mean other implementations are not
+possible or the method designed can&#x2019;t be built in other programming languages
+and frameworks.</p>
+<p>The platforms and tools presented in the <a href="#foochap:platforms"
+data-reference-type="ref" data-reference="chap:platforms">3</a> are used.
+Python was chosen as a programming language for its ability to deal with data
+and machine learning but it can as well be used for robotics thanks to the
+"rospy" package.</p>
+<p>The most important passages in the code developed and only the key points
+of the solution implemented will be explained below. They can be used as a
+reference for clarification, for another implementation, or for further
+improvements.</p>
+<p>Following the structure of the <a href="#foochap:design"
+data-reference-type="ref" data-reference="chap:design">4</a>, this chapter is
+divided into two main subsections.</p>
+<p>The first subsection explains the implementation of the partial skill
+combination. The parts of this section follow the previous chapter; the first
+is relative to the implementation of the CNMP model with the task parameter
+only in condition, and the second is relative to the CNMP model with the
+task-parameter only in query. The third part is a comparison of all three
+models. Lastly, the last two parts will explain how CNMP changing task
+executed in time with one conditioning or multiple conditions are
+developed.</p>
+<p>The second subsection shows the implementation of the previously explained
+End-To-End Skill Concatenation method.</p>
+<p>Since the CNMP model has been used in both subsections, the structure is
+briefly reported in <a href="#foolst:cnmp" data-reference-type="ref"
+data-reference="lst:cnmp">[lst:cnmp]</a>. The encoder and the decoder networks
+are multilayer perceptions consisting of three fully connected layers with the
+non-linear ReLU activation function. The dimensionality is fixed to 128
+dimensions except for the first and last layers.</p>
+<p>The encoder&#x2019;s first layer has a dimensionality equal to the sum of the
+input and output ones, since the observations have both of them. It will
+output the latent representations to aggregate together with
+position-independent operations, as in equation <a
+href="#fooeq:commutative-operation" data-reference-type="ref"
+data-reference="eq:commutative-operation">[eq:commutative-operation]</a>.</p>
+<p>The first layer of the decoder has a dimensionality equal to 128 for the
+latent representation plus the input query desired to concatenate. The decoder
+outputs double the output dimensions since for each one is returned the mean
+and standard deviation.</p>
+<div class="sourceCode" id="foolst:cnmp" data-float="" data-language="Python"
+data-firstline="1" data-lastline="20" data-caption="CNMP model code"
+label="lst:cnmp"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-1"><a href="#foolst:cnmp-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="foolst:cnmp-2"><a href="#foolst:cnmp-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CNMP(nn.Module):</span>
+<span id="foolst:cnmp-3"><a href="#foolst:cnmp-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="foolst:cnmp-4"><a href="#foolst:cnmp-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="foolst:cnmp-5"><a href="#foolst:cnmp-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(CNMP, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="foolst:cnmp-6"><a href="#foolst:cnmp-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="foolst:cnmp-7"><a href="#foolst:cnmp-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Encoder takes observations which are (X,Y) tuples and produces latent representations for each of them</span></span>
+<span id="foolst:cnmp-8"><a href="#foolst:cnmp-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder <span class="op">=</span> nn.Sequential(</span>
+<span id="foolst:cnmp-9"><a href="#foolst:cnmp-9" aria-hidden="true" tabindex="-1"></a>        nn.Linear(d_x<span class="op">+</span>d_y,<span class="dv">128</span>),nn.ReLU(),</span>
+<span id="foolst:cnmp-10"><a href="#foolst:cnmp-10" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">128</span>),nn.ReLU(),</span>
+<span id="foolst:cnmp-11"><a href="#foolst:cnmp-11" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">128</span>)</span>
+<span id="foolst:cnmp-12"><a href="#foolst:cnmp-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="foolst:cnmp-13"><a href="#foolst:cnmp-13" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="foolst:cnmp-14"><a href="#foolst:cnmp-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">#Decoder takes the (r_mean, target_t) tuple and produces mean and std values for each dimension of the output</span></span>
+<span id="foolst:cnmp-15"><a href="#foolst:cnmp-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder <span class="op">=</span> nn.Sequential(</span>
+<span id="foolst:cnmp-16"><a href="#foolst:cnmp-16" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span><span class="op">+</span>d_x,<span class="dv">128</span>),nn.ReLU(),</span>
+<span id="foolst:cnmp-17"><a href="#foolst:cnmp-17" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">128</span>),nn.ReLU(),</span>
+<span id="foolst:cnmp-18"><a href="#foolst:cnmp-18" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">2</span><span class="op">*</span>d_y)</span>
+<span id="foolst:cnmp-19"><a href="#foolst:cnmp-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="foolst:cnmp-20"><a href="#foolst:cnmp-20" aria-hidden="true" tabindex="-1"></a>        </span></code></pre></div>
+<p>The forward function built in <a href="#foolst:cnmp-forward-function"
+data-reference-type="ref"
+data-reference="lst:cnmp-forward-function">[lst:cnmp-forward-function]</a>
+passes the observations provided to the encoder, then generates the mean of
+all the 128 latent representations created. For all the queries, the
+representation is concatenated to them and passed to the decoder. The decoder
+produces the mean and the standard deviation for each target queried.</p>
+<div class="sourceCode" id="foolst:cnmp-forward-function" data-float=""
+data-language="Python" data-firstline="21" data-lastline="27"
+data-caption="CNMP model forward function"
+label="lst:cnmp-forward-function"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-forward-function-1"><a href="#foolst:cnmp-forward-function-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>,observations,target_t):</span>
+<span id="foolst:cnmp-forward-function-2"><a href="#foolst:cnmp-forward-function-2" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> <span class="va">self</span>.encoder(observations) <span class="co"># Generating observations</span></span>
+<span id="foolst:cnmp-forward-function-3"><a href="#foolst:cnmp-forward-function-3" aria-hidden="true" tabindex="-1"></a>        r_mean <span class="op">=</span> torch.mean(r,dim<span class="op">=</span><span class="dv">0</span>) <span class="co"># Taking mean and generating the general representation</span></span>
+<span id="foolst:cnmp-forward-function-4"><a href="#foolst:cnmp-forward-function-4" aria-hidden="true" tabindex="-1"></a>        r_mean <span class="op">=</span> r_mean.repeat(target_t.shape[<span class="dv">0</span>],<span class="dv">1</span>) <span class="co"># Duplicating general representation for every target_t</span></span>
+<span id="foolst:cnmp-forward-function-5"><a href="#foolst:cnmp-forward-function-5" aria-hidden="true" tabindex="-1"></a>        concat <span class="op">=</span> torch.cat((r_mean,target_t),dim<span class="op">=-</span><span class="dv">1</span>) <span class="co"># Concatenating each target_t with general representation</span></span>
+<span id="foolst:cnmp-forward-function-6"><a href="#foolst:cnmp-forward-function-6" aria-hidden="true" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.decoder(concat) <span class="co"># Producing mean and std values for each target_t</span></span>
+<span id="foolst:cnmp-forward-function-7"><a href="#foolst:cnmp-forward-function-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> output</span></code></pre></div>
+<p>Lastly, the loss function implemented is visible in <a
+href="#foolst:cnmp-error-function" data-reference-type="ref"
+data-reference="lst:cnmp-error-function">[lst:cnmp-error-function]</a> is the
+implementation of the log probability loss explained in the <a
+href="#foochap:background" data-reference-type="ref"
+data-reference="chap:background">2</a>. The standard deviation values <span
+class="math inline">\(\sigma\)</span> ("sigma" in the code at <em>line 3</em>)
+are passed through the Softplus activation function. Softplus is a smooth
+approximation of the ReLU function and ensures that the standard deviation
+remains positive.</p>
+<p>The following line creates a PyTorch distribution object. It specifies that
+the distribution, with independent axes, is Normal with mean mean and standard
+deviation sigma.</p>
+<p>Finally, the negative log-likelihood of the target values given the
+distribution (dist) is computed. This is used for backpropagation in network
+training.</p>
+<div class="sourceCode" id="foolst:cnmp-error-function" data-float=""
+data-language="Python" data-firstline="29"
+data-caption="CNMP model loss function for trainig"
+label="lst:cnmp-error-function"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-error-function-1"><a href="#foolst:cnmp-error-function-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_prob_loss(output, target):</span>
+<span id="foolst:cnmp-error-function-2"><a href="#foolst:cnmp-error-function-2" aria-hidden="true" tabindex="-1"></a>    mean, sigma <span class="op">=</span> output.chunk(<span class="dv">2</span>, dim <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="foolst:cnmp-error-function-3"><a href="#foolst:cnmp-error-function-3" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> F.softplus(sigma)</span>
+<span id="foolst:cnmp-error-function-4"><a href="#foolst:cnmp-error-function-4" aria-hidden="true" tabindex="-1"></a>    dist <span class="op">=</span> D.Independent(D.Normal(loc<span class="op">=</span>mean, scale<span class="op">=</span>sigma), <span class="dv">1</span>)</span>
+<span id="foolst:cnmp-error-function-5"><a href="#foolst:cnmp-error-function-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>torch.mean(dist.log_prob(target))</span></code></pre></div>
+<section id="foopartial-skill-combination-1" class="level2" data-number="5.1">
+<h2 data-number="5.1"><span class="header-section-number">5.1</span> Partial
+Skill Combination</h2>
+<p>In this section, the concept of task parameters was introduced. At the
+implementation level, it doesn&#x2019;t change the previously explained network
+structure since the dimension of the input will be increased, for example by
+one: <span class="math inline">\(d\_x = 2\)</span>, and the code will adapt
+the network structure.</p>
+<p>An example of input for a query will be:</p>
+<p><span class="math inline">\(tensor([[0.1357, 1.0]],
+dtype=torch.float64)\)</span>.</p>
+<p>Finally, an observation will be in the form of <span
+class="math inline">\([0.6],[1.0],[0.45]\)</span>, where the two dimensions of
+the input (note the <span class="math inline">\(1.0\)</span> as TP) are
+concatenated with the output desired.</p>
+<p>Another crucial passage in the <a href="#foochap:design"
+data-reference-type="ref" data-reference="chap:design">4</a> was to vary
+independently the two task parameters of the observations and the queries in
+order to build the visualization of their influence in <a
+href="#foofig:tp-influence" data-reference-type="ref"
+data-reference="fig:tp-influence">4.5</a>.</p>
+<p>To achieve this, a simple matrix of observations and queries was built,
+where each row contains observations and a time query to the network.
+Subsequently, the matrix was edited with constant task parameters in the
+observations, letting the TP vary in the queries, in order to build the plot.
+The opposite was implemented in order to build the plot where the task
+parameters vary in the observations and are constant in the queries.</p>
+<section id="foocnmp-model-with-task-parameter-only-in-condition-1"
+class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1"><span class="header-section-number">5.1.1</span> CNMP
+model with task-parameter only in condition</h3>
+<p>In this section, a new architecture is implemented, as proposed in <a
+href="#foochap:design" data-reference-type="ref"
+data-reference="chap:design">4</a>, based on the previously explained CNMP
+model.</p>
+<p>Among the edits in the code, one of the most important ones is the change
+of the model itself in the definition seen previously in <a
+href="#foolst:cnmp" data-reference-type="ref"
+data-reference="lst:cnmp">[lst:cnmp]</a>.</p>
+<div class="sourceCode" id="foolst:cnmp-just-condition" data-float=""
+data-language="Python" data-firstline="0" data-lastline="7"
+data-caption="CNMP model architecture change for TP only in conditions"
+label="lst:cnmp-just-condition"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-just-condition-1"><a href="#foolst:cnmp-just-condition-1" aria-hidden="true" tabindex="-1"></a>        <span class="co">#Decoder takes the (r_mean, target_t) tuple and produces mean and std values for each dimension of the output</span></span>
+<span id="foolst:cnmp-just-condition-2"><a href="#foolst:cnmp-just-condition-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder <span class="op">=</span> nn.Sequential(</span>
+<span id="foolst:cnmp-just-condition-3"><a href="#foolst:cnmp-just-condition-3" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span><span class="op">+</span>d_x<span class="op">-</span>d_TP,<span class="dv">128</span>),nn.ReLU(), <span class="co">#edited here to pass only x without tp</span></span>
+<span id="foolst:cnmp-just-condition-4"><a href="#foolst:cnmp-just-condition-4" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">128</span>),nn.ReLU(),</span>
+<span id="foolst:cnmp-just-condition-5"><a href="#foolst:cnmp-just-condition-5" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">2</span><span class="op">*</span>d_y)</span>
+<span id="foolst:cnmp-just-condition-6"><a href="#foolst:cnmp-just-condition-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="foolst:cnmp-just-condition-7"><a href="#foolst:cnmp-just-condition-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="foolst:cnmp-just-condition-8"><a href="#foolst:cnmp-just-condition-8" aria-hidden="true" tabindex="-1"></a>predicted_Y,predicted_std <span class="op">=</span> predict_model(np.array([np.concatenate((v_X[i,<span class="dv">0</span>],v_Y[i,<span class="dv">0</span>]))]), np.delete(v_X[i], <span class="op">-</span>d_TP, axis<span class="op">=</span><span class="dv">1</span>), plot<span class="op">=</span> <span class="va">False</span>) <span class="co">#edited here to pass v_X only with first element and not tp</span></span></code></pre></div>
+<p>As is visible in the <a href="#foolst:cnmp-just-condition"
+data-reference-type="ref"
+data-reference="lst:cnmp-just-condition">[lst:cnmp-just-condition]</a>, while
+the encoder stays the same, the decoder has input dimensions reduced. The
+subtraction is at <em>line 3</em>, after the concatenation of the latent
+representation&#x2019;s 128 dimensions and the <span
+class="math inline">\(d\_x\)</span> input dimensions, where <span
+class="math inline">\(d\_TP\)</span> is the number of dimensions of the task
+parameters.</p>
+<div class="sourceCode" id="foolst:cnmp-just-condition-training" data-float=""
+data-language="Python" data-firstline="8"
+data-caption="CNMP training code change for TP only in conditions"
+label="lst:cnmp-just-condition-training"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-just-condition-training-1"><a href="#foolst:cnmp-just-condition-training-1" aria-hidden="true" tabindex="-1"></a>predicted_Y,predicted_std <span class="op">=</span> predict_model(np.array([np.concatenate((v_X[i,<span class="dv">0</span>],v_Y[i,<span class="dv">0</span>]))]), np.delete(v_X[i], <span class="op">-</span>d_TP, axis<span class="op">=</span><span class="dv">1</span>), plot<span class="op">=</span> <span class="va">False</span>) <span class="co">#edited here to pass v_X only with first element and not tp</span></span></code></pre></div>
+<p>Another fundamental change in the process is the input at the prediction
+time. The <a href="#foolst:cnmp-just-condition-training"
+data-reference-type="ref"
+data-reference="lst:cnmp-just-condition-training">[lst:cnmp-just-condition-training]</a>,
+taken from the prediction during training, shows the normal conditions in the
+first part of the function. In the second argument, the queries are passed.
+These are in the form of a matrix with inputs and task parameters in the
+columns, and the rows are the times.</p>
+<p>In the new version, it is possible to see how the matrix is deprived by the
+last <span class="math inline">\(d\_x\)</span> columns containing the task
+parameters. The input passed to the network corresponds indeed to the
+dimensionality of the decoder designed before in the model.</p>
+<p>This allows to query the network simply with an array of times <span
+class="math inline">\(t\)</span> desired.</p>
+</section>
+<section id="foocnmp-model-with-task-parameter-only-in-query-1" class="level3"
+data-number="5.1.2">
+<h3 data-number="5.1.2"><span class="header-section-number">5.1.2</span> CNMP
+model with task-parameter only in query</h3>
+<p>In this part, another new architecture is proposed based on the previously
+explained CNMP model, as the opposite of the one presented in the previous
+part.</p>
+<p>To maintain the comparison coherent, between all the code developed, the
+most important changes here presented will follow in parallel the previous
+part.</p>
+<p>One of the most important changes is again the model architecture itself,
+seen previously in <a href="#foolst:cnmp" data-reference-type="ref"
+data-reference="lst:cnmp">[lst:cnmp]</a>.</p>
+<div class="sourceCode" id="foolst:cnmp-just-query" data-float=""
+data-language="Python" data-firstline="0" data-lastline="7"
+data-caption="CNMP model architecture change for TP only in query"
+label="lst:cnmp-just-query"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-just-query-1"><a href="#foolst:cnmp-just-query-1" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Encoder takes observations which are (X,Y) tuples and produces latent representations for each of them</span></span>
+<span id="foolst:cnmp-just-query-2"><a href="#foolst:cnmp-just-query-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder <span class="op">=</span> nn.Sequential(</span>
+<span id="foolst:cnmp-just-query-3"><a href="#foolst:cnmp-just-query-3" aria-hidden="true" tabindex="-1"></a>        nn.Linear(d_x<span class="op">-</span>d_TP<span class="op">+</span>d_y,<span class="dv">128</span>),nn.ReLU(), <span class="co">#edited here to pass only x without tp</span></span>
+<span id="foolst:cnmp-just-query-4"><a href="#foolst:cnmp-just-query-4" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">128</span>),nn.ReLU(),</span>
+<span id="foolst:cnmp-just-query-5"><a href="#foolst:cnmp-just-query-5" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">128</span>,<span class="dv">128</span>)</span>
+<span id="foolst:cnmp-just-query-6"><a href="#foolst:cnmp-just-query-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="foolst:cnmp-just-query-7"><a href="#foolst:cnmp-just-query-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="foolst:cnmp-just-query-8"><a href="#foolst:cnmp-just-query-8" aria-hidden="true" tabindex="-1"></a>predicted_Y,predicted_std <span class="op">=</span> predict_model(np.array([np.concatenate((np.delete(v_X[i,<span class="dv">0</span>], <span class="op">-</span>d_TP, axis<span class="op">=</span><span class="dv">0</span>),v_Y[i,<span class="dv">0</span>]))]), v_X[i], plot<span class="op">=</span> <span class="va">False</span>) <span class="co">#edited here to pass only with first element and not tp</span></span></code></pre></div>
+<p>As possible to see in <a href="#foolst:cnmp-just-query"
+data-reference-type="ref"
+data-reference="lst:cnmp-just-query">[lst:cnmp-just-query]</a>, the decoder
+this time was untouched, but the encoder was modified to accommodate different
+dimensions in his input. The dimensionality of the first layer of the network
+was reduced by the number of task parameter dimensions. At <em>line 3</em>,
+the dimensions of the task parameter <span
+class="math inline">\(d\_TP\)</span> are subtracted from the dimensions of the
+observations <span class="math inline">\(d\_x+d\_y\)</span>.</p>
+<div class="sourceCode" id="foolst:cnmp-just-query-training" data-float=""
+data-language="Python" data-firstline="8"
+data-caption="CNMP training code change for TP only in query"
+label="lst:cnmp-just-query-training"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-just-query-training-1"><a href="#foolst:cnmp-just-query-training-1" aria-hidden="true" tabindex="-1"></a>predicted_Y,predicted_std <span class="op">=</span> predict_model(np.array([np.concatenate((np.delete(v_X[i,<span class="dv">0</span>], <span class="op">-</span>d_TP, axis<span class="op">=</span><span class="dv">0</span>),v_Y[i,<span class="dv">0</span>]))]), v_X[i], plot<span class="op">=</span> <span class="va">False</span>) <span class="co">#edited here to pass only with first element and not tp</span></span></code></pre></div>
+<p>Similarly to the previous architecture, another fundamental change in the
+process is the input at the prediction time. The <a
+href="#foolst:cnmp-just-query-training" data-reference-type="ref"
+data-reference="lst:cnmp-just-query-training">[lst:cnmp-just-query-training]</a>,
+taken from the prediction during training, shows this time the normal queries
+<span class="math inline">\(v_X [ i ]\)</span> in the second part of the
+function. In the first argument, though, the observations are passed in a
+different way. These are also in the form of a vector with inputs, outputs,
+and task parameters concatenated in order.</p>
+<p>In the model implemented, the observations are deprived of the last <span
+class="math inline">\(d\_x\)</span> columns of the input relative to their
+task parameters. Now the observations passed to the network correspond to the
+dimensionality of the first layer of the decoder designed.</p>
+<p>This allows conditioning the network simply with conditions that are
+parameterless.</p>
+</section>
+<section id="foocomparison-of-the-previous-models-1" class="level3"
+data-number="5.1.3">
+<h3 data-number="5.1.3"><span class="header-section-number">5.1.3</span>
+Comparison of the previous models</h3>
+<p>For the comparisons among models developed a brief extract of code is
+reported in <a href="#foolst:cnmp-comparison" data-reference-type="ref"
+data-reference="lst:cnmp-comparison">[lst:cnmp-comparison]</a>. Using the
+<em>numpy</em> library the real values are compared to the predicted ones.</p>
+<p>Different metrics have been used, initially, the Mean Squared Error (MSE)
+is calculated. It measures the average squared difference between the actual
+(<span class="math inline">\(real\_values\)</span>) and predicted values
+(<span class="math inline">\(predicted\_Y\)</span>). It penalizes larger
+errors more severely due to the squaring operation. Since the errors produced
+were minimal, this is the metric chosen and reported in <a
+href="#footab:CNMP3vs" data-reference-type="ref"
+data-reference="tab:CNMP3vs">[tab:CNMP3vs]</a>.</p>
+<p>Subsequently, also the Mean Absolute Error (MAE) is computed at <em>line
+3</em>. It provides the average absolute difference between the actual and
+predicted values.</p>
+<p>Lastly, the Root Mean Squared Error (RMSE) is calculated on the basis of
+this last, since it is the square root of the Mean Absolute Error. These
+metrics were chosen being the most commonly used in regression analysis.</p>
+<div class="sourceCode" id="foolst:cnmp-comparison" data-float=""
+data-language="Python" data-caption="Extract of code for comparison of models"
+label="lst:cnmp-comparison"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-comparison-1"><a href="#foolst:cnmp-comparison-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="foolst:cnmp-comparison-2"><a href="#foolst:cnmp-comparison-2" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> np.mean((real_values <span class="op">-</span> predicted_Y)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="foolst:cnmp-comparison-3"><a href="#foolst:cnmp-comparison-3" aria-hidden="true" tabindex="-1"></a>mae <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(real_values <span class="op">-</span> predicted_Y))</span>
+<span id="foolst:cnmp-comparison-4"><a href="#foolst:cnmp-comparison-4" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> np.sqrt(mse)</span></code></pre></div>
+</section>
+<section id="foocnmp-changing-task-in-time-with-one-conditioning-point-1"
+class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4"><span class="header-section-number">5.1.4</span> CNMP
+changing task in time with one conditioning point</h3>
+<p>In this part is present a possible implementation of the method proposed to
+shift the execution of a skill in time.</p>
+<p>For the sake of simplicity, the model used was the proposed CNMP without
+task parameters in the query. This does not imply that the method does not
+work with the other CNMP architectures analyzed.</p>
+<p>The method is a mathematical way to feed the model with the right
+conditions, so it is possible to implement it on other networks for custom
+needs or for better performance.</p>
+<p>Implementations for the other architectures were also developed but, for
+simplicity and avoiding repetitions, only one will be explained.</p>
+<p>As depicted in <a href="#foofig:tpshift" data-reference-type="ref"
+data-reference="fig:tpshift">4.11</a>, the shift implemented is linear, and,
+given an observation, goes from one task parameter to the other. In <a
+href="#foolst:shift-tp-one-condition" data-reference-type="ref"
+data-reference="lst:shift-tp-one-condition">[lst:shift-tp-one-condition]</a> a
+matrix of times, linearly changing task parameters and values is created. The
+values column is empty and will be filled later.</p>
+<p>Subsequently, the model is queried for every timestep, with the TP changing
+<em>line 7</em>. Finally, values predicted are inserted in the third column of
+the matrix for every time step at <em>line 10</em>.</p>
+<p>At the end, the resulting matrix will have all the data required. The
+plotting process visible on the right in <a href="#foofig:tpshift"
+data-reference-type="ref" data-reference="fig:tpshift">4.11</a> will not be
+described here cause it is not necessary, but it was achieved using the
+<em>Matplotlib</em> python library.</p>
+<div class="sourceCode" id="foolst:shift-tp-one-condition" data-float=""
+data-language="Python"
+data-caption="Extract of code for task shift with one observation"
+label="lst:shift-tp-one-condition"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:shift-tp-one-condition-1"><a href="#foolst:shift-tp-one-condition-1" aria-hidden="true" tabindex="-1"></a>mixed_tp<span class="op">=</span>graph[<span class="dv">0</span>].copy() <span class="co">#first column time</span></span>
+<span id="foolst:shift-tp-one-condition-2"><a href="#foolst:shift-tp-one-condition-2" aria-hidden="true" tabindex="-1"></a>mixed_tp[:,<span class="dv">1</span>]<span class="op">=</span>np.linspace(<span class="dv">2</span>,<span class="dv">1</span>,mixed_tp.shape[<span class="dv">0</span>]) <span class="co">#second column tp changing</span></span>
+<span id="foolst:shift-tp-one-condition-3"><a href="#foolst:shift-tp-one-condition-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="foolst:shift-tp-one-condition-4"><a href="#foolst:shift-tp-one-condition-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, el <span class="kw">in</span> <span class="bu">enumerate</span>(mixed_tp):</span>
+<span id="foolst:shift-tp-one-condition-5"><a href="#foolst:shift-tp-one-condition-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="foolst:shift-tp-one-condition-6"><a href="#foolst:shift-tp-one-condition-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;now time </span><span class="sc">%f</span><span class="st"> and TP </span><span class="sc">%f</span><span class="st">&quot;</span><span class="op">%</span>(el[<span class="dv">0</span>], el[<span class="dv">1</span>]))</span>
+<span id="foolst:shift-tp-one-condition-7"><a href="#foolst:shift-tp-one-condition-7" aria-hidden="true" tabindex="-1"></a>        pred_y <span class="op">=</span> model( torch.from_numpy(np.array([np.concatenate(([<span class="fl">0.5</span>],[el[<span class="dv">1</span>]],[<span class="fl">0.6</span>]))])) , </span>
+<span id="foolst:shift-tp-one-condition-8"><a href="#foolst:shift-tp-one-condition-8" aria-hidden="true" tabindex="-1"></a>        torch.from_numpy(np.array([[el[<span class="dv">0</span>]]])) ).numpy()</span>
+<span id="foolst:shift-tp-one-condition-9"><a href="#foolst:shift-tp-one-condition-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(pred_y[<span class="dv">0</span>][<span class="dv">0</span>]) <span class="co">#  value returned</span></span>
+<span id="foolst:shift-tp-one-condition-10"><a href="#foolst:shift-tp-one-condition-10" aria-hidden="true" tabindex="-1"></a>        mixed_tp[index,<span class="dv">2</span>]<span class="op">=</span>pred_y[<span class="dv">0</span>][<span class="dv">0</span>] <span class="co"># fill 3rd column</span></span>
+<span id="foolst:shift-tp-one-condition-11"><a href="#foolst:shift-tp-one-condition-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mixed_tp)</span></code></pre></div>
+</section>
+<section
+id="foocnmp-changing-task-in-time-with-multiple-conditioning-points-1"
+class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5"><span class="header-section-number">5.1.5</span> CNMP
+changing task in time with multiple conditioning points</h3>
+<p>Below are proposed key parts of the final implementation for changing
+multiple times tasks in the same prediction time span.</p>
+<p>There are two key functions for achieving this result, the first is
+dedicated to building a matrix of data and the second one has as duty the use
+of this matrix to generate the predictions.</p>
+<section
+id="foobuilding-the-matrix-of-timestep-and-observation-for-the-timesteps."
+class="level5" data-number="5.1.5.0.1">
+<h5 data-number="5.1.5.0.1"><span
+class="header-section-number">5.1.5.0.1</span> Building the matrix of timestep
+and observation for the timesteps. </h5>
+<p>The first key part is building a matrix that defines how the conditioning
+point will move in time and task space. This function is responsible for the
+results visible in the <a href="#foofig:tp-multiple-shift"
+data-reference-type="ref" data-reference="fig:tp-multiple-shift">4.14</a> and
+<a href="#foofig:tp-multiple-shift-condition" data-reference-type="ref"
+data-reference="fig:tp-multiple-shift-condition">4.15</a>.</p>
+<p>The function receives the observation list, with time as the first
+dimension, and returns the matrix with the observation for every timestep.
+Initially, the observations are sorted based on their time. The matrix is
+defined with queries of time (in the first position) concatenated to only one
+observation at that specific time. The matrix has dimensions <span
+class="math inline">\(1+d\_X+d\_Y\)</span>, recalling that <span
+class="math inline">\(d\_X\)</span> includes the <span
+class="math inline">\(d\_TP\)</span> dimensionality of the task
+parameters.</p>
+<p>Subsequently, the action will be repeated for every timestep. The loop
+keeps also track of the current and next observation in time, starting from
+the first. Some optimizations were performed not to calculate the same couples
+of closest points every time but won&#x2019;t be reported here for shortness.</p>
+<p>If the current time is less than the observation time or this is the last
+observation, the function fills the current timestep of the matrix with the
+current observation. This takes care of the initial and final periods.</p>
+<p>If the timestep is in between two observations, the core part happens. The
+code implementation should check the whole predictions in time of the two
+observations, finding the two closest points. In the code extract, this part
+is visible in <a href="#foolst:shift-tp-more-conditions-build-matrixPT1"
+data-reference-type="ref"
+data-reference="lst:shift-tp-more-conditions-build-matrixPT1">[lst:shift-tp-more-conditions-build-matrixPT1]</a>.
+This operation can be done once per couple of observations.</p>
+<div class="sourceCode" id="foolst:shift-tp-more-conditions-build-matrixPT1"
+data-float="" data-language="Python" data-firstline="6" data-lastline="9"
+data-caption="Extract of code for task shift with multiple observations, couple of observation finding"
+label="lst:shift-tp-more-conditions-build-matrixPT1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="foolst:shift-tp-more-conditions-build-matrixPT1-1"><a href="#foolst:shift-tp-more-conditions-build-matrixPT1-1" aria-hidden="true" tabindex="-1"></a>pred_1ob <span class="op">=</span> model( torch.from_numpy(np.array([observations[curr_obs_num,:]])) , torch.from_numpy(times_array.reshape(<span class="dv">200</span>,<span class="dv">1</span>)) ).numpy()</span>
+<span id="foolst:shift-tp-more-conditions-build-matrixPT1-2"><a href="#foolst:shift-tp-more-conditions-build-matrixPT1-2" aria-hidden="true" tabindex="-1"></a>pred_2ob <span class="op">=</span> model( torch.from_numpy(np.array([observations[next_obs_num,:]])) , torch.from_numpy(times_array.reshape(<span class="dv">200</span>,<span class="dv">1</span>)) ).numpy()</span>
+<span id="foolst:shift-tp-more-conditions-build-matrixPT1-3"><a href="#foolst:shift-tp-more-conditions-build-matrixPT1-3" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> <span class="bu">abs</span>(pred_1ob[:,<span class="dv">0</span>]<span class="op">-</span>pred_2ob[:,<span class="dv">0</span>]) <span class="co">#computes the couples distances on the y predicted</span></span>
+<span id="foolst:shift-tp-more-conditions-build-matrixPT1-4"><a href="#foolst:shift-tp-more-conditions-build-matrixPT1-4" aria-hidden="true" tabindex="-1"></a>index_min<span class="op">=</span>np.argmin(diff) <span class="co"># saves the closest couple</span></span></code></pre></div>
+<p>Once the closest couple of points is found in the trajectories, the points
+among them will not bias the task parameter change. For this reason, the start
+and end obtained will be interpolated in the time period of the transition.
+The final interpolated point obtained for this timestep is the desired
+observation with the non-biasing position and the mixed TP. In the <a
+href="#foolst:shift-tp-more-conditions-build-matrixPT2"
+data-reference-type="ref"
+data-reference="lst:shift-tp-more-conditions-build-matrixPT2">[lst:shift-tp-more-conditions-build-matrixPT2]</a>,
+it is possible to see how in the current timestep the interpolation is
+executed among the two previously defined points. The resulting conditioning
+point is inserted in the matrix after the current timestep.</p>
+<div class="sourceCode" id="foolst:shift-tp-more-conditions-build-matrixPT2"
+data-float="" data-language="Python" data-firstline="14" data-lastline="17"
+data-caption="Extract of code for task shift with multiple observations, couple of observation interpolating"
+label="lst:shift-tp-more-conditions-build-matrixPT2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="foolst:shift-tp-more-conditions-build-matrixPT2-1"><a href="#foolst:shift-tp-more-conditions-build-matrixPT2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the fraction of interpolation</span></span>
+<span id="foolst:shift-tp-more-conditions-build-matrixPT2-2"><a href="#foolst:shift-tp-more-conditions-build-matrixPT2-2" aria-hidden="true" tabindex="-1"></a>fraction <span class="op">=</span> (curr_time <span class="op">-</span> observations[curr_obs_num,<span class="dv">0</span>]) <span class="op">/</span> (observations[next_obs_num,<span class="dv">0</span>] <span class="op">-</span> observations[curr_obs_num,<span class="dv">0</span>])</span>
+<span id="foolst:shift-tp-more-conditions-build-matrixPT2-3"><a href="#foolst:shift-tp-more-conditions-build-matrixPT2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#interpolated_param = start_param + fraction * (end_param - start_param)</span></span>
+<span id="foolst:shift-tp-more-conditions-build-matrixPT2-4"><a href="#foolst:shift-tp-more-conditions-build-matrixPT2-4" aria-hidden="true" tabindex="-1"></a>observation_timestep_matrix[time_index,<span class="dv">1</span><span class="op">+</span>i]<span class="op">=</span>start_param[i]<span class="op">+</span> fraction <span class="op">*</span> (end_param[i] <span class="op">-</span> start_param[i])</span></code></pre></div>
+<p>The plottings of the matrix depicted in <a href="#foofig:tp-multiple-shift"
+data-reference-type="ref" data-reference="fig:tp-multiple-shift">4.14</a> and
+<a href="#foofig:tp-multiple-shift-condition" data-reference-type="ref"
+data-reference="fig:tp-multiple-shift-condition">4.15</a> are achieved again
+with the <em>Matplotlib</em> python library. The relative code will not be
+reported as well because it&#x2019;s not necessary for the sake of the result but
+only to visualize the correctness of the procedure.</p>
+</section>
+<section
+id="foobuilding-the-function-to-query-the-network-with-the-matrix-obtained."
+class="level5" data-number="5.1.5.0.2">
+<h5 data-number="5.1.5.0.2"><span
+class="header-section-number">5.1.5.0.2</span> Building the function to query
+the network with the matrix obtained. </h5>
+<p>The second key part uses the matrix built before to query the network at
+every timestep with the changing observations. It is responsible for the final
+results obtained and visualized in <a href="#foofig:tp-multiple-shift-results"
+data-reference-type="ref"
+data-reference="fig:tp-multiple-shift-results">4.16</a>.</p>
+<p>This part, instead of passing to the network the array of multiple
+observations, passes the computed array with a single observation of every
+time step. In the <a href="#foolst:shift-tp-more-conditions-function"
+data-reference-type="ref"
+data-reference="lst:shift-tp-more-conditions-function">[lst:shift-tp-more-conditions-function]</a>,
+it is possible to see how the model is fed with the observation at <span
+class="math inline">\(time\_index\)</span> and the current time. The matrix
+previously built is split in the array <span
+class="math inline">\(matirx\_time\)</span> (first column of the matrix), and
+the matrix of observations for every time step <span
+class="math inline">\(matrix\_observations\)</span>.</p>
+<div class="sourceCode" id="foolst:shift-tp-more-conditions-function"
+data-float="" data-language="Python"
+data-caption="Extract of code for task shift with multiple observations, using the matrix obtained"
+label="lst:shift-tp-more-conditions-function"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="foolst:shift-tp-more-conditions-function-1"><a href="#foolst:shift-tp-more-conditions-function-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> time_index, time <span class="kw">in</span> <span class="bu">enumerate</span>(matrix_times):</span>
+<span id="foolst:shift-tp-more-conditions-function-2"><a href="#foolst:shift-tp-more-conditions-function-2" aria-hidden="true" tabindex="-1"></a>    prediction <span class="op">=</span> model( torch.from_numpy(np.array([ matrix_observations[time_index] ])) , torch.from_numpy(np.array([[time]])) ).numpy()</span>
+<span id="foolst:shift-tp-more-conditions-function-3"><a href="#foolst:shift-tp-more-conditions-function-3" aria-hidden="true" tabindex="-1"></a>    predicted_Y[time_index] <span class="op">=</span> prediction[:,:d_y]</span>
+<span id="foolst:shift-tp-more-conditions-function-4"><a href="#foolst:shift-tp-more-conditions-function-4" aria-hidden="true" tabindex="-1"></a>    predicted_std[time_index] <span class="op">=</span> np.log(<span class="dv">1</span><span class="op">+</span>np.exp(prediction[:,d_y:]))</span></code></pre></div>
+<p>The predicted output value is saved in an array and plotted, as in the
+results in <a href="#foofig:tp-multiple-shift-results"
+data-reference-type="ref"
+data-reference="fig:tp-multiple-shift-results">4.16</a>.</p>
+</section>
+</section>
+</section>
+<section id="fooend-to-end-skill-concatenation-1" class="level2"
+data-number="5.2">
+<h2 data-number="5.2"><span class="header-section-number">5.2</span>
+End-To-End Skill Concatenation</h2>
+</section>
 </section>
 <section id="foochap:validation" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Validation
 and Testing</h1>
-<p>Result validation and testing on real-life robots here</p>
+<section id="foopartial-skill-combination-2" class="level2" data-number="6.1">
+<h2 data-number="6.1"><span class="header-section-number">6.1</span> Partial
+Skill Combination</h2>
+<p>Results with the real robots are shown below.</p>
+</section>
+<section id="fooend-to-end-skill-concatenation-2" class="level2"
+data-number="6.2">
+<h2 data-number="6.2"><span class="header-section-number">6.2</span>
+End-To-End Skill Concatenation</h2>
+</section>
 </section>
 <section id="foochap:conclusions" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span>

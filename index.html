@@ -19,7 +19,7 @@
 
         <meta name="generator" content="pandoc-uikit" />
                 <meta name="author" content="Lirussi Igor" />
-                        <meta name="date" content="2023-12-02" />
+                        <meta name="date" content="2023-12-03" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
                 <style type="text/css">q { quotes: "&#x201C;" "&#x201D;" "&#x2018;" "&#x2019;"; }</style>
@@ -102,7 +102,7 @@
                         <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
                     <h1 class="uk-heading">Master Thesis - Igor Lirussi</h1>
-                                        <h1 class="uk-heading" style="margin:0">2023-12-02</h1>
+                                        <h1 class="uk-heading" style="margin:0">2023-12-03</h1>
                                                             <p class="uk-text-large">Lirussi
 Igor</p>
                                     </div>
@@ -2430,7 +2430,7 @@ interface developed to simplify the use of the robot in general and enable
 this experiment. This interface is available in a <a
 href="https://github.com/igor-lirussi/UR10_robot_interface">GitHub public
 repository</a> <span class="citation" data-cites="url:UR10repo">(Igor Lirussi
-2023c)</span>. The interface acts as a bridge between the user commands and
+2023d)</span>. The interface acts as a bridge between the user commands and
 the ROS topics exposed by the robot&#x2019;s computer.</p>
 <p>It implements a series of ROS Subscribers to retrieve the desired data
 published by the robot and save it into buffer variables. Some functions are
@@ -2450,7 +2450,7 @@ easily interface the gripper to the user and ease its operation.</p>
 <p>This interface is available in a <a
 href="https://github.com/igor-lirussi/Gripper3F_interface">GitHub public
 repository</a> <span class="citation" data-cites="url:3FGripperrepo">(Igor
-Lirussi 2023b)</span>. The code has been developed separately since the
+Lirussi 2023c)</span>. The code has been developed separately since the
 gripper is a different entity from the robot and has its own ROS services and
 IP address. The interface also acts as a connecting link between the Python
 commands and the ROS services made available by the gripper integrated
@@ -2538,19 +2538,38 @@ and orientation.</p>
 data-number="6.2">
 <h2 data-number="6.2"><span class="header-section-number">6.2</span>
 End-To-End Skill Concatenation</h2>
-<p>TODO</p>
+<p>For the End-To-End Skill Concatenation, the robot used for real-life
+testing is Baxter Robot, <a href="#foochap:platforms"
+data-reference-type="ref" data-reference="chap:platforms">3</a>. It is crucial
+to highlight that the research is not exclusive to this specific robot though.
+The platform has been used only to demonstrate the real applicability and
+efficacy of the work presented.</p>
+<p>Moreover, part of the choice to use this platform instead of UR10 is indeed
+to prove that the models and methods developed are platform-independent and
+can be implemented on any robot.</p>
+<p>Baxter robot has a complete set of interaction and Learning from
+Demonstration capacities. Moreover, the manipulation capabilities, although
+limited by the two-finger parallel grippers, are easier to integrate with the
+expert demonstrations and trajectory recordings. The robot has two buttons on
+the hands that are easy to press and link with the gripper position. The end
+effectors are light and simple to move.</p>
+<p>This part of the research implies the concatenation of primitives, so many
+different demonstrations. Furthermore, the skills are related to the
+environment and manipulation of objects, so it&#x2019;s crucial to have a platform
+that is easy to interact with. For this reason, the Baxter robot has been
+selected for this research demonstration.</p>
 <section id="foobaxter-robot-interface" class="level5"
 data-number="6.2.0.0.1">
 <h5 data-number="6.2.0.0.1"><span
 class="header-section-number">6.2.0.0.1</span> Baxter robot interface</h5>
-<p>Another repository implemented for the experiments in real life is the
-interface for the Baxter robot in Python 3. This work was driven by the need
-for Python 3 compatible functions since Baxter has an interface but it is only
-Python 2 and it&#x2019;s not compatible with the majority of ML frameworks nowadays.
-This interface is available in a <a
+<p>Another repository implemented along with the previous ones for the
+experiments in real life is the interface for the Baxter robot in Python 3.
+This work was driven by the need for Python 3 compatible functions since
+Baxter has an interface, but it is only Python 2, and it&#x2019;s not compatible with
+the majority of ML frameworks nowadays. This interface is available in a <a
 href="https://github.com/igor-lirussi/baxter-python3">GitHub public
 repository</a> <span class="citation" data-cites="url:Baxterrepo">(Igor
-Lirussi 2023a)</span>.</p>
+Lirussi 2023b)</span>.</p>
 <p>Baxter exposes a ROS system as well, with ROS topics and services. For this
 reason, the interface uses nodes and ServiceProxies to send messages or call
 actions in the robot. To speed up the reading process, there are buffer
@@ -2564,23 +2583,69 @@ possible to set and get the gripper position or the display image, or read the
 data from the infrared sensors and cameras in the hands.</p>
 <p>All these options are available in the Python 3 interface developed.
 Moreover, some examples are present of how to move the robot or control from
-keyboard, how to get the data from the sensors and cameras, and how to use the
-inverse kinematic services and the grippers.</p>
+the keyboard, how to get the data from the sensors and cameras, and how to use
+the inverse kinematic services and the grippers.</p>
 </section>
 <section id="footrajectories-recorder-and-playback-1" class="level5"
 data-number="6.2.0.0.2">
 <h5 data-number="6.2.0.0.2"><span
 class="header-section-number">6.2.0.0.2</span> Trajectories recorder and
 playback</h5>
-<p>Lastly, the interface developed contains also the code to record the
-trajectories of the arms of the robot and play them back.</p>
+<p>Lastly, in the interface developed previously, it is possible to find also
+the code to record the trajectories of the arms of the robot and play them
+back.</p>
 <p>The recorder waits for the pressing of a button and starts to save current
 time and the position of the joints at the frequency desired. Moreover, the
 recorder also saves the end effector cartesian position and orientation for
 later comparison.</p>
-<p>Finally, the gripper position and force read are saved as well in the data
-for every timestep. This is useful for manipulation tasks that require
-handling objects.</p>
+<p>The gripper position and force read are also saved in the data for every
+timestep. This is useful for manipulation tasks that require handling
+objects.</p>
+<p>Furthermore, a trajectory visualizer for cartesian and joint space has been
+developed as well. The code enables the user to see the movement primitive in
+3D and check the correctness of the data recorded or about to be played. The
+3D visualization of the trajectory can be optionally surrounded by five graphs
+for each individual dimension of the cartesian or joint space. The color of
+the points in 3D corresponds to the gripper aperture.</p>
+<p>Lastly, the complementary code for the playback of trajectories enables the
+robot to move precisely from the data provided. The trajectories can be
+previously recorded or generated with a network. For this reason, this code
+was especially useful in testing this research.</p>
+</section>
+<section id="foobaxter-detecting-and-reaching-objects" class="level5"
+data-number="6.2.0.0.3">
+<h5 data-number="6.2.0.0.3"><span
+class="header-section-number">6.2.0.0.3</span> Baxter detecting and reaching
+objects</h5>
+<p>Another code repository was developed to complement the research done with
+a method that can bring the robot actuator to the initial position. In the
+discussion presented, the robot arm has to be in an initial state, from which
+possible and meaningful actions are generated. Here we briefly propose a
+method that can reach the initial state. This will make the demonstration more
+complete from the side of a spectator and independent from an expert who has
+to guide the robot in the initial state.</p>
+<p>The code and the neural network model weights are available in a <a
+href="https://github.com/igor-lirussi/Baxter-Robot-ObjDet">GitHub public
+repository</a> <span class="citation" data-cites="url:BaxterrepoObjDet">(Igor
+Lirussi 2023a)</span>.</p>
+<p>The method developed consists of putting the robot arm in a pose from which
+the cameras in the hands are leveraged to acquire the RGB image of the table
+below. Subsequently, the objects present will be detected with the use of a
+neural network for object detection, namely YOLO. The robot will use the given
+positions of the objects to move the arm slightly toward the one desired. The
+inverse kinematics service of the robot takes care of computing the pose for
+the new cartesian position. The process repeats till the infrared (IR) sensor
+of the hand detects the distance of the object as "graspable". At this point,
+the gripper closes and the object is reached for further desired
+manipulation.</p>
+<p>This code has been used in the research as a viable way to get to the
+initial pose and the object. Many other more complicated approaches are
+possible. Reached the initial state, then demonstrated the method presented
+are demonstrated.</p>
+</section>
+<section id="footesting-1" class="level5" data-number="6.2.0.0.4">
+<h5 data-number="6.2.0.0.4"><span
+class="header-section-number">6.2.0.0.4</span> Testing</h5>
 </section>
 </section>
 </section>
@@ -2683,18 +2748,23 @@ Hu, Hengyuan, Denis Yarats, Qucheng Gong, Yuandong Tian, e Mike Lewis. 2019.
 language instructions&#xBB;</span>. <em>Advances in neural information processing
 systems</em> 32.
 </div>
+<div id="fooref-url:BaxterrepoObjDet" class="csl-entry" role="listitem">
+Igor Lirussi. 2023a. <span>&#xAB;Baxter Object Detection and Grasping&#xBB;</span>. <a
+href="https://github.com/igor-lirussi/Baxter-Robot-ObjDet"
+class="uri">https://github.com/igor-lirussi/Baxter-Robot-ObjDet</a>.
+</div>
 <div id="fooref-url:Baxterrepo" class="csl-entry" role="listitem">
-Igor Lirussi. 2023a. <span>&#xAB;Baxter Python interface&#xBB;</span>. <a
+&#x2014;&#x2014;&#x2014;. 2023b. <span>&#xAB;Baxter Python interface&#xBB;</span>. <a
 href="https://github.com/igor-lirussi/baxter-python3"
 class="uri">https://github.com/igor-lirussi/baxter-python3</a>.
 </div>
 <div id="fooref-url:3FGripperrepo" class="csl-entry" role="listitem">
-&#x2014;&#x2014;&#x2014;. 2023b. <span>&#xAB;Three Finger Gripper Python interface&#xBB;</span>. <a
+&#x2014;&#x2014;&#x2014;. 2023c. <span>&#xAB;Three Finger Gripper Python interface&#xBB;</span>. <a
 href="https://github.com/igor-lirussi/Gripper3F_interface"
 class="uri">https://github.com/igor-lirussi/Gripper3F_interface</a>.
 </div>
 <div id="fooref-url:UR10repo" class="csl-entry" role="listitem">
-&#x2014;&#x2014;&#x2014;. 2023c. <span>&#xAB;UR10 Python interface&#xBB;</span>. <a
+&#x2014;&#x2014;&#x2014;. 2023d. <span>&#xAB;UR10 Python interface&#xBB;</span>. <a
 href="https://github.com/igor-lirussi/UR10_robot_interface"
 class="uri">https://github.com/igor-lirussi/UR10_robot_interface</a>.
 </div>

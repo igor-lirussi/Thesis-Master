@@ -437,13 +437,14 @@ Movement Primitives</strong></p>
 </div>
 <section id="fooabstract" class="level1 unnumbered">
 <h1 class="unnumbered">Abstract</h1>
-<p>Max 2000 characters, strict. UniBo has that limit in the upload system!
-Will write at the end.</p>
+<p>Humans are capable of executing a wide variety of complex actions, based on
+prior experience. In this study two approaches are presented to combine parts
+of motion primitives and</p>
 </section>
 <section id="foosection" class="level1 unnumbered">
 <h1 class="unnumbered"></h1>
 <div class="flushright">
-<p><em>Dedication here</em></p>
+<p><em>To my family and to the time we have.</em></p>
 </div>
 </section>
 <section id="fooacknowledgements" class="level1 unnumbered">
@@ -1100,7 +1101,9 @@ I. A. J. P. A. E. Ugur 2019)</span>, Conditional Neural Movement Primitives
 are proposed as a model. CNMPs, as the name suggests, are an extension of CNPs
 and are particularly well suited for the robotics domain. The model
 illustration can be seen in Figure <a href="#foofig:cnmp"
-data-reference-type="ref" data-reference="fig:cnmp">2.5</a>.</p>
+data-reference-type="ref" data-reference="fig:cnmp">2.5</a>, from <span
+class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A. M. I. A. J. P. A. E.
+Ugur 2019)</span>.</p>
 <figure id="foofig:cnmp">
 <img src="Images/CNMP.png" />
 <figcaption>CNMP model, it is conceived to work with temporal relations
@@ -3141,14 +3144,52 @@ back of the blue box and end point on the green box </figcaption>
 <section id="foochap:conclusions" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span>
 Conclusions</h1>
-<p>Humans are capable of executing a wide variety of complex actions, based on
-prior experience. In this thesis, we provided a possible approach to novel
-high-level skill generation by combining movement primitives learned by CNMP
-models.</p>
+<p>This thesis provides a possible approach to novel high-level skill
+generation by combining movement primitives learned by CNMP models.</p>
+<p>The main key findings of the study are two methods developed to synthesize
+new actions from demonstrated ones.</p>
+<p>In the first approach, parts of trajectories are blended thanks to the
+combination of the task interpolation ability of the neural network analyzed
+and the mathematical system developed to pass the proper parameters to it.</p>
+<p>Furthermore, two different architectural changes have been proposed to the
+classic CNMP model. The two different architectures achieve similar results
+compared to the original model, but they enable its use with partial
+information.</p>
+<p>The second approach presented achieved action synthesis thanks to the
+concatenation of primitives combined with the spatial interpolation of the
+network and the ability to encode multidimensional data.</p>
+<p>The approaches are not free from limitations, the main ones discovered are
+the need for an initial condition and the awareness of the environment.</p>
+<p>Finally, the practical applications have been investigated, and both
+methods proposed performed well on the tests on real-life robots.</p>
 <section id="foofuture-work" class="level2" data-number="7.1">
 <h2 data-number="7.1"><span class="header-section-number">7.1</span> Future
 work</h2>
-<p>Possible future works are ...</p>
+<p>Possible future works are multiple since the research touched extensively
+many topics. This research leaves many challenges open to tackle, from
+planning to a better world representation, perception, and grasping.</p>
+<p>Another area in which the network output can be used is navigation. The
+trajectories analyzed in this study focused on robotics manipulation but can
+also be extended to robotic navigation.</p>
+<p>A possible research in the CNMP with the task parameters only in query
+would be to condition it with one state without parameters and let the
+network, queried with different tasks, pass through that state.</p>
+<p>Further research is needed on the same network developed for better
+training to improve the results in the interpolation dimensions. For example,
+conditioning it with task parameters between the original ones during
+training. This will force mixed task parameters trajectories to pass through
+the designated point.</p>
+<p>Moreover, it&#x2019;s possible to extend the research to use the task parameter
+changing capabilities to shift to another meaningful plan if one fails. The
+same abilities could be used to change among continuous actions.</p>
+<p>In the second part, some further optimization of the graph building can be
+achieved. More intelligent methods of research and pruning could be
+developed.</p>
+<p>Furthermore, actions of different time lengths in the concatenation
+procedure can be integrated.</p>
+<p>Finally, an excellent addition would be extending the simple
+low-dimensional world representation given to the network in the second method
+with an environment image.</p>
 <div id="foorefs" class="references csl-bib-body hanging-indent" role="list">
 <div id="fooref-Ahmetoglu_2022" class="csl-entry" role="listitem">
 Ahmetoglu, Alper, M. Yunus Seker, Justus Piater, Erhan Oztop, e Emre Ugur.

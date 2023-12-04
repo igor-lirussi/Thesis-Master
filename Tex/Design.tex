@@ -43,7 +43,7 @@ The thicker points in the \cref{fig:trajX} are the conditions, these force the m
 
 % do it without jumps
 The shift can not be abrupt, so it's not sufficient to directly stitch together two parts of the trajectories collected. 
-The simplest solution of executing one trajectory till a certain desired timestep and executing the second one after that moment will create an abrupt jump in the execution for the majority of timesteps where the trajectories don't perfectly intersect (\cref{fig:trajX-failing-approaches}). A jump in the movement primitive will lead to an unnatural fast change of pace and position of the robot during the execution, which not clearly referable to human behavior. Moreover, moving from one position to a completely different one in the next moment is an unsafe behavior. It might lead to damage to the robot itself and its surroundings, harm to people, or activate the safety stop measures of the robot due to the high speed and torque applied.  
+The simplest solution of executing one trajectory till a certain desired timestep and executing the second one after that moment will create an abrupt jump in the execution for the majority of timesteps where the trajectories don't perfectly intersect (\cref{fig:trajX-failing-approaches}). A jump in the movement primitive will lead to an unnatural fast change of pace and position of the robot during the execution, which is not clearly referable to human behavior. Moreover, moving from one position to a completely different one in the next moment is an unsafe behavior. It might lead to damage to the robot itself and its surroundings, harm to people, or activate the safety stop measures of the robot due to the high speed and torque applied.  
 
 \begin{figure}
     \centering
@@ -137,7 +137,7 @@ The quantitative comparison results in \cref{tab:CNMPvsCNMPnoTPquery} show the a
 
 The qualitative results of the interpolation can be seen in \cref{fig:comparisonCNMPvsCNMPonlyTPcondition}, and although some interpolation differences are visible, they still clearly maintain a sufficient degree of correctness.
 
-The new network architecture maintains the same interpolation capabilities, but allows the user to query only the time, without worrying about the task parameter, that will be inferred constant form the observations.
+The new network architecture maintains the same interpolation capabilities, but allows the user to query only the time, without worrying about the task parameter, which will be inferred constant from the observations.
 
 \begin{figure}
     \centering
@@ -498,7 +498,7 @@ The object position is encoded with a state $[1,2,3]$ depending on its position 
 The arms' positions are encoded in the same way, but by definition, the left arm can reach only the first two and the right arm only the last two. In a real-world scenario, the position of the arm will not be monodimensional but probably multidimensional, but the example is still valid.
 The world representation is finally $[PositionLeftArm, PositionObject, PositionRightArm]$. The CNMP model will learn the changes in time of both the arms and the environment representation. The possible demonstrations are depicted in \cref{tab:cnmp_env_represenation}, where pick and place means close the gripper, move to a position, and open the gripper.
 
-Given a condition on the initial state where the object is on the left $[0,0,2]$, the method proposed will build the whole graph of possible actions and resultant environment states. At this point the sequence for bringing the object from left to right, final state $[0,2,2]$ is:
+Given a condition on the initial state where the object is on the left $[0,0,2]$, the method proposed will build the whole graph of possible actions and resultant environment states. At this point, the sequence for bringing the object from left to right, final state $[0,2,2]$ is:
 \begin{enumerate}
   \item $[0,0,2] \rightarrow [1,1,2]$ left arm pick and place from side to center
   \item $[1,1,2] \rightarrow [0,1,2]$ left arm move arm to its side

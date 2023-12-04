@@ -454,10 +454,7 @@ Will write at the end.</p>
 <h1 class="unnumbered">List of Symbols</h1>
 <div class="tabbing">
 <p>&#x304;&#x304;</p>
-<p><span class="math inline">\(a_{ij}\)</span></p>
-<p>Description of <span class="math inline">\(a_{ij}\)</span></p>
-<p><br />
-<span class="math inline">\(t\)</span></p>
+<p><span class="math inline">\(t\)</span></p>
 <p>Time</p>
 <p><br />
 <span class="math inline">\(r\)</span></p>
@@ -1308,7 +1305,7 @@ has an IP65 rating. It also enables precise object placement such as
 alignment, indexing, and insertion <span class="citation"
 data-cites="url:ftsensor">(Robotiq 2023b)</span>.</p>
 <p>It exposes the six readings of the forces and torques in the three axes
-through a port opened in the computer connected to it. In out setup it has
+through a port opened in the computer connected to it. In our setup, it has
 been connected straight to the UR10 computer, allowing any user to retrieve
 the necessary data.</p>
 <p>The FT 300-S is commonly used in tasks where force and torque sensing are
@@ -2738,7 +2735,7 @@ data-number="5.2">
 End-To-End Skill Concatenation</h2>
 <p>In this section, the key parts of the implementation for concatenating
 trajectories are introduced. The training of the network on the actions
-performed has been already explained, so it will be skipped.</p>
+performed has already been explained, so it will be skipped.</p>
 <p>There are two important parts worth highlighting: the first one is the
 construction of the graph of all possible actions, and the second one is the
 filtering of the ones that are not executable.</p>
@@ -2751,14 +2748,14 @@ obtained from a starting point and combining multiple skills. This code is
 responsible for the visualization of the results in the <a
 href="#foofig:diff-traj-concat" data-reference-type="ref"
 data-reference="fig:diff-traj-concat">4.20</a>.</p>
-<p>Initially, as possible to see in the <a href="#foolst:concat-build-graph1"
-data-reference-type="ref"
+<p>Initially, as it is possible to see in the <a
+href="#foolst:concat-build-graph1" data-reference-type="ref"
 data-reference="lst:concat-build-graph1">[lst:concat-build-graph1]</a>, the
-empty structure is defined, row by row will be added later. The final number
-of trajectories is calculated as explained in <a href="#foochap:design"
+empty structure is defined, and row by row will be added later. The final
+number of trajectories is calculated as explained in <a href="#foochap:design"
 data-reference-type="ref" data-reference="chap:design">4</a> elevating the
-number of actions available to the power of the number of time they can be
-concatenated. This will also determine the full time lenght of the
+number of actions available to the power of the number of times they can be
+concatenated. This will also determine the full-time length of the
 execution.</p>
 <div class="sourceCode" id="foolst:concat-build-graph1" data-float=""
 data-language="Python" data-firstline="0" data-lastline="4"
@@ -2769,15 +2766,15 @@ label="lst:concat-build-graph1"><pre class="sourceCode python"><code class="sour
 <span id="foolst:concat-build-graph1-4"><a href="#foolst:concat-build-graph1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="foolst:concat-build-graph1-5"><a href="#foolst:concat-build-graph1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># prevision, given a starting point</span></span></code></pre></div>
 <p>Next, the recursive function will take care of filling the graph for each
-step, it&#x2019;s possible to see the most important lines in the <a
+step. It&#x2019;s possible to see the most important lines in the <a
 href="#foolst:concat-build-graph2" data-reference-type="ref"
 data-reference="lst:concat-build-graph2">[lst:concat-build-graph2]</a>.</p>
 <p>The model is queried for every action given a conditioning point based on
 the result of the previous one. The starting point and end point of the
-actions predicted are visualized, then the predictions are added at the end of
-the new line to add to the graph. Finally, for every action still, the
-function will call itself again. The parameter new line this time has now all
-the actions preditions in the end.</p>
+actions predicted are visualized, and then the predictions are added at the
+end of the new line to add to the graph. Finally, for every action, the
+function will call itself again. The parameter new line this time now has all
+the action predictions in the end.</p>
 <div class="sourceCode" id="foolst:concat-build-graph2" data-float=""
 data-language="Python" data-firstline="5"
 data-caption="Extract of code for filling the graph of skills concatenated"
@@ -2789,8 +2786,8 @@ label="lst:concat-build-graph2"><pre class="sourceCode python"><code class="sour
 <span id="foolst:concat-build-graph2-6"><a href="#foolst:concat-build-graph2-6" aria-hidden="true" tabindex="-1"></a>new_line[ <span class="dv">0</span>, current_depth<span class="op">*</span>time_queries.shape[<span class="dv">0</span>]:(current_depth<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>time_queries.shape[<span class="dv">0</span>] ] <span class="op">=</span> predicted_Ys.T</span>
 <span id="foolst:concat-build-graph2-7"><a href="#foolst:concat-build-graph2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#recursive call to further modify</span></span>
 <span id="foolst:concat-build-graph2-8"><a href="#foolst:concat-build-graph2-8" aria-hidden="true" tabindex="-1"></a>full_graph<span class="op">=</span>add_trajectories(predicted_Ys[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>], current_depth<span class="op">+</span><span class="dv">1</span>, max_depth, full_graph, new_line)</span></code></pre></div>
-<p>If the end time is reached the new line containing the new trajectory
-generated is added to the graph. No more recursive calls will be performed in
+<p>If the end time is reached, the new line containing the newly generated
+trajectory is added to the graph. No more recursive calls will be performed in
 this case.</p>
 </section>
 <section id="foopruning-the-graph-of-concatenated-trajectories" class="level3"
@@ -2798,15 +2795,15 @@ data-number="5.2.2">
 <h3 data-number="5.2.2"><span class="header-section-number">5.2.2</span>
 Pruning the graph of concatenated trajectories</h3>
 <p>The second important part of the method is to remove the movement
-primitives that are unfeasable or unmenaingful. To remove these trajectories
-the jumps in the trajectories that exceed a certain threshold will make the
-trajectory discarded.</p>
+primitives that are unfeasible or not meaningful. To remove these
+trajectories, the jumps in the trajectories that exceed a certain threshold
+will make the trajectory discarded.</p>
 <p>In <a href="#foolst:concat-prune-graph" data-reference-type="ref"
-data-reference="lst:concat-prune-graph">[lst:concat-prune-graph]</a> is
-possible to see how the graph is passed to the function and a new one empty is
-built. For each sequence in the original graph the differences among the
+data-reference="lst:concat-prune-graph">[lst:concat-prune-graph]</a>, it is
+possible to see how the graph is passed to the function and a new empty one is
+built. For each sequence in the original graph, the differences among the
 elements are computed as an array.</p>
-<p>Next, the array converted to positive values with the absoulte
+<p>Next, the array is converted to positive values with the absolute
 function.</p>
 <p>If none of these differences exceed the threshold desired, the sequence is
 added to the graph of valid sequences.</p>
@@ -2840,7 +2837,7 @@ given in the design is not enough.</p>
 <p>Furthermore, the time scale for the movement primitives has been changed to
 a longer time period. The trajectories generated if in cartesian space, were
 passed to an inverse kinematic algorithm to retrieve the joint space.</p>
-<p>Overall, these variations don&#x2019;t impact though what has been discussed and
+<p>Overall, these variations don&#x2019;t impact what has been discussed and
 implemented before.</p>
 <section id="foopartial-skill-combination-2" class="level2" data-number="6.1">
 <h2 data-number="6.1"><span class="header-section-number">6.1</span> Partial
@@ -3049,8 +3046,8 @@ class="header-section-number">6.2.0.0.3</span> Baxter detecting and reaching
 objects</h5>
 <p>Another code repository was developed to complement the research done with
 a method that can bring the robot actuator to the initial position. In the
-discussion presented, the robot arm has to be in an initial state, from which
-possible and meaningful actions are generated. Here we briefly propose a
+discussion presented, the robot arm has to be in an initial state from which
+possible and meaningful actions are generated. Here, we briefly propose a
 method that can reach the initial state. This will make the demonstration more
 complete from the side of a spectator and independent from an expert who has
 to guide the robot in the initial state.</p>
@@ -3066,7 +3063,7 @@ positions of the objects to move the arm slightly toward the one desired. The
 inverse kinematics service of the robot takes care of computing the pose for
 the new cartesian position. The process repeats till the infrared (IR) sensor
 of the hand detects the distance of the object as "graspable". At this point,
-the gripper closes and the object is reached for further desired
+the gripper closes, and the object is reached for further desired
 manipulation.</p>
 <p>This code has been used in the research as a viable way to get to the
 initial pose and the object. Many other more complicated approaches are
@@ -3076,6 +3073,68 @@ are demonstrated.</p>
 <section id="footesting-1" class="level5" data-number="6.2.0.0.4">
 <h5 data-number="6.2.0.0.4"><span
 class="header-section-number">6.2.0.0.4</span> Testing</h5>
+<p>For testing the method, the trajectories are initially shown to the robot.
+The recorder developed provided an easy way to save the data.</p>
+<p>For this test, the choice was to record the trajectories in cartesian
+space. There is no substantial difference since the network will learn
+multiple dimensions anyway, but to demonstrate this method is valid also for
+cartesian space, this time, the network got trained on those trajectories.</p>
+<p>Furthermore, the three dimensions plus four dimensions for the orientation
+of the hand sum up to the seven dimensions, and Baxter has 7 Degrees of
+Freedom (DoF) as well.</p>
+<p>For these reasons, the network input is expanded to 7 dimensions in both
+cases, but using the cartesian space, the inverse kinematic service of the
+robot has to be used.</p>
+<p>The trajectories recorded are visible in <a href="#foofig:baxter-train"
+data-reference-type="ref" data-reference="fig:baxter-train">6.4</a>. On the
+left, it depicts an action to move the box from a position on the table to the
+top of the green box. In the center, there is a movement primitive that brings
+the red box from the green one to the top of the yellow one. Lastly, on the
+right, there is a movement that overcomes the blue box and reaches a new
+position.</p>
+<p>It has to be highlighted that the actions are demonstrated separately, and
+they are independently shown to the network.</p>
+<figure id="foofig:baxter-train">
+<img src="Images/baxter-train.JPG" />
+<figcaption> Teaching by demonstration three different actions. From left to
+right: move from the ground to the green block, move on to the yellow block,
+and overcome the blue obstacle. </figcaption>
+</figure>
+<p>The proposed method is used after training the network and obtaining
+satisfactory performance. Two examples are presented below to demonstrate that
+the method is not bonded to time or a specific order of actions.</p>
+<p>In the first example, in <a href="#foofig:con2-full"
+data-reference-type="ref" data-reference="fig:con2-full">6.5</a>, the robot
+reaches the red box. This is the starting position and the condition of the
+network. Subsequently, all possible actions are generated, and their end
+position is used to concatenate the next level of possible actions. The
+process continues until one finds the final state requested, which is the top
+of the yellow box.</p>
+<figure id="foofig:con2-full">
+<img src="Images/con2-full.jpg" />
+<figcaption> Results of the concatenation method given a starting point in
+front of the blue box and end point on the yellow box </figcaption>
+</figure>
+<p>The results are shown in <a href="#foofig:con2-full"
+data-reference-type="ref" data-reference="fig:con2-full">6.5</a>, the
+cartesian trajectories on the right are combined together, and the fast jumps
+are not present. The relative 3D representation is shown in the 3D plot. When
+executed with the trajectory playback, the robot performs the action correctly
+and reaches the goal, combining the ones learned.</p>
+<p>In the second example, in <a href="#foofig:con1-full"
+data-reference-type="ref" data-reference="fig:con1-full">6.6</a>, another
+starting point and another goal is given. The method performs the search, and
+the resulting combination of cartesian trajectories is visible on the right
+part of the figure. The 3D trajectory is visible in the plot.</p>
+<p>In this case, the end and beginning of different actions also match without
+abrupt jumps. Finally, the trajectories generated are reproduced. The robot
+executes the combinations of actions to bring the box from the starting point
+to the goal state.</p>
+<figure id="foofig:con1-full">
+<img src="Images/con1-full.jpg" />
+<figcaption> Results of the concatenation method given a starting point in the
+back of the blue box and end point on the green box </figcaption>
+</figure>
 </section>
 </section>
 </section>

@@ -61,7 +61,7 @@ To achieve this, a simple matrix of observations and queries was built, where ea
 
 %%%%%%  Network with only TP in condition  %%%%%%
 \subsection{CNMP model with task-parameter only in condition}
-In this section, a new architecture is implemented, as proposed in \cref{chap:design}, based on the previously explained CNMP model. 
+In this part, a new architecture is implemented, as proposed in \cref{chap:design}, based on the previously explained CNMP model. 
 
 Among the edits in the code, one of the most important ones is the change of the model itself in the definition seen previously in \cref{lst:cnmp}. 
 
@@ -83,19 +83,19 @@ This allows to query the network simply with an array of times $t$ desired.
 \subsection{CNMP model with task-parameter only in query}
 In this part, another new architecture is proposed based on the previously explained CNMP model, as the opposite of the one presented in the previous part.
 
-To maintain the comparison coherent, between all the code developed, the most important changes here presented will follow in parallel the previous part. 
+To maintain the comparison between all the code developed, the most important changes presented here will follow in parallel the previous part. 
 
 One of the most important changes is again the model architecture itself, seen previously in \cref{lst:cnmp}.  
 
 \lstinputlisting[float,	language=Python, firstline=0, lastline=7, caption={CNMP model architecture change for TP only in query},label={lst:cnmp-just-query}]{listings/cnmp-just-query.txt}
 
-As possible to see in \cref{lst:cnmp-just-query}, the decoder this time was untouched, but the encoder was modified to accommodate different dimensions in his input. The dimensionality of the first layer of the network was reduced by the number of task parameter dimensions. At \emph{line 3}, the dimensions of the task parameter $d\_TP$ are subtracted from the dimensions of the observations $d\_x+d\_y$.
+As it is possible to see in \cref{lst:cnmp-just-query}, the decoder this time was untouched, but the encoder was modified to accommodate different dimensions in his input. The dimensionality of the first layer of the network was reduced by the number of task parameter dimensions. At \emph{line 3}, the dimensions of the task parameter $d\_TP$ are subtracted from the dimensions of the observations $d\_x+d\_y$.
 
 \lstinputlisting[float,	language=Python, firstline=8, caption={CNMP training code change for TP only in query},label={lst:cnmp-just-query-training}]{listings/cnmp-just-query.txt}
 
 Similarly to the previous architecture, another fundamental change in the process is the input at the prediction time. The \cref{lst:cnmp-just-query-training}, taken from the prediction during training, shows this time the normal queries $v_X [ i ]$ in the second part of the function. In the first argument, though, the observations are passed in a different way. These are also in the form of a vector with inputs, outputs, and task parameters concatenated in order. 
 
-In the model implemented, the observations are deprived of the last $d\_x$ columns of the input relative to their task parameters. Now the observations passed to the network correspond to the dimensionality of the first layer of the decoder designed.
+In the model implemented, the observations are deprived of the last $d\_x$ columns of the input relative to their task parameters. Now, the observations passed to the network correspond to the dimensionality of the first layer of the decoder designed.
 
 This allows conditioning the network simply with conditions that are parameterless. 
 
@@ -103,13 +103,13 @@ This allows conditioning the network simply with conditions that are parameterle
 %%%%%% Comparison %%%%%%
 \subsection{Comparison of the previous models}
 
-For the comparisons among models developed a brief extract of code is reported in \cref{lst:cnmp-comparison}. Using the \emph{numpy} library the real values are compared to the predicted ones. 
+For the comparisons among models developed, a brief extract of code is reported in \cref{lst:cnmp-comparison}. Using the \emph{numpy} library, the real values are compared to the predicted ones. 
 
-Different metrics have been used, initially, the Mean Squared Error (MSE) is calculated. It measures the average squared difference between the actual ($real\_values$) and predicted values ($predicted\_Y$). It penalizes larger errors more severely due to the squaring operation. Since the errors produced were minimal, this is the metric chosen and reported in \cref{tab:CNMP3vs}.
+Different metrics have been used. Initially, the Mean Squared Error (MSE) is calculated. It measures the average squared difference between the actual ($real\_values$) and predicted values ($predicted\_Y$). It penalizes larger errors more severely due to the squaring operation. Since the errors produced were minimal, this is the metric chosen and reported in \cref{tab:CNMP3vs}.
 
 Subsequently, also the Mean Absolute Error (MAE) is computed at \emph{line 3}. It provides the average absolute difference between the actual and predicted values.
 
-Lastly, the Root Mean Squared Error (RMSE) is calculated on the basis of this last, since it is the square root of the Mean Absolute Error. These metrics were chosen being the most commonly used in regression analysis.
+Lastly, the Root Mean Squared Error (RMSE) is calculated on the basis of this one since it is the square root of the Mean Absolute Error. These metrics were chosen as they are the most commonly used in regression analysis.
 
 \lstinputlisting[float,	language=Python, caption={Extract of code for comparison of models},label={lst:cnmp-comparison}]{listings/cnmp-comparison.txt}
 
@@ -124,7 +124,7 @@ The method is a mathematical way to feed the model with the right conditions, so
 
 Implementations for the other architectures were also developed but, for simplicity and avoiding repetitions, only one will be explained. 
 
-As depicted in \cref{fig:tpshift}, the shift implemented is linear, and, given an observation, goes from one task parameter to the other. In \cref{lst:shift-tp-one-condition} a matrix of times, linearly changing task parameters and values is created. The values column is empty and will be filled later.
+As depicted in \cref{fig:tpshift}, the shift implemented is linear, and, given an observation, goes from one task parameter to the other. In \cref{lst:shift-tp-one-condition}, a matrix of times linearly changing task parameters and values is created. The values column is empty and will be filled later.
 
 Subsequently, the model is queried for every timestep, with the TP changing \emph{line 7}. 
 Finally, values predicted are inserted in the third column of the matrix for every time step at \emph{line 10}. 
@@ -138,14 +138,14 @@ At the end, the resulting matrix will have all the data required. The plotting p
 \subsection{CNMP changing task in time with multiple conditioning points}
 Below are proposed key parts of the final implementation for changing multiple times tasks in the same prediction time span.
 
-There are two key functions for achieving this result, the first is dedicated to building a matrix of data and the second one has as duty the use of this matrix to generate the predictions. 
+There are two key functions for achieving this result: the first is dedicated to building a matrix of data, and the second one has as duty the use of this matrix to generate the predictions. 
 
 \paragraph{Building the matrix of timestep and observation for the timesteps. }
 The first key part is building a matrix that defines how the conditioning point will move in time and task space. This function is responsible for the results visible in the \cref{fig:tp-multiple-shift} and \cref{fig:tp-multiple-shift-condition}. 
 
 The function receives the observation list, with time as the first dimension, and returns the matrix with the observation for every timestep. Initially, the observations are sorted based on their time. The matrix is defined with queries of time (in the first position) concatenated to only one observation at that specific time. The matrix has dimensions $1+d\_X+d\_Y$, recalling that $d\_X$ includes the $d\_TP$ dimensionality of the task parameters. 
 
-Subsequently, the action will be repeated for every timestep. The loop keeps also track of the current and next observation in time, starting from the first. Some optimizations were performed not to calculate the same couples of closest points every time but won't be reported here for shortness. 
+Subsequently, the action will be repeated for every timestep. The loop also keeps track of the current and next observation in time, starting from the first. Some optimizations were performed not to calculate the same couples of closest points every time, but won't be reported here for shortness. 
 
 If the current time is less than the observation time or this is the last observation, the function fills the current timestep of the matrix with the current observation. This takes care of the initial and final periods.
 
@@ -153,7 +153,7 @@ If the timestep is in between two observations, the core part happens. The code 
 
 \lstinputlisting[float,	language=Python, firstline=6, lastline=9, caption={Extract of code for task shift with multiple observations, couple of observation finding},label={lst:shift-tp-more-conditions-build-matrixPT1}]{listings/shift-tp-more-conditions-build-matrix.txt}
 
-Once the closest couple of points is found in the trajectories, the points among them will not bias the task parameter change. For this reason, the start and end obtained will be interpolated in the time period of the transition. The final interpolated point obtained for this timestep is the desired observation with the non-biasing position and the mixed TP. In the \cref{lst:shift-tp-more-conditions-build-matrixPT2}, it is possible to see how in the current timestep the interpolation is executed among the two previously defined points. The resulting conditioning point is inserted in the matrix after the current timestep.
+Once the closest couple of points is found in the trajectories, the points among them will not bias the task parameter change. For this reason, the start and end obtained will be interpolated in the time period of the transition. The final interpolated point obtained for this timestep is the desired observation with the non-biasing position and the mixed TP. In the \cref{lst:shift-tp-more-conditions-build-matrixPT2}, it is possible to see how, in the current timestep, the interpolation is executed among the two previously defined points. The resulting conditioning point is inserted in the matrix after the current timestep.
 
 \lstinputlisting[float,	language=Python, firstline=14, lastline=17, caption={Extract of code for task shift with multiple observations, couple of observation interpolating},label={lst:shift-tp-more-conditions-build-matrixPT2}]{listings/shift-tp-more-conditions-build-matrix.txt}
 
@@ -174,3 +174,33 @@ The predicted output value is saved in an array and plotted, as in the results i
 \section{End-To-End Skill Concatenation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+In this section, the key parts of the implementation for concatenating trajectories are introduced. The training of the network on the actions performed has been already explained, so it will be skipped. 
+
+There are two important parts worth highlighting: the first one is the construction of the graph of all possible actions, and the second one is the filtering of the ones that are not executable. 
+
+\subsection{Building the graph of concatenated trajectories} 
+The first key part is building the graph of the whole possible trajectories obtained from a starting point and combining multiple skills. This code is responsible for the visualization of the results in the \cref{fig:diff-traj-concat}. 
+
+Initially, as possible to see in the \cref{lst:concat-build-graph1}, the empty structure is defined, row by row will be added later. The final number of trajectories is calculated as explained in \cref{chap:design} elevating the number of actions available to the power of the number of time they can be concatenated. This will also determine the full time lenght of the execution. 
+
+\lstinputlisting[float,	language=Python, firstline=0, lastline=4, caption={Extract of code for building the graph of skills concatenated},label={lst:concat-build-graph1}]{listings/concat-build-graph.txt}
+
+Next, the recursive function will take care of filling the graph for each step, it's possible to see the most important lines in the \cref{lst:concat-build-graph2}. 
+
+The model is queried for every action given a conditioning point based on the result of the previous one. The starting point and end point of the actions predicted are visualized, then the predictions are added at the end of the new line to add to the graph. Finally, for every action still, the function will call itself again. The parameter new line this time has now all the actions preditions in the end. 
+
+\lstinputlisting[float,	language=Python, firstline=5, caption={Extract of code for filling the graph of skills concatenated},label={lst:concat-build-graph2}]{listings/concat-build-graph.txt}
+
+If the end time is reached the new line containing the new trajectory generated is added to the graph. No more recursive calls will be performed in this case.
+
+\subsection{Pruning the graph of concatenated trajectories}
+The second important part of the method is to remove the movement primitives that are unfeasable or unmenaingful. To remove these trajectories the jumps in the trajectories that exceed a certain threshold will make the trajectory discarded.
+
+In \cref{lst:concat-prune-graph} is possible to see how the graph is passed to the function and a new one empty is built. 
+For each sequence in the original graph the differences among the elements are computed as an array. 
+
+Next, the array converted to positive values with the absoulte function. 
+
+If none of these differences exceed the threshold desired, the sequence is added to the graph of valid sequences. 
+
+\lstinputlisting[float,	language=Python, caption={Extract of code for filling the graph of skills concatenated},label={lst:concat-prune-graph}]{listings/concat-prune-graph.txt}

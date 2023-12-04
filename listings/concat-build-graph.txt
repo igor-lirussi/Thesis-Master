@@ -1,0 +1,12 @@
+num_traj=len(params_array)**(max_depth+1)
+lengh_time=time_steps*(max_depth+1)
+full_graph = np.zeros((0,lengh_time)) # initially empty
+
+# prevision, given a starting point
+predicted_Ys,predicted_std=predict_model(np.array([np.concatenate(([0.0],params_array[i],[starting_pt]))]),time_queries)
+print("%.2f to %.2f"%(predicted_Ys[0],predicted_Ys[-1]))
+print("filling form %i to %i"%(current_depth*time_queries.shape[0],(current_depth+1)*time_queries.shape[0]))
+#modify line
+new_line[ 0, current_depth*time_queries.shape[0]:(current_depth+1)*time_queries.shape[0] ] = predicted_Ys.T
+#recursive call to further modify
+full_graph=add_trajectories(predicted_Ys[-1,0], current_depth+1, max_depth, full_graph, new_line)

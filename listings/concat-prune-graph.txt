@@ -1,0 +1,6 @@
+def remove_sequences_with_large_jumps(graph, threshold):
+    valid_sequences = []
+    for sequence in graph:
+        diffs = np.abs(np.diff(sequence))
+        if not np.any(diffs > threshold):
+            valid_sequences.append(sequence)

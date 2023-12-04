@@ -469,20 +469,23 @@ real robots.</p>
 <section id="fooacknowledgements" class="level1 unnumbered">
 <h1 class="unnumbered">Acknowledgements</h1>
 <p>First of all, I would like to thank my advisors, Prof. Emre U&#x11F;ur and Prof.
-Andrea Roli, for their support and guidance during this research. I want to
-thank the University of Bologna, the teachers, and the personnel for making
-this journey of academic and personal growth possible. I extend my gratitude
-to all members of <a href="https://colors.cmpe.boun.edu.tr">CoLoRs
-Laboratory</a> in Bo&#x11F;azi&#xE7;i University for their advice and kindness,
-especially Yigit and Alper. I am thankful to my foreign friends, Bahadir, Naz,
-Ipek, and Zeynep, for their moral and logistical help abroad. I also thank my
-Italian friends for their affection, which enables me to explore distant lands
-far away from home without feeling lost. I am grateful to all the pilots of
-the 2nd Tactical Transport Squadron of the 46th Air Brigade for their support.
-A heartfelt thank you to Cyrus for his immense support. I also express my
-gratitude to Beppino for always being present. Finally, I want to express my
-deepest gratitude to my family. I have been able to persevere in my education
-thanks to their unconditional love and support.</p>
+Andrea Roli, for their support and guidance during this research.</p>
+<p>I want to thank the University of Bologna, the teachers, and the personnel
+for making this journey of academic and personal growth possible.</p>
+<p>I extend my gratitude to all members of <a
+href="https://colors.cmpe.boun.edu.tr">CoLoRs Laboratory</a> in Bo&#x11F;azi&#xE7;i
+University for their advice and kindness, especially Yigit and Alper.</p>
+<p>I am thankful to my foreign friends, Bahadir, Naz, Ipek, and Zeynep, for
+their moral and logistical help abroad.</p>
+<p>I also thank my Italian friends for their affection, which enables me to
+explore distant lands far away from home without feeling lost.</p>
+<p>I am grateful to all the pilots of the 2nd Tactical Transport Squadron of
+the 46th Air Brigade for their support.</p>
+<p>A heartfelt thank you to Cyrus for his immense support.</p>
+<p>I also express my gratitude to Beppino for always being present.</p>
+<p>Finally, I want to express my deepest gratitude to my family.</p>
+<p>I have been able to persevere in my education thanks to their unconditional
+love and support.</p>
 </section>
 <section id="foolist-of-symbols" class="level1 unnumbered">
 <h1 class="unnumbered">List of Symbols</h1>
@@ -973,11 +976,11 @@ Primitives (CNMP) <span class="citation" data-cites="Ugur-RSS-19">(M. Y. S. A.
 M. I. A. J. P. A. E. Ugur 2019)</span> also learns from demonstrations, but
 instead of using GMMs, they use neural networks to model the mapping from
 conditions to trajectories directly. Neural networks allow the model to scale
-better and to offer robust data approximation via gradient descent. Until
+better and offer robust data approximation via gradient descent. Until
 recently, neural networks in deep learning were trained to approximate a
 single-output function. However, when data is a distribution, the single
-function cannot approximate the underlying model. So the network can be
-modeled as a probabilistic approximator, that can predict the distribution
+function cannot approximate the underlying model. So, the network can be
+modeled as a probabilistic approximator that can predict the distribution
 parameters, mean, and variance. This makes CNMPs well-suited for tasks with
 complex, high-dimensional state spaces. It allows one to learn skills in tens,
 rather than thousands, of real-world interactions and interpolate among
@@ -1534,7 +1537,7 @@ the majority of timesteps where the trajectories don&#x2019;t perfectly intersec
 href="#foofig:trajX-failing-approaches" data-reference-type="ref"
 data-reference="fig:trajX-failing-approaches">4.2</a>). A jump in the movement
 primitive will lead to an unnatural fast change of pace and position of the
-robot during the execution, which not clearly referable to human behavior.
+robot during the execution, which is not clearly referable to human behavior.
 Moreover, moving from one position to a completely different one in the next
 moment is an unsafe behavior. It might lead to damage to the robot itself and
 its surroundings, harm to people, or activate the safety stop measures of the
@@ -1707,7 +1710,7 @@ some interpolation differences are visible, they still clearly maintain a
 sufficient degree of correctness.</p>
 <p>The new network architecture maintains the same interpolation capabilities,
 but allows the user to query only the time, without worrying about the task
-parameter, that will be inferred constant form the observations.</p>
+parameter, which will be inferred constant from the observations.</p>
 <figure id="foofig:comparisonCNMPvsCNMPonlyTPcondition">
 <img src="figures/comparisonCNMPvsCNMPonlyTPcondition.png" />
 <figcaption> Interpolation comparison of CNMP model vs CNMP model with TP only
@@ -2297,7 +2300,7 @@ gripper.</p>
 <p>Given a condition on the initial state where the object is on the left
 <span class="math inline">\([0,0,2]\)</span>, the method proposed will build
 the whole graph of possible actions and resultant environment states. At this
-point the sequence for bringing the object from left to right, final state
+point, the sequence for bringing the object from left to right, final state
 <span class="math inline">\([0,2,2]\)</span> is:</p>
 <ol>
 <li><p><span class="math inline">\([0,0,2] \rightarrow [1,1,2]\)</span> left

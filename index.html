@@ -349,7 +349,23 @@ Igor</p>
                                                         id="footoc-end-to-end-skill-concatenation-1"><span
                                                         class="toc-section-number">5.2</span>
                                                         End-To-End Skill
-                                                        Concatenation</a></li>
+                                                        Concatenation</a>
+                                                        <ul>
+                                                        <li><a
+                                                        href="#foobuilding-the-graph-of-concatenated-trajectories"
+                                                        id="footoc-building-the-graph-of-concatenated-trajectories"><span
+                                                        class="toc-section-number">5.2.1</span>
+                                                        Building the graph of
+                                                        concatenated
+                                                        trajectories</a></li>
+                                                        <li><a
+                                                        href="#foopruning-the-graph-of-concatenated-trajectories"
+                                                        id="footoc-pruning-the-graph-of-concatenated-trajectories"><span
+                                                        class="toc-section-number">5.2.2</span>
+                                                        Pruning the graph of
+                                                        concatenated
+                                                        trajectories</a></li>
+                                                        </ul></li>
                                                         </ul></li>
                                                         <li><a
                                                         href="#foochap:validation"
@@ -2423,7 +2439,7 @@ parameters vary in the observations and are constant in the queries.</p>
 class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1"><span class="header-section-number">5.1.1</span> CNMP
 model with task-parameter only in condition</h3>
-<p>In this section, a new architecture is implemented, as proposed in <a
+<p>In this part, a new architecture is implemented, as proposed in <a
 href="#foochap:design" data-reference-type="ref"
 data-reference="chap:design">4</a>, based on the previously explained CNMP
 model.</p>
@@ -2478,8 +2494,8 @@ model with task-parameter only in query</h3>
 <p>In this part, another new architecture is proposed based on the previously
 explained CNMP model, as the opposite of the one presented in the previous
 part.</p>
-<p>To maintain the comparison coherent, between all the code developed, the
-most important changes here presented will follow in parallel the previous
+<p>To maintain the comparison between all the code developed, the most
+important changes presented here will follow in parallel the previous
 part.</p>
 <p>One of the most important changes is again the model architecture itself,
 seen previously in <a href="#foolst:cnmp" data-reference-type="ref"
@@ -2495,7 +2511,7 @@ label="lst:cnmp-just-query"><pre class="sourceCode python"><code class="sourceCo
 <span id="foolst:cnmp-just-query-6"><a href="#foolst:cnmp-just-query-6" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="foolst:cnmp-just-query-7"><a href="#foolst:cnmp-just-query-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="foolst:cnmp-just-query-8"><a href="#foolst:cnmp-just-query-8" aria-hidden="true" tabindex="-1"></a>predicted_Y,predicted_std <span class="op">=</span> predict_model(np.array([np.concatenate((np.delete(v_X[i,<span class="dv">0</span>], <span class="op">-</span>d_TP, axis<span class="op">=</span><span class="dv">0</span>),v_Y[i,<span class="dv">0</span>]))]), v_X[i], plot<span class="op">=</span> <span class="va">False</span>) <span class="co">#edited here to pass only with first element and not tp</span></span></code></pre></div>
-<p>As possible to see in <a href="#foolst:cnmp-just-query"
+<p>As it is possible to see in <a href="#foolst:cnmp-just-query"
 data-reference-type="ref"
 data-reference="lst:cnmp-just-query">[lst:cnmp-just-query]</a>, the decoder
 this time was untouched, but the encoder was modified to accommodate different
@@ -2520,7 +2536,7 @@ different way. These are also in the form of a vector with inputs, outputs,
 and task parameters concatenated in order.</p>
 <p>In the model implemented, the observations are deprived of the last <span
 class="math inline">\(d\_x\)</span> columns of the input relative to their
-task parameters. Now the observations passed to the network correspond to the
+task parameters. Now, the observations passed to the network correspond to the
 dimensionality of the first layer of the decoder designed.</p>
 <p>This allows conditioning the network simply with conditions that are
 parameterless.</p>
@@ -2529,11 +2545,12 @@ parameterless.</p>
 data-number="5.1.3">
 <h3 data-number="5.1.3"><span class="header-section-number">5.1.3</span>
 Comparison of the previous models</h3>
-<p>For the comparisons among models developed a brief extract of code is
+<p>For the comparisons among models developed, a brief extract of code is
 reported in <a href="#foolst:cnmp-comparison" data-reference-type="ref"
 data-reference="lst:cnmp-comparison">[lst:cnmp-comparison]</a>. Using the
-<em>numpy</em> library the real values are compared to the predicted ones.</p>
-<p>Different metrics have been used, initially, the Mean Squared Error (MSE)
+<em>numpy</em> library, the real values are compared to the predicted
+ones.</p>
+<p>Different metrics have been used. Initially, the Mean Squared Error (MSE)
 is calculated. It measures the average squared difference between the actual
 (<span class="math inline">\(real\_values\)</span>) and predicted values
 (<span class="math inline">\(predicted\_Y\)</span>). It penalizes larger
@@ -2545,8 +2562,8 @@ data-reference="tab:CNMP3vs">[tab:CNMP3vs]</a>.</p>
 3</em>. It provides the average absolute difference between the actual and
 predicted values.</p>
 <p>Lastly, the Root Mean Squared Error (RMSE) is calculated on the basis of
-this last, since it is the square root of the Mean Absolute Error. These
-metrics were chosen being the most commonly used in regression analysis.</p>
+this one since it is the square root of the Mean Absolute Error. These metrics
+were chosen as they are the most commonly used in regression analysis.</p>
 <div class="sourceCode" id="foolst:cnmp-comparison" data-float=""
 data-language="Python" data-caption="Extract of code for comparison of models"
 label="lst:cnmp-comparison"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:cnmp-comparison-1"><a href="#foolst:cnmp-comparison-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2572,8 +2589,8 @@ simplicity and avoiding repetitions, only one will be explained.</p>
 data-reference="fig:tpshift">4.11</a>, the shift implemented is linear, and,
 given an observation, goes from one task parameter to the other. In <a
 href="#foolst:shift-tp-one-condition" data-reference-type="ref"
-data-reference="lst:shift-tp-one-condition">[lst:shift-tp-one-condition]</a> a
-matrix of times, linearly changing task parameters and values is created. The
+data-reference="lst:shift-tp-one-condition">[lst:shift-tp-one-condition]</a>,
+a matrix of times linearly changing task parameters and values is created. The
 values column is empty and will be filled later.</p>
 <p>Subsequently, the model is queried for every timestep, with the TP changing
 <em>line 7</em>. Finally, values predicted are inserted in the third column of
@@ -2605,8 +2622,8 @@ class="level3" data-number="5.1.5">
 changing task in time with multiple conditioning points</h3>
 <p>Below are proposed key parts of the final implementation for changing
 multiple times tasks in the same prediction time span.</p>
-<p>There are two key functions for achieving this result, the first is
-dedicated to building a matrix of data and the second one has as duty the use
+<p>There are two key functions for achieving this result: the first is
+dedicated to building a matrix of data, and the second one has as duty the use
 of this matrix to generate the predictions.</p>
 <section
 id="foobuilding-the-matrix-of-timestep-and-observation-for-the-timesteps."
@@ -2629,10 +2646,10 @@ class="math inline">\(1+d\_X+d\_Y\)</span>, recalling that <span
 class="math inline">\(d\_X\)</span> includes the <span
 class="math inline">\(d\_TP\)</span> dimensionality of the task
 parameters.</p>
-<p>Subsequently, the action will be repeated for every timestep. The loop
-keeps also track of the current and next observation in time, starting from
-the first. Some optimizations were performed not to calculate the same couples
-of closest points every time but won&#x2019;t be reported here for shortness.</p>
+<p>Subsequently, the action will be repeated for every timestep. The loop also
+keeps track of the current and next observation in time, starting from the
+first. Some optimizations were performed not to calculate the same couples of
+closest points every time, but won&#x2019;t be reported here for shortness.</p>
 <p>If the current time is less than the observation time or this is the last
 observation, the function fills the current timestep of the matrix with the
 current observation. This takes care of the initial and final periods.</p>
@@ -2659,7 +2676,7 @@ observation with the non-biasing position and the mixed TP. In the <a
 href="#foolst:shift-tp-more-conditions-build-matrixPT2"
 data-reference-type="ref"
 data-reference="lst:shift-tp-more-conditions-build-matrixPT2">[lst:shift-tp-more-conditions-build-matrixPT2]</a>,
-it is possible to see how in the current timestep the interpolation is
+it is possible to see how, in the current timestep, the interpolation is
 executed among the two previously defined points. The resulting conditioning
 point is inserted in the matrix after the current timestep.</p>
 <div class="sourceCode" id="foolst:shift-tp-more-conditions-build-matrixPT2"
@@ -2719,6 +2736,90 @@ data-reference="fig:tp-multiple-shift-results">4.16</a>.</p>
 data-number="5.2">
 <h2 data-number="5.2"><span class="header-section-number">5.2</span>
 End-To-End Skill Concatenation</h2>
+<p>In this section, the key parts of the implementation for concatenating
+trajectories are introduced. The training of the network on the actions
+performed has been already explained, so it will be skipped.</p>
+<p>There are two important parts worth highlighting: the first one is the
+construction of the graph of all possible actions, and the second one is the
+filtering of the ones that are not executable.</p>
+<section id="foobuilding-the-graph-of-concatenated-trajectories"
+class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1"><span class="header-section-number">5.2.1</span>
+Building the graph of concatenated trajectories</h3>
+<p>The first key part is building the graph of the whole possible trajectories
+obtained from a starting point and combining multiple skills. This code is
+responsible for the visualization of the results in the <a
+href="#foofig:diff-traj-concat" data-reference-type="ref"
+data-reference="fig:diff-traj-concat">4.20</a>.</p>
+<p>Initially, as possible to see in the <a href="#foolst:concat-build-graph1"
+data-reference-type="ref"
+data-reference="lst:concat-build-graph1">[lst:concat-build-graph1]</a>, the
+empty structure is defined, row by row will be added later. The final number
+of trajectories is calculated as explained in <a href="#foochap:design"
+data-reference-type="ref" data-reference="chap:design">4</a> elevating the
+number of actions available to the power of the number of time they can be
+concatenated. This will also determine the full time lenght of the
+execution.</p>
+<div class="sourceCode" id="foolst:concat-build-graph1" data-float=""
+data-language="Python" data-firstline="0" data-lastline="4"
+data-caption="Extract of code for building the graph of skills concatenated"
+label="lst:concat-build-graph1"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:concat-build-graph1-1"><a href="#foolst:concat-build-graph1-1" aria-hidden="true" tabindex="-1"></a>num_traj<span class="op">=</span><span class="bu">len</span>(params_array)<span class="op">**</span>(max_depth<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="foolst:concat-build-graph1-2"><a href="#foolst:concat-build-graph1-2" aria-hidden="true" tabindex="-1"></a>lengh_time<span class="op">=</span>time_steps<span class="op">*</span>(max_depth<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="foolst:concat-build-graph1-3"><a href="#foolst:concat-build-graph1-3" aria-hidden="true" tabindex="-1"></a>full_graph <span class="op">=</span> np.zeros((<span class="dv">0</span>,lengh_time)) <span class="co"># initially empty</span></span>
+<span id="foolst:concat-build-graph1-4"><a href="#foolst:concat-build-graph1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="foolst:concat-build-graph1-5"><a href="#foolst:concat-build-graph1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># prevision, given a starting point</span></span></code></pre></div>
+<p>Next, the recursive function will take care of filling the graph for each
+step, it&#x2019;s possible to see the most important lines in the <a
+href="#foolst:concat-build-graph2" data-reference-type="ref"
+data-reference="lst:concat-build-graph2">[lst:concat-build-graph2]</a>.</p>
+<p>The model is queried for every action given a conditioning point based on
+the result of the previous one. The starting point and end point of the
+actions predicted are visualized, then the predictions are added at the end of
+the new line to add to the graph. Finally, for every action still, the
+function will call itself again. The parameter new line this time has now all
+the actions preditions in the end.</p>
+<div class="sourceCode" id="foolst:concat-build-graph2" data-float=""
+data-language="Python" data-firstline="5"
+data-caption="Extract of code for filling the graph of skills concatenated"
+label="lst:concat-build-graph2"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:concat-build-graph2-1"><a href="#foolst:concat-build-graph2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prevision, given a starting point</span></span>
+<span id="foolst:concat-build-graph2-2"><a href="#foolst:concat-build-graph2-2" aria-hidden="true" tabindex="-1"></a>predicted_Ys,predicted_std<span class="op">=</span>predict_model(np.array([np.concatenate(([<span class="fl">0.0</span>],params_array[i],[starting_pt]))]),time_queries)</span>
+<span id="foolst:concat-build-graph2-3"><a href="#foolst:concat-build-graph2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">%.2f</span><span class="st"> to </span><span class="sc">%.2f</span><span class="st">&quot;</span><span class="op">%</span>(predicted_Ys[<span class="dv">0</span>],predicted_Ys[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="foolst:concat-build-graph2-4"><a href="#foolst:concat-build-graph2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;filling form </span><span class="sc">%i</span><span class="st"> to </span><span class="sc">%i</span><span class="st">&quot;</span><span class="op">%</span>(current_depth<span class="op">*</span>time_queries.shape[<span class="dv">0</span>],(current_depth<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>time_queries.shape[<span class="dv">0</span>]))</span>
+<span id="foolst:concat-build-graph2-5"><a href="#foolst:concat-build-graph2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#modify line</span></span>
+<span id="foolst:concat-build-graph2-6"><a href="#foolst:concat-build-graph2-6" aria-hidden="true" tabindex="-1"></a>new_line[ <span class="dv">0</span>, current_depth<span class="op">*</span>time_queries.shape[<span class="dv">0</span>]:(current_depth<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>time_queries.shape[<span class="dv">0</span>] ] <span class="op">=</span> predicted_Ys.T</span>
+<span id="foolst:concat-build-graph2-7"><a href="#foolst:concat-build-graph2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#recursive call to further modify</span></span>
+<span id="foolst:concat-build-graph2-8"><a href="#foolst:concat-build-graph2-8" aria-hidden="true" tabindex="-1"></a>full_graph<span class="op">=</span>add_trajectories(predicted_Ys[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>], current_depth<span class="op">+</span><span class="dv">1</span>, max_depth, full_graph, new_line)</span></code></pre></div>
+<p>If the end time is reached the new line containing the new trajectory
+generated is added to the graph. No more recursive calls will be performed in
+this case.</p>
+</section>
+<section id="foopruning-the-graph-of-concatenated-trajectories" class="level3"
+data-number="5.2.2">
+<h3 data-number="5.2.2"><span class="header-section-number">5.2.2</span>
+Pruning the graph of concatenated trajectories</h3>
+<p>The second important part of the method is to remove the movement
+primitives that are unfeasable or unmenaingful. To remove these trajectories
+the jumps in the trajectories that exceed a certain threshold will make the
+trajectory discarded.</p>
+<p>In <a href="#foolst:concat-prune-graph" data-reference-type="ref"
+data-reference="lst:concat-prune-graph">[lst:concat-prune-graph]</a> is
+possible to see how the graph is passed to the function and a new one empty is
+built. For each sequence in the original graph the differences among the
+elements are computed as an array.</p>
+<p>Next, the array converted to positive values with the absoulte
+function.</p>
+<p>If none of these differences exceed the threshold desired, the sequence is
+added to the graph of valid sequences.</p>
+<div class="sourceCode" id="foolst:concat-prune-graph" data-float=""
+data-language="Python"
+data-caption="Extract of code for filling the graph of skills concatenated"
+label="lst:concat-prune-graph"><pre class="sourceCode python"><code class="sourceCode python"><span id="foolst:concat-prune-graph-1"><a href="#foolst:concat-prune-graph-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remove_sequences_with_large_jumps(graph, threshold):</span>
+<span id="foolst:concat-prune-graph-2"><a href="#foolst:concat-prune-graph-2" aria-hidden="true" tabindex="-1"></a>    valid_sequences <span class="op">=</span> []</span>
+<span id="foolst:concat-prune-graph-3"><a href="#foolst:concat-prune-graph-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sequence <span class="kw">in</span> graph:</span>
+<span id="foolst:concat-prune-graph-4"><a href="#foolst:concat-prune-graph-4" aria-hidden="true" tabindex="-1"></a>        diffs <span class="op">=</span> np.<span class="bu">abs</span>(np.diff(sequence))</span>
+<span id="foolst:concat-prune-graph-5"><a href="#foolst:concat-prune-graph-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> np.<span class="bu">any</span>(diffs <span class="op">&gt;</span> threshold):</span>
+<span id="foolst:concat-prune-graph-6"><a href="#foolst:concat-prune-graph-6" aria-hidden="true" tabindex="-1"></a>            valid_sequences.append(sequence)</span></code></pre></div>
+</section>
 </section>
 </section>
 <section id="foochap:validation" class="level1" data-number="6">

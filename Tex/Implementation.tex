@@ -174,32 +174,32 @@ The predicted output value is saved in an array and plotted, as in the results i
 \section{End-To-End Skill Concatenation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In this section, the key parts of the implementation for concatenating trajectories are introduced. The training of the network on the actions performed has been already explained, so it will be skipped. 
+In this section, the key parts of the implementation for concatenating trajectories are introduced. The training of the network on the actions performed has already been explained, so it will be skipped. 
 
 There are two important parts worth highlighting: the first one is the construction of the graph of all possible actions, and the second one is the filtering of the ones that are not executable. 
 
 \subsection{Building the graph of concatenated trajectories} 
 The first key part is building the graph of the whole possible trajectories obtained from a starting point and combining multiple skills. This code is responsible for the visualization of the results in the \cref{fig:diff-traj-concat}. 
 
-Initially, as possible to see in the \cref{lst:concat-build-graph1}, the empty structure is defined, row by row will be added later. The final number of trajectories is calculated as explained in \cref{chap:design} elevating the number of actions available to the power of the number of time they can be concatenated. This will also determine the full time lenght of the execution. 
+Initially, as it is possible to see in the \cref{lst:concat-build-graph1}, the empty structure is defined, and row by row will be added later. The final number of trajectories is calculated as explained in \cref{chap:design} elevating the number of actions available to the power of the number of times they can be concatenated. This will also determine the full-time length of the execution. 
 
 \lstinputlisting[float,	language=Python, firstline=0, lastline=4, caption={Extract of code for building the graph of skills concatenated},label={lst:concat-build-graph1}]{listings/concat-build-graph.txt}
 
-Next, the recursive function will take care of filling the graph for each step, it's possible to see the most important lines in the \cref{lst:concat-build-graph2}. 
+Next, the recursive function will take care of filling the graph for each step. It's possible to see the most important lines in the \cref{lst:concat-build-graph2}. 
 
-The model is queried for every action given a conditioning point based on the result of the previous one. The starting point and end point of the actions predicted are visualized, then the predictions are added at the end of the new line to add to the graph. Finally, for every action still, the function will call itself again. The parameter new line this time has now all the actions preditions in the end. 
+The model is queried for every action given a conditioning point based on the result of the previous one. The starting point and end point of the actions predicted are visualized, and then the predictions are added at the end of the new line to add to the graph. Finally, for every action, the function will call itself again. The parameter new line this time now has all the action predictions in the end. 
 
 \lstinputlisting[float,	language=Python, firstline=5, caption={Extract of code for filling the graph of skills concatenated},label={lst:concat-build-graph2}]{listings/concat-build-graph.txt}
 
-If the end time is reached the new line containing the new trajectory generated is added to the graph. No more recursive calls will be performed in this case.
+If the end time is reached, the new line containing the newly generated trajectory is added to the graph. No more recursive calls will be performed in this case.
 
 \subsection{Pruning the graph of concatenated trajectories}
-The second important part of the method is to remove the movement primitives that are unfeasable or unmenaingful. To remove these trajectories the jumps in the trajectories that exceed a certain threshold will make the trajectory discarded.
+The second important part of the method is to remove the movement primitives that are unfeasible or not meaningful. To remove these trajectories, the jumps in the trajectories that exceed a certain threshold will make the trajectory discarded.
 
-In \cref{lst:concat-prune-graph} is possible to see how the graph is passed to the function and a new one empty is built. 
-For each sequence in the original graph the differences among the elements are computed as an array. 
+In \cref{lst:concat-prune-graph}, it is possible to see how the graph is passed to the function and a new empty one is built. 
+For each sequence in the original graph, the differences among the elements are computed as an array. 
 
-Next, the array converted to positive values with the absoulte function. 
+Next, the array is converted to positive values with the absolute function. 
 
 If none of these differences exceed the threshold desired, the sequence is added to the graph of valid sequences. 
 

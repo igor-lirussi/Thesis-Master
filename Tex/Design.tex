@@ -33,7 +33,7 @@ The two actions discussed will be a simple movement upwards and a similar moveme
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/trajX.png}
-    \caption{Trajectories for two different skills demonstrated and generated ones from the conditioning points.}
+    \caption{ Trajectories for two different skills demonstrated, in different colors. The generated ones in grey color, from the black conditioning points. }
     \label{fig:trajX}
 \end{figure}
 
@@ -119,7 +119,7 @@ This architectural choice is motivated by the previous analysis in which the tas
 In \cref{fig:CNMP_short_no_tp_query}, the design changes can be compared to the original model. The neural network now feeds the decoder only with the time value to query and the constant representation of the conditions. As a result, the decoder has an input dimension less than the original model.
 
 \begin{longtable}[c]{|c|l|c|c|}
-\caption{Comparison Table of original CNMP vs CNMP with TP only in condition}
+\caption{Comparison Table of errors of original CNMP vs CNMP with TP only in condition}
 \label{tab:CNMPvsCNMPnoTPquery}\\
 \hline
 \textbf{MSE Error} & \textbf{TP} & \textbf{CNMP} & \textbf{CNMP TP condition} \\ \hline
@@ -170,7 +170,7 @@ In \cref{fig:CNMP_short_no_tp_observations}, the design changes can be compared 
 The second new model has been trained on the same dataset and verified with the same validation set as the previously discussed ones.
 
 \begin{longtable}[c]{|c|l|c|l|}
-\caption{Comparison Table of original CNMP vs CNMP with TP only in query}
+\caption{Comparison Table of errors of original CNMP vs CNMP with TP only in query}
 \label{tab:CNMPvsCNMPnoTPcondition}\\
 \hline
 \textbf{MSE Error} & \textbf{TP} & \textbf{CNMP} & \multicolumn{1}{c|}{\textbf{CNMP TP query}} \\ \hline
@@ -345,4 +345,174 @@ Finally, the results shown in \cref{fig:tp-multiple-shift-results} demonstrate h
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{End-To-End Skill Concatenation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% transition between chapters 
+The proposed method in the previous chapter would be really limited if not coupled with the ability to compose the skills in succession. Being able to combine parts is indeed useful, but it will eventually end in the time span of one action, even if we use parts of other ones. To really enhance the potentiality of the network and exponentially enlarge the capacities of the robot, a way to join the skills end-to-end is required. 
 
+% intro
+In this part, a method is proposed with which it is possible to concatenate skills one after the other to achieve a goal or reach the final target position or desired state.
+
+% picture of dataset used 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/diff-traj-dataset.png}
+    \caption{ Artificial dataset of different skills to concatenate. On the left, there are the demonstrations. On the right, there is the validation. }
+    \label{fig:diff-traj-dataset}
+\end{figure}
+
+% what required + what subsequently has to be achieved
+In order to synthesize a series of actions, the demonstrations have to be initially collected. 
+Subsequently, the method presented will combine them end-to-end to reach a desired objective.
+
+% challenge of concatenation without jumps
+An immediate challenge presented consists of the concatenation of the movement primitives without incurring in jumps when passing from one to the other. Abrupt jumps in the final movement execution, as previously analyzed, can be dangerous and look unnatural. 
+
+The requirements, also for this research subpart, are indeed that the motions have to be executed with meaning, they have to seem natural, and they have to be safe.  
+
+% challenge different lengths of actions
+Another challenge to face is the different lengths of the actions in time and space. Some actions might be faster than others because they are more easily executable, for example, picking an object compared to pouring water. Furthermore, the same actions might last less if performed in different points of space, for example, placing an object in a container next to it or further away. 
+
+% challenge of deciding the right order 
+Another possible challenge is choosing the right action sequence to perform. Having all the possibilities from a starting point means that a meaningful choice has to be made. Every action has an effect on the environment, and some of them have a specific order that can not be permutated. Deciding the right order is a complication to solve, 
+
+% simplistic example dataset, but can be extended. What are the demonstrations, what can represent 
+For simplicity, the example that will follow will refer to a simple dataset \cref{fig:diff-traj-dataset} that eases the comprehension of the concepts. 
+Nevertheless, this method can still be extended to multiple dimensions and more complex scenarios. 
+
+In the dataset artificially generated, two trajectories are provided for each skill. They can resemble any task or movement in time, for example, push or shake an object or move to a position. This dataset enables a clear visualization later on. More realistic but more difficult-to-understand data can be found in the \cref{chap:validation}. 
+
+The different skills, in this case, are given to the same network with the task-parameter option seen in the previous chapter, but it's not necessary. The task parameters are, this time, three, one for each task, and they are boolean, so it's clearly visible which task is queried to the network. The task parameters are visible in the legend of the \cref{fig:diff-traj-dataset}.
+
+% multiple trajectories have to be collected for interpolation
+As mentioned in the previous chapter, for every skill, not one but multiple different trajectories are collected. This is not mandatory, as the network can learn with as little as one demonstration. 
+However, having multiple expert demonstrations allows the network to generate new unseen ones from interpolation. This extra capability is fundamental since it allows the extension of the effectiveness of the actions from a single point to a whole area or volume. 
+Furthermore, having a network that generates new unseen trajectories will allow the method proposed to be validated later for these cases.
+
+The interpolation abilities of the network are validated on the trajectories visible in the right plot. These trajectories enable the code to verify if the movement primitives generated by the network have a minimum error or not. 
+
+% pic of concatenation and jumps 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/diff-traj-jump.png}
+    \caption{ An example of failing concatenation of skills due to abrupt jumps. }
+    \label{fig:diff-traj-jump}
+\end{figure}
+
+% concatenation can't be a simple stitch
+The joining of multiple trajectories can't be a simple stitch of the previously recorded ones since it will also create abrupt jumps, \cref{fig:diff-traj-jump}. We want to avoid this event for the safety and human-like movements as required but also for a deeper further reason.
+
+Since the network can deal easily with multidimensionality, some dimensions might be added in the future to represent the state of the world. Jumps in the final trajectory must be avoided because the network would allow unmotivated internal world representation changes without being the author of them. However, this is an option that we will explore at the end of this chapter. 
+
+\subsection{CNMP for skill concatenation}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/diff-traj-interpolation.png}
+    \caption{ An example of using interpolation with CNMP model to generate new consecutive smooth trajectories. }
+    \label{fig:diff-traj-interpolation}
+\end{figure}
+
+% CNMP capability interpolation used
+To overcome part of the concatenation abrupt changes problem, the ability of CNMP of interpolation is used again. Once the final point of an action is reached, the model is queried to generate the next skills with a conditioning starting point matching it. The model, conditioned on that initial position, will generate the actions required that start from that state, avoiding big discrepancies in the final trajectory generated. 
+
+In \cref{fig:diff-traj-interpolation}, it is possible to see that the first trajectory is the result of the interpolation of the two sinusoidal demonstrations of the dataset depicted in grey. Furthermore, the end of the first trajectory is used as a condition to generate the second one. The second is the interpolation of the two linear functions, also depicted in the background.
+
+It's worth noting that in the example, the output is monodimensional, and the interpolation is simple, but in multidimensional inputs, the CNMPs can interpolate and generate output primitives that are able to interpolate in the whole 3D or joint space. This means that the trajectories of every joint, or 3D axis, won't have abrupt jumps. 
+
+Using a real-life example, if the final position of an action is reached and no other action demonstrated starts from there, the model will use the demonstrated trajectories that start from other points and combine them to generate a skill that starts from that position.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/diff-traj-concat.png}
+    \caption{ An example of a recursive concatenation of movement primitives using interpolation abilities of CNMPs. }
+    \label{fig:diff-traj-concat}
+\end{figure}
+
+% building the graph recursively
+At this point, given a starting point, the method proposed recursively builds the graph of all the possible actions, \cref{fig:diff-traj-concat}.
+This means that all the actions are evaluated from the starting position, then for all the positions reached, all the actions are generated, and so on. 
+
+The cost of this action is exponential with time; the cost is $O(n_a^{d})$, where $n_a$ is the number of actions available and $n_t$ is the depth number of subsequent actions. The cost is high but can be easily reduced since the network can be queried only for the prediction of the final step, and the queries take milliseconds. 
+
+Furthermore, mechanisms for pruning the tree if a jump is detected can significantly reduce the number of possibilities.
+Moreover, the building of the tree can stop once a viable sequence is found to reach the final goal.
+Lastly, more informed research is possible with heuristic algorithms that can reduce the steps to find a desired goal.
+However, the scope of this research remains to demonstrate the validity of the method, so the optimizations are left for future work.
+
+% extrapolation problem
+Even with the interpolation ability, the graph still contains some jumps, and we want to avoid them for the reasons explained previously. This is due to the fact that repeating some actions over and over again will bring the state out of the demonstration range provided to the network. 
+
+The CNMP model shines in the interpolation but lacks the ability to extrapolate from demonstrations. So, if a conditioning point is positioned out of the area between expert demonstrations, the network will simply output the demonstration that is the closest to that point without going further. 
+
+% pic of pruned graph
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/diff-traj-filtered.png}
+    \caption{ An example of filtering the skills generated based on extrapolation limitations. }
+    \label{fig:diff-traj-filtered}
+\end{figure}
+
+% pruning, using extrapolation as an advantage
+This problem actually helps to find the actions that are simply not feasible. For the sake of safety and meaningfulness, it is not actually reasonable to extrapolate the actions demonstrated to the whole space around the agent. For example, concatenating too many push actions might, in real life, exceed the reachability area of the robot or its arm length. 
+
+For this step the assumption taken is that the expert gives demonstrations that are at the limits of the capacity of the robot. This allows the method to derive what is feasible and what is not. 
+
+Consequently, to remove the actions that are not feasible from the option set, it is sufficient to leverage the limitations of the model and just look for big data variations in the sequences generated. After finding them, it's possible to prune the tree from these unfeasible action concatenations.
+
+In \cref{fig:diff-traj-filtered} are presented the selected trajectories generated by the network, with interpolation to avoid jumps, but without extrapolation to avoid the impractical ones. As it is possible to see in the picture, among the four trajectories chosen, it's also present in red the one previously shown in \cref{fig:diff-traj-interpolation} and created using interpolation.
+
+% actions have same length, being small primitives. Future work possible here
+All the actions presented in the example have the same temporal length. This is not mandatory but a choice for the sake of simplicity. An extension of this research could include skills that have different durations. Overall, since the majority of movement primitives are simple actions and last a few seconds, this complication was not addressed.  
+
+\subsection{CNMP embedding environment representation}
+% trajectories are executable but not always meaningful w/o internal world representation
+Trajectories generated in this way are executable and this means that the method works for spatial concatenation. 
+On the other hand,  the final goal in this way can be only a position in space or a joint state. 
+Although it is really useful to make the robot or the agent reach new places using the previous knowledge, this is limited to the device or, at maximum, the object it can carry.
+
+Upon observation, it's clear that many movement primitives involve an external object or the interaction with the environment around them. Another step in complexity is to develop the method for goals that are not only as a point in time or robot position but also related to the external world. 
+
+The external world introduces a whole new degree of complication because it requires having a degree of knowledge about it. Without this internal representation of the environment, the robot would execute actions that are possible but not meaningful. For example, picking an object that is not present or placing a lid before the pot. 
+
+% will use extra dimensions for world modelling, it's adding a dimension to the output, the opposite of a TP
+Since the CNMP model can deal with multidimensional data, the solution proposed is to embed the state changes of the environment in the network. Given a representation of the world, the network can learn how the actions performed change it and the final outcome. The representation can be as simple as a single $x,y$ position of an object manipulated or the whole image of the environment. 
+
+Furthermore, the network's ability to interpolate will make it adaptable to new states, as long as they can be interpolated from demonstrations, and it will be able to predict the outcome of the actions on them. 
+
+\begin{longtable}[c]{|l|l|l|}
+\caption{Example of CNMP ability to embed environment representations}
+\label{tab:cnmp_env_represenation}\\
+\hline
+ & left arm & right arm \\ \hline
+\endfirsthead
+%
+\endhead
+%
+move arm to center & [\textbf{0},1,2] $\rightarrow$ [\textbf{1},1,2] & [0,1,\textbf{2}] $\rightarrow$ [0,1,\textbf{1}] \\ \hline
+move arm to its side & [\textbf{1},1,2] $\rightarrow$ [\textbf{0},1,2] & [0,1,\textbf{1}] $\rightarrow$ [0,1,\textbf{2}] \\ \hline
+pick and place from side to center & [\textbf{0},\textbf{0},2] $\rightarrow$ [\textbf{1},\textbf{1},2] & [0,\textbf{2},\textbf{2}] $\rightarrow$ [0,\textbf{1},\textbf{1}] \\ \hline
+pick and place from center to side & [\textbf{1},\textbf{1},2] $\rightarrow$ [\textbf{0},\textbf{0},2] & [0,\textbf{1},\textbf{1}] $\rightarrow$ [0,\textbf{2},\textbf{2}] \\ \hline
+\end{longtable}
+
+A simplistic example is reported. The CNMP model can be trained on both arms of a robot and enable the movement of an object from a position that is reachable only from the left arm to a position that is reachable only to the right arm. 
+This action requires the internal knowledge of the position of the object to find the right sequence and not to execute actions that are possible but not meaningful if the object is not in the desired position. 
+The object position is encoded with a state $[1,2,3]$ depending on its position from left to right. We assume the left position is only reachable from the left arm, the central position from both arms and the right position from the right arm. 
+The arms' positions are encoded in the same way, but by definition, the left arm can reach only the first two and the right arm only the last two. In a real-world scenario, the position of the arm will not be monodimensional but probably multidimensional, but the example is still valid.
+The world representation is finally $[PositionLeftArm, PositionObject, PositionRightArm]$. The CNMP model will learn the changes in time of both the arms and the environment representation. The possible demonstrations are depicted in \cref{tab:cnmp_env_represenation}, where pick and place means close the gripper, move to a position, and open the gripper.
+
+Given a condition on the initial state where the object is on the left $[0,0,2]$, the method proposed will build the whole graph of possible actions and resultant environment states. At this point the sequence for bringing the object from left to right, final state $[0,2,2]$ is:
+\begin{enumerate}
+  \item $[0,0,2] \rightarrow [1,1,2]$ left arm pick and place from side to center
+  \item $[1,1,2] \rightarrow [0,1,2]$ left arm move arm to its side
+  \item $[0,1,2] \rightarrow [0,1,1]$ right arm move arm to center
+  \item $[0,1,1] \rightarrow [0,2,2]$ right arm pick and place from center to side
+\end{enumerate}
+
+It's worth noting that the method doesn't require additional data structures, but it's all embedded in the network. 
+
+This method extension means adding the dimensions normally to the network's input and output. In this way, it's still possible to use the previously presented method to discard the actions that don't bring to a valid state. In the example, it is impossible to move one arm in the center while the other is there so the arms won't collide. 
+
+Moreover, the action possibilities can still be filtered by analyzing abrupt changes in the world representation to understand when an action's output will lead to a state where further actions are not possible. In the example, the object must be in the center to be picked and placed on the side. If not, the generated action will show an abrupt initial change in the environment representation.
+
+% Overall, this doesn't go into planning
+While the presented method works out of the box for reaching goals in space, a possible extension for meaningful executions is presented here. Nevertheless, the scope of this work is not action planning, which is a complex topic in robotics beyond the scope of this work.
+
+% shift method is temporally bonded, here adding one action to the set 1) doesn't require adding it in every time slot 2) doesn't require repeating the inital part if it is at the end of the execution 

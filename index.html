@@ -19,7 +19,7 @@
 
         <meta name="generator" content="pandoc-uikit" />
                 <meta name="author" content="Lirussi Igor" />
-                        <meta name="date" content="2023-12-03" />
+                        <meta name="date" content="2023-12-04" />
                 <title>Master Thesis - Igor Lirussi</title>
         <style type="text/css">code{white-space: pre;}</style>
                 <style type="text/css">q { quotes: "&#x201C;" "&#x201D;" "&#x2018;" "&#x2019;"; }</style>
@@ -102,7 +102,7 @@
                         <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
                     <h1 class="uk-heading">Master Thesis - Igor Lirussi</h1>
-                                        <h1 class="uk-heading" style="margin:0">2023-12-03</h1>
+                                        <h1 class="uk-heading" style="margin:0">2023-12-04</h1>
                                                             <p class="uk-text-large">Lirussi
 Igor</p>
                                     </div>
@@ -276,7 +276,22 @@ Igor</p>
                                                         id="footoc-end-to-end-skill-concatenation"><span
                                                         class="toc-section-number">4.2</span>
                                                         End-To-End Skill
-                                                        Concatenation</a></li>
+                                                        Concatenation</a>
+                                                        <ul>
+                                                        <li><a
+                                                        href="#foocnmp-for-skill-concatenation"
+                                                        id="footoc-cnmp-for-skill-concatenation"><span
+                                                        class="toc-section-number">4.2.1</span>
+                                                        CNMP for skill
+                                                        concatenation</a></li>
+                                                        <li><a
+                                                        href="#foocnmp-embedding-environment-representation"
+                                                        id="footoc-cnmp-embedding-environment-representation"><span
+                                                        class="toc-section-number">4.2.2</span>
+                                                        CNMP embedding
+                                                        environment
+                                                        representation</a></li>
+                                                        </ul></li>
                                                         </ul></li>
                                                         <li><a
                                                         href="#foochap:implementation"
@@ -1445,8 +1460,9 @@ that starts from a single 1D dimension and keeps the understanding manageable
 at the subsequent introduction of new dimensions.</p>
 <figure id="foofig:trajX">
 <img src="figures/trajX.png" />
-<figcaption>Trajectories for two different skills demonstrated and generated
-ones from the conditioning points.</figcaption>
+<figcaption> Trajectories for two different skills demonstrated, in different
+colors. The generated ones in grey color, from the black conditioning points.
+</figcaption>
 </figure>
 <p>Some demonstration trajectories are given for both skills, in the <a
 href="#foofig:trajX" data-reference-type="ref"
@@ -1953,6 +1969,315 @@ traditional CNMP network. </figcaption>
 data-number="4.2">
 <h2 data-number="4.2"><span class="header-section-number">4.2</span>
 End-To-End Skill Concatenation</h2>
+<p>The proposed method in the previous chapter would be really limited if not
+coupled with the ability to compose the skills in succession. Being able to
+combine parts is indeed useful, but it will eventually end in the time span of
+one action, even if we use parts of other ones. To really enhance the
+potentiality of the network and exponentially enlarge the capacities of the
+robot, a way to join the skills end-to-end is required.</p>
+<p>In this part, a method is proposed with which it is possible to concatenate
+skills one after the other to achieve a goal or reach the final target
+position or desired state.</p>
+<figure id="foofig:diff-traj-dataset">
+<img src="figures/diff-traj-dataset.png" />
+<figcaption> Artificial dataset of different skills to concatenate. On the
+left, there are the demonstrations. On the right, there is the validation.
+</figcaption>
+</figure>
+<p>In order to synthesize a series of actions, the demonstrations have to be
+initially collected. Subsequently, the method presented will combine them
+end-to-end to reach a desired objective.</p>
+<p>An immediate challenge presented consists of the concatenation of the
+movement primitives without incurring in jumps when passing from one to the
+other. Abrupt jumps in the final movement execution, as previously analyzed,
+can be dangerous and look unnatural.</p>
+<p>The requirements, also for this research subpart, are indeed that the
+motions have to be executed with meaning, they have to seem natural, and they
+have to be safe.</p>
+<p>Another challenge to face is the different lengths of the actions in time
+and space. Some actions might be faster than others because they are more
+easily executable, for example, picking an object compared to pouring water.
+Furthermore, the same actions might last less if performed in different points
+of space, for example, placing an object in a container next to it or further
+away.</p>
+<p>Another possible challenge is choosing the right action sequence to
+perform. Having all the possibilities from a starting point means that a
+meaningful choice has to be made. Every action has an effect on the
+environment, and some of them have a specific order that can not be
+permutated. Deciding the right order is a complication to solve,</p>
+<p>For simplicity, the example that will follow will refer to a simple dataset
+<a href="#foofig:diff-traj-dataset" data-reference-type="ref"
+data-reference="fig:diff-traj-dataset">4.17</a> that eases the comprehension
+of the concepts. Nevertheless, this method can still be extended to multiple
+dimensions and more complex scenarios.</p>
+<p>In the dataset artificially generated, two trajectories are provided for
+each skill. They can resemble any task or movement in time, for example, push
+or shake an object or move to a position. This dataset enables a clear
+visualization later on. More realistic but more difficult-to-understand data
+can be found in the <a href="#foochap:validation" data-reference-type="ref"
+data-reference="chap:validation">6</a>.</p>
+<p>The different skills, in this case, are given to the same network with the
+task-parameter option seen in the previous chapter, but it&#x2019;s not necessary.
+The task parameters are, this time, three, one for each task, and they are
+boolean, so it&#x2019;s clearly visible which task is queried to the network. The
+task parameters are visible in the legend of the <a
+href="#foofig:diff-traj-dataset" data-reference-type="ref"
+data-reference="fig:diff-traj-dataset">4.17</a>.</p>
+<p>As mentioned in the previous chapter, for every skill, not one but multiple
+different trajectories are collected. This is not mandatory, as the network
+can learn with as little as one demonstration. However, having multiple expert
+demonstrations allows the network to generate new unseen ones from
+interpolation. This extra capability is fundamental since it allows the
+extension of the effectiveness of the actions from a single point to a whole
+area or volume. Furthermore, having a network that generates new unseen
+trajectories will allow the method proposed to be validated later for these
+cases.</p>
+<p>The interpolation abilities of the network are validated on the
+trajectories visible in the right plot. These trajectories enable the code to
+verify if the movement primitives generated by the network have a minimum
+error or not.</p>
+<figure id="foofig:diff-traj-jump">
+<img src="figures/diff-traj-jump.png" />
+<figcaption> An example of failing concatenation of skills due to abrupt
+jumps. </figcaption>
+</figure>
+<p>The joining of multiple trajectories can&#x2019;t be a simple stitch of the
+previously recorded ones since it will also create abrupt jumps, <a
+href="#foofig:diff-traj-jump" data-reference-type="ref"
+data-reference="fig:diff-traj-jump">4.18</a>. We want to avoid this event for
+the safety and human-like movements as required but also for a deeper further
+reason.</p>
+<p>Since the network can deal easily with multidimensionality, some dimensions
+might be added in the future to represent the state of the world. Jumps in the
+final trajectory must be avoided because the network would allow unmotivated
+internal world representation changes without being the author of them.
+However, this is an option that we will explore at the end of this
+chapter.</p>
+<section id="foocnmp-for-skill-concatenation" class="level3"
+data-number="4.2.1">
+<h3 data-number="4.2.1"><span class="header-section-number">4.2.1</span> CNMP
+for skill concatenation</h3>
+<figure id="foofig:diff-traj-interpolation">
+<img src="figures/diff-traj-interpolation.png" />
+<figcaption> An example of using interpolation with CNMP model to generate new
+consecutive smooth trajectories. </figcaption>
+</figure>
+<p>To overcome part of the concatenation abrupt changes problem, the ability
+of CNMP of interpolation is used again. Once the final point of an action is
+reached, the model is queried to generate the next skills with a conditioning
+starting point matching it. The model, conditioned on that initial position,
+will generate the actions required that start from that state, avoiding big
+discrepancies in the final trajectory generated.</p>
+<p>In <a href="#foofig:diff-traj-interpolation" data-reference-type="ref"
+data-reference="fig:diff-traj-interpolation">4.19</a>, it is possible to see
+that the first trajectory is the result of the interpolation of the two
+sinusoidal demonstrations of the dataset depicted in grey. Furthermore, the
+end of the first trajectory is used as a condition to generate the second one.
+The second is the interpolation of the two linear functions, also depicted in
+the background.</p>
+<p>It&#x2019;s worth noting that in the example, the output is monodimensional, and
+the interpolation is simple, but in multidimensional inputs, the CNMPs can
+interpolate and generate output primitives that are able to interpolate in the
+whole 3D or joint space. This means that the trajectories of every joint, or
+3D axis, won&#x2019;t have abrupt jumps.</p>
+<p>Using a real-life example, if the final position of an action is reached
+and no other action demonstrated starts from there, the model will use the
+demonstrated trajectories that start from other points and combine them to
+generate a skill that starts from that position.</p>
+<figure id="foofig:diff-traj-concat">
+<img src="figures/diff-traj-concat.png" />
+<figcaption> An example of a recursive concatenation of movement primitives
+using interpolation abilities of CNMPs. </figcaption>
+</figure>
+<p>At this point, given a starting point, the method proposed recursively
+builds the graph of all the possible actions, <a
+href="#foofig:diff-traj-concat" data-reference-type="ref"
+data-reference="fig:diff-traj-concat">4.20</a>. This means that all the
+actions are evaluated from the starting position, then for all the positions
+reached, all the actions are generated, and so on.</p>
+<p>The cost of this action is exponential with time; the cost is <span
+class="math inline">\(O(n_a^{d})\)</span>, where <span
+class="math inline">\(n_a\)</span> is the number of actions available and
+<span class="math inline">\(n_t\)</span> is the depth number of subsequent
+actions. The cost is high but can be easily reduced since the network can be
+queried only for the prediction of the final step, and the queries take
+milliseconds.</p>
+<p>Furthermore, mechanisms for pruning the tree if a jump is detected can
+significantly reduce the number of possibilities. Moreover, the building of
+the tree can stop once a viable sequence is found to reach the final goal.
+Lastly, more informed research is possible with heuristic algorithms that can
+reduce the steps to find a desired goal. However, the scope of this research
+remains to demonstrate the validity of the method, so the optimizations are
+left for future work.</p>
+<p>Even with the interpolation ability, the graph still contains some jumps,
+and we want to avoid them for the reasons explained previously. This is due to
+the fact that repeating some actions over and over again will bring the state
+out of the demonstration range provided to the network.</p>
+<p>The CNMP model shines in the interpolation but lacks the ability to
+extrapolate from demonstrations. So, if a conditioning point is positioned out
+of the area between expert demonstrations, the network will simply output the
+demonstration that is the closest to that point without going further.</p>
+<figure id="foofig:diff-traj-filtered">
+<img src="figures/diff-traj-filtered.png" />
+<figcaption> An example of filtering the skills generated based on
+extrapolation limitations. </figcaption>
+</figure>
+<p>This problem actually helps to find the actions that are simply not
+feasible. For the sake of safety and meaningfulness, it is not actually
+reasonable to extrapolate the actions demonstrated to the whole space around
+the agent. For example, concatenating too many push actions might, in real
+life, exceed the reachability area of the robot or its arm length.</p>
+<p>For this step the assumption taken is that the expert gives demonstrations
+that are at the limits of the capacity of the robot. This allows the method to
+derive what is feasible and what is not.</p>
+<p>Consequently, to remove the actions that are not feasible from the option
+set, it is sufficient to leverage the limitations of the model and just look
+for big data variations in the sequences generated. After finding them, it&#x2019;s
+possible to prune the tree from these unfeasible action concatenations.</p>
+<p>In <a href="#foofig:diff-traj-filtered" data-reference-type="ref"
+data-reference="fig:diff-traj-filtered">4.21</a> are presented the selected
+trajectories generated by the network, with interpolation to avoid jumps, but
+without extrapolation to avoid the impractical ones. As it is possible to see
+in the picture, among the four trajectories chosen, it&#x2019;s also present in red
+the one previously shown in <a href="#foofig:diff-traj-interpolation"
+data-reference-type="ref"
+data-reference="fig:diff-traj-interpolation">4.19</a> and created using
+interpolation.</p>
+<p>All the actions presented in the example have the same temporal length.
+This is not mandatory but a choice for the sake of simplicity. An extension of
+this research could include skills that have different durations. Overall,
+since the majority of movement primitives are simple actions and last a few
+seconds, this complication was not addressed.</p>
+</section>
+<section id="foocnmp-embedding-environment-representation" class="level3"
+data-number="4.2.2">
+<h3 data-number="4.2.2"><span class="header-section-number">4.2.2</span> CNMP
+embedding environment representation</h3>
+<p>Trajectories generated in this way are executable and this means that the
+method works for spatial concatenation. On the other hand, the final goal in
+this way can be only a position in space or a joint state. Although it is
+really useful to make the robot or the agent reach new places using the
+previous knowledge, this is limited to the device or, at maximum, the object
+it can carry.</p>
+<p>Upon observation, it&#x2019;s clear that many movement primitives involve an
+external object or the interaction with the environment around them. Another
+step in complexity is to develop the method for goals that are not only as a
+point in time or robot position but also related to the external world.</p>
+<p>The external world introduces a whole new degree of complication because it
+requires having a degree of knowledge about it. Without this internal
+representation of the environment, the robot would execute actions that are
+possible but not meaningful. For example, picking an object that is not
+present or placing a lid before the pot.</p>
+<p>Since the CNMP model can deal with multidimensional data, the solution
+proposed is to embed the state changes of the environment in the network.
+Given a representation of the world, the network can learn how the actions
+performed change it and the final outcome. The representation can be as simple
+as a single <span class="math inline">\(x,y\)</span> position of an object
+manipulated or the whole image of the environment.</p>
+<p>Furthermore, the network&#x2019;s ability to interpolate will make it adaptable to
+new states, as long as they can be interpolated from demonstrations, and it
+will be able to predict the outcome of the actions on them.</p>
+<div id="footab:cnmp_env_represenation">
+<table>
+<caption>Example of CNMP ability to embed environment
+representations</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">left arm</th>
+<th style="text-align: left;">right arm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">move arm to center</td>
+<td style="text-align: left;">[<strong>0</strong>,1,2] <span
+class="math inline">\(\rightarrow\)</span> [<strong>1</strong>,1,2]</td>
+<td style="text-align: left;">[0,1,<strong>2</strong>] <span
+class="math inline">\(\rightarrow\)</span> [0,1,<strong>1</strong>]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">move arm to its side</td>
+<td style="text-align: left;">[<strong>1</strong>,1,2] <span
+class="math inline">\(\rightarrow\)</span> [<strong>0</strong>,1,2]</td>
+<td style="text-align: left;">[0,1,<strong>1</strong>] <span
+class="math inline">\(\rightarrow\)</span> [0,1,<strong>2</strong>]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pick and place from side to center</td>
+<td style="text-align: left;">[<strong>0</strong>,<strong>0</strong>,2] <span
+class="math inline">\(\rightarrow\)</span>
+[<strong>1</strong>,<strong>1</strong>,2]</td>
+<td style="text-align: left;">[0,<strong>2</strong>,<strong>2</strong>] <span
+class="math inline">\(\rightarrow\)</span>
+[0,<strong>1</strong>,<strong>1</strong>]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pick and place from center to side</td>
+<td style="text-align: left;">[<strong>1</strong>,<strong>1</strong>,2] <span
+class="math inline">\(\rightarrow\)</span>
+[<strong>0</strong>,<strong>0</strong>,2]</td>
+<td style="text-align: left;">[0,<strong>1</strong>,<strong>1</strong>] <span
+class="math inline">\(\rightarrow\)</span>
+[0,<strong>2</strong>,<strong>2</strong>]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A simplistic example is reported. The CNMP model can be trained on both
+arms of a robot and enable the movement of an object from a position that is
+reachable only from the left arm to a position that is reachable only to the
+right arm. This action requires the internal knowledge of the position of the
+object to find the right sequence and not to execute actions that are possible
+but not meaningful if the object is not in the desired position. The object
+position is encoded with a state <span class="math inline">\([1,2,3]\)</span>
+depending on its position from left to right. We assume the left position is
+only reachable from the left arm, the central position from both arms and the
+right position from the right arm. The arms&#x2019; positions are encoded in the same
+way, but by definition, the left arm can reach only the first two and the
+right arm only the last two. In a real-world scenario, the position of the arm
+will not be monodimensional but probably multidimensional, but the example is
+still valid. The world representation is finally <span
+class="math inline">\([PositionLeftArm, PositionObject,
+PositionRightArm]\)</span>. The CNMP model will learn the changes in time of
+both the arms and the environment representation. The possible demonstrations
+are depicted in <a href="#footab:cnmp_env_represenation"
+data-reference-type="ref" data-reference="tab:cnmp_env_represenation">4.1</a>,
+where pick and place means close the gripper, move to a position, and open the
+gripper.</p>
+<p>Given a condition on the initial state where the object is on the left
+<span class="math inline">\([0,0,2]\)</span>, the method proposed will build
+the whole graph of possible actions and resultant environment states. At this
+point the sequence for bringing the object from left to right, final state
+<span class="math inline">\([0,2,2]\)</span> is:</p>
+<ol>
+<li><p><span class="math inline">\([0,0,2] \rightarrow [1,1,2]\)</span> left
+arm pick and place from side to center</p></li>
+<li><p><span class="math inline">\([1,1,2] \rightarrow [0,1,2]\)</span> left
+arm move arm to its side</p></li>
+<li><p><span class="math inline">\([0,1,2] \rightarrow [0,1,1]\)</span> right
+arm move arm to center</p></li>
+<li><p><span class="math inline">\([0,1,1] \rightarrow [0,2,2]\)</span> right
+arm pick and place from center to side</p></li>
+</ol>
+<p>It&#x2019;s worth noting that the method doesn&#x2019;t require additional data
+structures, but it&#x2019;s all embedded in the network.</p>
+<p>This method extension means adding the dimensions normally to the network&#x2019;s
+input and output. In this way, it&#x2019;s still possible to use the previously
+presented method to discard the actions that don&#x2019;t bring to a valid state. In
+the example, it is impossible to move one arm in the center while the other is
+there so the arms won&#x2019;t collide.</p>
+<p>Moreover, the action possibilities can still be filtered by analyzing
+abrupt changes in the world representation to understand when an action&#x2019;s
+output will lead to a state where further actions are not possible. In the
+example, the object must be in the center to be picked and placed on the side.
+If not, the generated action will show an abrupt initial change in the
+environment representation.</p>
+<p>While the presented method works out of the box for reaching goals in
+space, a possible extension for meaningful executions is presented here.
+Nevertheless, the scope of this work is not action planning, which is a
+complex topic in robotics beyond the scope of this work.</p>
+</section>
 </section>
 </section>
 <section id="foochap:implementation" class="level1" data-number="5">
@@ -1971,6 +2296,10 @@ and machine learning but it can as well be used for robotics thanks to the
 of the solution implemented will be explained below. They can be used as a
 reference for clarification, for another implementation, or for further
 improvements.</p>
+<p>This code is available in a <a
+href="https://github.com/igor-lirussi/CNMP-Robotic-Skill-Synthesis">GitHub
+public repository</a>, <span class="citation" data-cites="url:CNMPrepo">(Igor
+Lirussi 2023c)</span>.</p>
 <p>Following the structure of the <a href="#foochap:design"
 data-reference-type="ref" data-reference="chap:design">4</a>, this chapter is
 divided into two main subsections.</p>
@@ -2430,7 +2759,7 @@ interface developed to simplify the use of the robot in general and enable
 this experiment. This interface is available in a <a
 href="https://github.com/igor-lirussi/UR10_robot_interface">GitHub public
 repository</a> <span class="citation" data-cites="url:UR10repo">(Igor Lirussi
-2023d)</span>. The interface acts as a bridge between the user commands and
+2023e)</span>. The interface acts as a bridge between the user commands and
 the ROS topics exposed by the robot&#x2019;s computer.</p>
 <p>It implements a series of ROS Subscribers to retrieve the desired data
 published by the robot and save it into buffer variables. Some functions are
@@ -2450,7 +2779,7 @@ easily interface the gripper to the user and ease its operation.</p>
 <p>This interface is available in a <a
 href="https://github.com/igor-lirussi/Gripper3F_interface">GitHub public
 repository</a> <span class="citation" data-cites="url:3FGripperrepo">(Igor
-Lirussi 2023c)</span>. The code has been developed separately since the
+Lirussi 2023d)</span>. The code has been developed separately since the
 gripper is a different entity from the robot and has its own ROS services and
 IP address. The interface also acts as a connecting link between the Python
 commands and the ROS services made available by the gripper integrated
@@ -2758,13 +3087,18 @@ class="uri">https://github.com/igor-lirussi/Baxter-Robot-ObjDet</a>.
 href="https://github.com/igor-lirussi/baxter-python3"
 class="uri">https://github.com/igor-lirussi/baxter-python3</a>.
 </div>
+<div id="fooref-url:CNMPrepo" class="csl-entry" role="listitem">
+&#x2014;&#x2014;&#x2014;. 2023c. <span>&#xAB;CNMP-Robotic-Skill-Synthesis&#xBB;</span>. <a
+href="https://github.com/igor-lirussi/CNMP-Robotic-Skill-Synthesis"
+class="uri">https://github.com/igor-lirussi/CNMP-Robotic-Skill-Synthesis</a>.
+</div>
 <div id="fooref-url:3FGripperrepo" class="csl-entry" role="listitem">
-&#x2014;&#x2014;&#x2014;. 2023c. <span>&#xAB;Three Finger Gripper Python interface&#xBB;</span>. <a
+&#x2014;&#x2014;&#x2014;. 2023d. <span>&#xAB;Three Finger Gripper Python interface&#xBB;</span>. <a
 href="https://github.com/igor-lirussi/Gripper3F_interface"
 class="uri">https://github.com/igor-lirussi/Gripper3F_interface</a>.
 </div>
 <div id="fooref-url:UR10repo" class="csl-entry" role="listitem">
-&#x2014;&#x2014;&#x2014;. 2023d. <span>&#xAB;UR10 Python interface&#xBB;</span>. <a
+&#x2014;&#x2014;&#x2014;. 2023e. <span>&#xAB;UR10 Python interface&#xBB;</span>. <a
 href="https://github.com/igor-lirussi/UR10_robot_interface"
 class="uri">https://github.com/igor-lirussi/UR10_robot_interface</a>.
 </div>

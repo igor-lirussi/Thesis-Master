@@ -1,5 +1,17 @@
 %Max 2000 characters, strict.
 \begin{abstract}	
-Humans are capable of executing a wide variety of complex actions, based on prior experience. 
-In this study two approaches are presented to combine parts of motion primitives and 
+Humans are capable of executing a wide variety of complex tasks, based on prior experience.
+Often, they accomplish them by breaking them down into minor actions that are composed together one after the other to achieve the goal.
+These actions are not always learned directly but adapted from previous similar experiences to the current context. 
+
+In this study, we propose a computational model that is biologically inspired and aims to integrate into robotics the human ability to adapt movements and combine them to achieve high-level skills.
+
+A novel approach to high-level skill synthesis is explored by leveraging movement primitives learned through Conditional Neural Motion Planning (CNMP) models. 
+
+The research introduces two methods for generating and composing new actions based on demonstrated ones. 
+In the first approach, trajectories are blended by utilizing the task interpolation capabilities of the neural network and a developed mathematical system for parameterization. 
+Additionally, two alternative architectures for the CNMP model are proposed, both achieving results comparable to the original model while accommodating partial information. 
+The second approach achieves action synthesis through the concatenation of primitives, spatial interpolation, and the network's ability to encode multidimensional data to embed the environment representation.
+
+Both proposed methods are finally showcased in several experiments with real robots.
 \end{abstract}
